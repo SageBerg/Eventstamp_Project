@@ -21,19 +21,21 @@ people = [
 
 #notes in this list will not appear as shortcuts in the eventstamp.py UI
 depricated_notes = [
-                        'cis 211',
-                        'math 232',
-                        'math 252',
-                        'masturbate',
-                        'Deep Space Nine',
-                        '2048',
-                        'Civilization III',
-                        'hentai',
-                        'porn',
-                        'Nutritionstamp Project',
-                        'reddit',
-                        'psy 201',
-                                            ] 
+'cis 211',
+'math 232',
+'math 233',
+'math 252',
+'The Economist',                   
+'masturbate',
+'Deep Space Nine',
+'2048',
+'Civilization III',
+'hentai',
+'porn',
+'Nutritionstamp Project',
+'reddit',
+'psy 201',
+] 
 
 #the first color is the activity color and the second is the activity title color
 event_list = [  

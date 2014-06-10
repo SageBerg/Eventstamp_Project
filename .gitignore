@@ -1,0 +1,9 @@
+*.pyc
+*.swp
+*.swo
+eventstamp_stats.py
+eventstamp.db
+stats.db
+Eventstamp_Stats
+Depricated
+__pycache__
