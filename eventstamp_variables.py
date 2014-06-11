@@ -4,44 +4,14 @@ contains variables to be imported into programs in my self-tracking project
 
 Sage Berg
 Created  07 March 2014
-Edited  07 June  2014
+Edited   11 June  2014
 '''
-
-#used to create people check boxes to so I can record who I do things with
-people = [
-               'Erica',
-               'Skyler',
-               'Thomas',
-               'Yan',
-               'Cheryl',
-               'Bei_Bei',
-               'Caitlin',
-               'other'
-                           ]
-
-#notes in this list will not appear as shortcuts in the eventstamp.py UI
-depricated_notes = [
-'cis 211',
-'math 232',
-'math 233',
-'math 252',
-'The Economist',                   
-'masturbate',
-'Deep Space Nine',
-'2048',
-'Civilization III',
-'hentai',
-'porn',
-'Nutritionstamp Project',
-'reddit',
-'psy 201',
-] 
 
 #the first color is the activity color and the second is the activity title color
 event_list = [  
 ('school','gold', 'black'),
 ('shopping','bisque', 'black'),		
-('clothing & personal care', 'light goldenrod yellow', 'black'), #
+('clothing & personal care', 'light goldenrod yellow', 'black'),
 ('aerobic','PeachPuff3', 'black'),
 ('urinate','light goldenrod', 'black'),
 ('games','dark khaki', 'black'),
@@ -49,7 +19,7 @@ event_list = [
 
 ('paid work','forest green', 'white'),		
 ('chores','DeepSkyBlue2', 'black'),
-('packing & unpacking', 'light coral', 'black'), #
+('packing & unpacking', 'light coral', 'black'),
 ('anaerobic','sandy brown', 'black'),
 ('defecate','chocolate', 'black'),           
 ('visual','pink', 'black'),
@@ -57,7 +27,7 @@ event_list = [
            
 ('lay in bed','steel blue', 'white'),
 ('travel','thistle', 'black'),
-('clerical chores', 'MediumPurple1', 'black'), #
+('clerical chores', 'MediumPurple1', 'black'),
 ('sexual','indian red', 'black'),
 ('shower','dark turquoise', 'black'),
 ('audio','light cyan', 'black'),
@@ -65,7 +35,7 @@ event_list = [
 
 ('sleep','midnight blue', 'white'),                
 ('hobby','light slate blue', 'white'),
-('food chores', 'olive drab', 'white'), #
+('food chores', 'olive drab', 'white'),
 ('eat','dark sea green', 'black'),
 ('dental','pale green', 'black'),                
 ('read','dark olive green', 'white'),

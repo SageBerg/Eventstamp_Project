@@ -7,7 +7,7 @@ functions draw different parts of the eventstamp.py gui
 
 Sage Berg
 Created 10 April 2014
-Edited  01 June  2014
+Edited  11 June  2014
 '''
 
 from tkinter              import *
@@ -17,11 +17,16 @@ from eventstamp_calendar  import *
 from eventstamp_parser    import *
 from eventstamp_variables import *
 
+try:
+    from personal_people_list import people
+except:
+    print('failed to import personal_people_list')
+
 root = Tk()
 root.configure(background='white')
 root.wm_title('Eventstamp.py')
 
-people_list = [(person, IntVar()) for person in eventstamp_variables.people]
+people_list = [(person, IntVar()) for person in people]
 make_people_string(people_list)
 location = '' #depricated
 stress_bool = IntVar()

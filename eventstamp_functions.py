@@ -5,12 +5,24 @@ to map functions as callbacks for gui buttons
 
 Sage Berg
 Created 10 April 2014
-Edited  01 June  2014
+Edited  11 June  2014
 '''
 
 from datetime import *
 from eventstamp_variables import *
 import eventstamp_parser 
+
+try:
+    from personal_depricated_notes import depricated_notes
+except:
+    print("failed to import personal_depricated_notes")
+    depricated_notes = list() #make a dummy list to avoid reference errors
+
+try:
+    from personal_people_list import people
+except:
+    print("failed to import personal_people_list")
+    people = list() #make a dummy list to avoid reference errors
 
 def make_people_string(people_list):
     people_string = ''
@@ -77,7 +89,9 @@ def get_last_stamp():
     lines  = open('eventstamp_data.txt', 'r').readlines()
     return lines[-1][5:16] + lines[-1][26:-14] #get the last line and don't include it's \n
 
-def make_frequent_note_dict(eventstamp_list): #function needs a clean up
+def make_note_shortcut_list(eventstamp_list): #function needs a clean up (bad name)
+    #changes number of note buttons that appear when eventstamp.py is run
+    number_of_note_shortcuts = 56 #most common non-depricated notes
     frequent_note_dict = dict()
     for eventstamp in eventstamp_list: 
         if eventstamp.note.strip() in frequent_note_dict:
@@ -89,11 +103,10 @@ def make_frequent_note_dict(eventstamp_list): #function needs a clean up
         most_freq_list.append( (frequent_note_dict[key], key) )
     most_freq_list.sort()
     most_freq_list.reverse()
-    quick_note_list = list()
-    x = 56 #changes number of note buttons that appear when eventstamp.py is run
-    for i in range(min(x, len(most_freq_list))): #collect x most common notes
-        quick_note_list.append(most_freq_list[i][1]) 
-    return quick_note_list
+    note_shortcut_list = list()
+    for i in range(min(number_of_note_shortcuts, len(most_freq_list))):
+        note_shortcut_list.append(most_freq_list[i][1]) 
+    return note_shortcut_list
 
 def refresh_scales(minute_scale, hour_scale, day_scale, month_scale, year_scale):
     minute_scale.set(datetime.today().minute)

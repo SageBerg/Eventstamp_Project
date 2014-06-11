@@ -16,7 +16,7 @@ idea:   have eventstamp.py run eventstamp_stats on launch
 
 Sage Berg
 Created ?? March 2014
-Edited  08 June  2014
+Edited  11 June  2014
 '''
 
 import eventstamp_parser
@@ -186,6 +186,8 @@ def update_average_happiness_by_day_column():
                     duration += 1440 
                 day_happiness_sum += int(eventstamp_list[j].happiness.strip())*duration
                 divisor += duration
+        if divisor == 0: #tacky
+            divisor += 1
         average = day_happiness_sum/divisor
         average = round(average,3)
         hap_by_day_dict[date_dict[i]] = average
