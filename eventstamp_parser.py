@@ -3,7 +3,6 @@ eventstamp_parser.py
 
 Sage Berg
 Created: 04 March 2014
-Edited:  04 May   2014
 '''
 
 from eventstamp_class import Eventstamp 

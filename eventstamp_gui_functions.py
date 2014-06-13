@@ -7,7 +7,6 @@ functions draw different parts of the eventstamp.py gui
 
 Sage Berg
 Created 10 April 2014
-Edited  11 June  2014
 '''
 
 from tkinter              import *

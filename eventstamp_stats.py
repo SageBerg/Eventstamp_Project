@@ -25,6 +25,11 @@ from datetime             import *
 from eventstamp_class     import *
 from eventstamp_variables import *
 
+try:
+    from personal_people_list import people
+except:
+    print('failed to import personal_people_list')
+
 eventstamp_list = eventstamp_parser.make_eventstamp_list()
 eventstamp_list.insert(0,Eventstamp(14,3,5,0,0,'Other', '', 3, '', '', 'no stress'))
 date_dict = eventstamp_parser.make_date_dict()
@@ -34,6 +39,14 @@ try:
     cur = con.cursor()
 except sqlite3.Error:
     sys.exit(1)
+
+def get_eventstamp_duration(index):
+    last_time = eventstamp_list[index-1].hour*60 + eventstamp_list[index-1].minute
+    curr_time = eventstamp_list[index].hour*60   + eventstamp_list[index].minute 
+    duration  = curr_time - last_time
+    if duration < 0:
+        duration += 1440
+    return duration 
 
 def make_happiness_by_minute_file(): #lots of off-by-one screw ups, but it probably provides the right output
     print('writing happiness_by_minute.txt')
@@ -244,14 +257,26 @@ def make_average_happiness_by_day_file():
 def make_people_time_dict(people_list): #called by make_people_by_day_file
     return {person : 0 for person in people_list}
 
-def make_people_by_day_file(): #work in progress !!!!!!!!!!!!!!!!
-    people_by_day = opne('Eventstamp_Stats/people_by_day.txt', 'w')
+def make_people_by_day_file(): 
+    people_by_day = open('Eventstamp_Stats/people_by_day.txt', 'w')
     days_dict = dict()
     for i in range(len(eventstamp_list)):
         if eventstamp_list[i].date not in days_dict:
-            days_dict[eventstamp_list[i].date] = make_people_time_dict()
-        for person in event_stampe_list[i].who:
-            days_dict[eventstamp_list[i].date][person] += eventstamp_list[i].duration #add duration
+            days_dict[eventstamp_list[i].date] = make_people_time_dict(people)
+        for person in eventstamp_list[i].who.split():
+            if person in make_people_time_dict(people):
+                duration = get_eventstamp_duration(i)
+                days_dict[eventstamp_list[i].date][person] += duration 
+    people_columns_string = "DATE, "
+    for person in people:
+        people_columns_string += person + ', '
+    people_by_day.write(people_columns_string[:-2] + '\n')
+    for i in range(len(date_dict)):
+        date_string = str(date_dict[i]) + ', '
+        for person in people:
+            date_string += str(days_dict[date_dict[i]][person]) + ', '
+        people_by_day.write(date_string[:-2] + '\n')
+    people_by_day.close()
 
 def make_stress_percent_by_day_file():
     stress_percent_by_day = open('Eventstamp_Stats/stress_percent_by_day.txt', 'w') 
@@ -326,7 +351,7 @@ def main():
     make_stress_percent_by_day_file()
     make_time_use_by_day_file()
     make_fragmentation_by_day_file()
-   #make_people_by_day_file()
+    make_people_by_day_file()
     following()
     update_time_use_by_day_columns()    
     update_stamps_by_day_column()

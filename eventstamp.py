@@ -4,12 +4,11 @@ provides a GUI for keeping track of personal activities
 
 Sage Berg
 Created 04 March 2014
-Edited  11 June   2014
 '''
 
 from eventstamp_gui_functions import * 
 import eventstamp_stats 
-#importing updates stats automatically when eventstamp.py runs
+#importing eventstamp_stats updates stats when eventstamp.py runs
 
 def main():
     eventstamp_list       = eventstamp_parser.make_eventstamp_list()

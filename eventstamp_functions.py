@@ -5,7 +5,6 @@ to map functions as callbacks for gui buttons
 
 Sage Berg
 Created 10 April 2014
-Edited  11 June  2014
 '''
 
 from datetime import *
