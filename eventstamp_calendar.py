@@ -3,7 +3,6 @@ eventstamp_calendar.py
 
 Sage Berg
 Created: ?? March 2014
-Edited:  16 May   2014
 '''
 
 from tkinter import *
@@ -30,11 +29,12 @@ class Eventstamp_Calendar(object): #needs a clean up
         self.root = Tk()
         self.root.wm_title(window_name)
         self.scrollbar = Scrollbar(self.root, relief=RAISED)
-        self.scrollbar.pack(side=RIGHT, fill=Y)
+        self.scrollbar.pack(side=RIGHT)#, fill=Y)
         self.calendar = Canvas(self.root, width=self.width, height=1440, bg='white', \
         yscrollcommand = self.scrollbar.set)
         self.calendar.pack(side=LEFT, fill=BOTH)
         self.scrollbar.config(command=self.calendar.yview)
+        self.scrollbar.config()
 
         self.draw_blank_calendar()
         self.fill_calendar_with_blocks() #fills calendar with events 

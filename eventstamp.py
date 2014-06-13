@@ -18,8 +18,10 @@ ppl.close()
 pdn.close()
 
 from eventstamp_gui_functions import * 
-import eventstamp_stats 
-#importing eventstamp_stats updates stats when eventstamp.py runs
+import eventstamp_stats
+#importing eventstamp_stats updates statistical files when eventstamp.py runs
+import eventstamp_sql
+#importing eventstamp_sql updates databases when eventstamp.py runs
 
 def main():
     eventstamp_list       = eventstamp_parser.make_eventstamp_list()
