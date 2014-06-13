@@ -16,7 +16,6 @@ idea:   have eventstamp.py run eventstamp_stats on launch
 
 Sage Berg
 Created ?? March 2014
-Edited  11 June  2014
 '''
 
 import eventstamp_parser
@@ -241,6 +240,18 @@ def make_average_happiness_by_day_file():
         average = round(average,3)
         average_happiness_by_day.write(str(average) + '\n')
     average_happiness_by_day.close()
+
+def make_people_time_dict(people_list): #called by make_people_by_day_file
+    return {person : 0 for person in people_list}
+
+def make_people_by_day_file(): #work in progress !!!!!!!!!!!!!!!!
+    people_by_day = opne('Eventstamp_Stats/people_by_day.txt', 'w')
+    days_dict = dict()
+    for i in range(len(eventstamp_list)):
+        if eventstamp_list[i].date not in days_dict:
+            days_dict[eventstamp_list[i].date] = make_people_time_dict()
+        for person in event_stampe_list[i].who:
+            days_dict[eventstamp_list[i].date][person] += eventstamp_list[i].duration #add duration
 
 def make_stress_percent_by_day_file():
     stress_percent_by_day = open('Eventstamp_Stats/stress_percent_by_day.txt', 'w') 
