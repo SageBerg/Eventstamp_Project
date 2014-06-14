@@ -2,7 +2,7 @@
 eventstamp_txt_data_by_day.py
 
 Sage Berg
-Created ?? March 2014
+Created March 2014
 '''
 
 import eventstamp_parser
@@ -19,21 +19,16 @@ except:
 eventstamp_list = eventstamp_parser.make_eventstamp_list()
 date_dict = eventstamp_parser.make_date_dict()
     
-def make_time_use_by_day_file():
+def make_time_use_by_day_file(): #not providing right time for first stamp
     time_use_by_day = open('data/time_use_by_day.txt', 'w') 
     for activity in eventstamp_variables.event_list:
         time_use_by_day.write(activity[0] + ',') #write column names to text file
     time_use_by_day.write('\n')
-
     for i in range(len(date_dict)): 
         daily_time_use_dict = {activity[0].title():0 for activity in eventstamp_variables.event_list}
-        for j in range(1, len(eventstamp_list)): #stupid loop, fix
+        for j in range(len(eventstamp_list)): #stupid loop, fix
             if date_dict[i] == eventstamp_list[j].date:
-                curr_time = 60*eventstamp_list[j].hour + eventstamp_list[j].minute 
-                prev_time = 60*eventstamp_list[j-1].hour + eventstamp_list[j-1].minute
-                duration = curr_time - prev_time
-                if duration < 0:
-                    duration += 1440 
+                duration = eventstamp_parser.get_eventstamp_duration(j, eventstamp_list)
                 daily_time_use_dict[eventstamp_list[j].what.strip()] += duration
         daily_activity_list = [(activity[0].title(), \
         daily_time_use_dict[activity[0].title()]) for activity in eventstamp_variables.event_list]
@@ -42,7 +37,7 @@ def make_time_use_by_day_file():
         time_use_by_day.write('\n')
     time_use_by_day.close()
 
-def make_average_happiness_by_day_file():
+def make_happiness_by_day_file():
     average_happiness_by_day = open('data/happiness_by_day.txt', 'w')
     for i in range(len(date_dict) -1): #don't indluce current date, since the happiness total is not yet known
         date_string = str(date_dict[i][1]) + '/' + str(date_dict[i][2]) + '/20' + str(date_dict[i][0])
@@ -51,11 +46,7 @@ def make_average_happiness_by_day_file():
         divisor = 0
         for j in range(1, len(eventstamp_list)):
             if date_dict[i] == eventstamp_list[j].date and eventstamp_list[j].what != 'Sleep':
-                curr_time = 60*eventstamp_list[j].hour + eventstamp_list[j].minute 
-                prev_time = 60*eventstamp_list[j-1].hour + eventstamp_list[j-1].minute
-                duration = curr_time - prev_time
-                if duration < 0:
-                    duration += 1440 
+                duration = eventstamp_parser.get_eventstamp_duration(j, eventstamp_list)
                 day_happiness_sum += int(eventstamp_list[j].happiness.strip())*duration
                 divisor += duration
         average = day_happiness_sum/divisor
@@ -87,24 +78,18 @@ def make_people_by_day_file():
         people_by_day.write(date_string[:-2] + '\n')
     people_by_day.close()
 
-def make_stress_percent_by_day_file(): #change to raw minutes
-    stress_percent_by_day = open('data/stress_percent_by_day.txt', 'w') 
+def make_stress_by_day_file(): 
+    stress_by_day = open('data/stress_by_day.txt', 'w') 
     for i in range(len(date_dict)): 
         date_string = str(date_dict[i][1]) + '/' + str(date_dict[i][2]) + '/20' + str(date_dict[i][0])
-        stress_percent_by_day.write(date_string + ',')
+        stress_by_day.write(date_string + ', ')
         stress_minute_sum = 0
         for j in range(1, len(eventstamp_list)): 
             if date_dict[i] == eventstamp_list[j].date and eventstamp_list[j].stress == 1:
-                curr_time = 60*eventstamp_list[j].hour + eventstamp_list[j].minute 
-                prev_time = 60*eventstamp_list[j-1].hour + eventstamp_list[j-1].minute
-                duration = curr_time - prev_time
-                if duration < 0:
-                    duration += 1440 
+                duration = eventstamp_parser.get_eventstamp_duration(i, eventstamp_list)
                 stress_minute_sum += duration
-        percent = 100*(stress_minute_sum/1440)
-        average = round(percent,0)
-        stress_percent_by_day.write(str(average) + '%\n')
-    stress_percent_by_day.close()
+        stress_by_day.write(str(stress_minute_sum) + '\n')
+    stress_by_day.close()
 
 def make_stamps_by_day_file():
     f = open('data/stamps_by_day.txt', 'w')
@@ -124,8 +109,8 @@ def make_stamps_by_day_file():
     f.close()
 
 def main():
-    make_average_happiness_by_day_file()
-    make_stress_percent_by_day_file()
+    make_happiness_by_day_file()
+    make_stress_by_day_file()
     make_time_use_by_day_file()
     make_stamps_by_day_file()
     make_people_by_day_file()
