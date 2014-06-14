@@ -40,7 +40,7 @@ class Eventstamp_Calendar(object): #needs a clean up
         self.scrollbar.config(command=self.calendar.yview)
 
         self.draw_blank_calendar()
-        self.fill_calendar_with_blocks() #fills calendar with events 
+        self.fill_calendar_with_blocks()
         self.fill_calendar_with_titles() #labels each block in calendar
 
         self.root.mainloop()
@@ -60,8 +60,8 @@ class Eventstamp_Calendar(object): #needs a clean up
             self.calendar.create_text((50, hour*60 +30), text=hour_title) 
             #place the titles of each hour
             self.calendar.create_text(\
-            (self.width -50, hour*60 +30), text=hour_title) 
-        self.calendar.create_line(0, 1460, self.width, 1460) 
+            (self.width -50, hour*60 +30), text=hour_title)
+        self.calendar.create_line(0, 1460, self.width, 1460)
         #create last line in calendar
         if len(self.date_dict) <  7:
             for i in range(len(self.date_dict)):
@@ -85,6 +85,20 @@ class Eventstamp_Calendar(object): #needs a clean up
         prettyified_date = day + ' ' + month + ' ' + year
         return prettyified_date
 
+    def get_color(self, curr_event):
+        '''
+        override it for classes inheriting from Eventstamp_Calendar
+        it should return a string that is a valid TK color
+        '''
+        pass 
+
+    def get_text_color(self, curr_event):
+        '''
+        can be override for classes inheriting from Eventstamp_Calendar
+        it should return a string that is a valid TK color
+        '''
+        return color_dict[curr_event.what.strip()][1]  
+
     def fill_calendar_with_blocks(self):
         inverted_date_dict = \
         {date:number for number, date in self.date_dict.items()}
@@ -94,7 +108,7 @@ class Eventstamp_Calendar(object): #needs a clean up
                 prev_event = self.eventstamp_list[i-1]
                 curr_event = self.eventstamp_list[i]
 
-                block_color = color_dict[curr_event.what.strip()][0] 
+                block_color = self.get_color(curr_event)
                 
                 topx    = 100 + inverted_date_dict[prev_event.date]*200  
                 bottomx = 300 + inverted_date_dict[curr_event.date]*200 
@@ -131,7 +145,7 @@ class Eventstamp_Calendar(object): #needs a clean up
                 prev_event = self.eventstamp_list[i-1]
                 curr_event = self.eventstamp_list[i]
 
-                text_color = color_dict[curr_event.what.strip()][1]
+                text_color = self.get_text_color(curr_event)
                 
                 if self.eventstamp_list[i].note.strip() != '':
                     block_title = curr_event.note.strip()
@@ -167,260 +181,44 @@ class Eventstamp_Calendar(object): #needs a clean up
                     self.calendar.create_text(\
                     (x,y + 16), text=people_string, fill=text_color) 
 
+class Activity_Calendar(Eventstamp_Calendar):
+    
+    def get_color(self, curr_event):
+        return color_dict[curr_event.what.strip()][0]
+        
 class Happiness_Calendar(Eventstamp_Calendar):
 
-    def fill_calendar_with_blocks(self): 
-        inverted_date_dict = \
-        {date:number for number, date in self.date_dict.items()}
-        for i in range(1,len(self.eventstamp_list)):
-            if self.eventstamp_list[i-1].date in inverted_date_dict and \
-               self.eventstamp_list[i].date in inverted_date_dict:
-                prev_event = self.eventstamp_list[i-1]
-                curr_event = self.eventstamp_list[i]
+    def get_color(self, curr_event):
+        if curr_event.what == 'Sleep':
+            return 'white'
+        return happiness_color_dict[str(curr_event.happiness)][0]
 
-                block_color = \
-                happiness_color_dict[curr_event.happiness.strip()][0]
-                if curr_event.what == 'Sleep':
-                    block_color = 'white' 
-                
-                topx    = 100 + inverted_date_dict[prev_event.date]*200  
-                bottomx = 300 + inverted_date_dict[curr_event.date]*200 
-                topy    = 20  + prev_event.hour*60 + prev_event.minute 
-                #y is in minutes
-                bottomy = 20  + curr_event.hour*60 + curr_event.minute 
-                #draws backwards from stamp time
-               
-                if prev_event.hour == 23 and prev_event.minute == 60:
-                    topy = 20
-                    topx += 200
-                    
-                self.calendar.create_rectangle(\
-                topx, topy, bottomx, bottomy, fill=block_color, width=0) 
-
-    def fill_calendar_with_titles(self):
-        inverted_date_dict = \
-        {date:number for number, date in self.date_dict.items()}
-        for i in range(1,len(self.eventstamp_list)):
-            duration = self.eventstamp_list[i].minute   + \
-            self.eventstamp_list[i].hour*60 - \
-                      (self.eventstamp_list[i-1].minute + \
-                      self.eventstamp_list[i-1].hour*60)
-            y_change = 0
-            if duration < 0:
-                duration += 1460
-                y_change = -1440
-            if self.eventstamp_list[i-1].date in inverted_date_dict and \
-               self.eventstamp_list[i].date in inverted_date_dict and \
-               self.eventstamp_list[i].what.strip() != 'Sexual' and \
-               duration >= 15:
-                
-                prev_event = self.eventstamp_list[i-1]
-                curr_event = self.eventstamp_list[i]
-
-                text_color = \
-                happiness_color_dict[curr_event.happiness.strip()][1]
-                
-                if self.eventstamp_list[i].note.strip() != '':
-                    block_title = curr_event.note.strip()
-                else:
-                    block_title = curr_event.what.strip() 
-
-                x = 200 + 200*\
-                inverted_date_dict[self.eventstamp_list[i].date]
-                y = 26  + 60*\
-                prev_event.hour + prev_event.minute + y_change
-
-                self.calendar.create_text(\
-                (x,y), text=block_title, fill=text_color)
-        
-                if curr_event.who.strip() != '' and duration >= 30: 
-                #show people
-                    number_of_people = len(curr_event.who.strip().split())
-                    people_string = 'with '
-                    if number_of_people < 2:
-                        separator_list = ['']
-                    elif number_of_people == 2:
-                        separator_list = [' and ', '']
-                    else:
-                        separator_list = [', and ', '']
-                    if number_of_people > 2:
-                        for i in range(number_of_people -2):
-                            separator_list.insert(0, ', ')
-                    for i in range(len(curr_event.who.strip().split())):
-                        people_string += \
-                        curr_event.who.strip().split()[i] + \
-                        separator_list[i] 
-                    self.calendar.create_text(\
-                    (x,y + 16), text=people_string, fill=text_color) 
+    def get_text_color(self, curr_event):
+        if curr_event.what == 'Sleep':
+            return 'white'
+        return happiness_color_dict[str(curr_event.happiness)][1]
 
 class People_Calendar(Eventstamp_Calendar):
 
-    def fill_calendar_with_blocks(self): 
-        inverted_date_dict = \
-        {date:number for number, date in self.date_dict.items()}
-        for i in range(1,len(self.eventstamp_list)):
-            if self.eventstamp_list[i-1].date in inverted_date_dict and \
-               self.eventstamp_list[i].date in inverted_date_dict and \
-               self.eventstamp_list[i].who.strip() != '':
-                prev_event = self.eventstamp_list[i-1]
-                curr_event = self.eventstamp_list[i]
+    def get_color(self, curr_event):
+        if curr_event.who == '':
+            return 'white'
+        else:
+            return color_dict[curr_event.what.strip()][0]
 
-                block_color = color_dict[curr_event.what.strip()][0] 
-                
-                topx    = 100 + inverted_date_dict[prev_event.date]*200  
-                bottomx = 300 + inverted_date_dict[curr_event.date]*200 
-                topy    = 20  + prev_event.hour*60 + prev_event.minute 
-                #y is in minutes
-                bottomy = 20  + curr_event.hour*60 + curr_event.minute 
-                #draws backwards from stamp time
-               
-                if prev_event.hour == 23 and prev_event.minute == 60:
-                    topy = 20
-                    topx += 200
-                    
-                self.calendar.create_rectangle(\
-                topx, topy, bottomx, bottomy, fill=block_color, width=0) 
-
-    def fill_calendar_with_titles(self):
-        inverted_date_dict = \
-        {date:number for number, date in self.date_dict.items()}
-        for i in range(1,len(self.eventstamp_list)):
-            duration = self.eventstamp_list[i].minute   + \
-                       self.eventstamp_list[i].hour*60  - \
-                      (self.eventstamp_list[i-1].minute + \
-                       self.eventstamp_list[i-1].hour*60)
-            y_change = 0
-            if duration < 0:
-                duration += 1460
-                y_change = -1440
-            if self.eventstamp_list[i].who.strip() != '' and \
-               self.eventstamp_list[i-1].date in inverted_date_dict and \
-               self.eventstamp_list[i].date in inverted_date_dict and \
-               self.eventstamp_list[i].what.strip() != 'Sexual' and \
-               duration >= 15:
-                
-                prev_event = self.eventstamp_list[i-1]
-                curr_event = self.eventstamp_list[i]
-
-                text_color = color_dict[curr_event.what.strip()][1]
-                
-                if self.eventstamp_list[i].note.strip() != '':
-                    block_title = curr_event.note.strip()
-                else:
-                    block_title = curr_event.what.strip() 
-
-                x = 200 + 200*\
-                inverted_date_dict[self.eventstamp_list[i].date]
-                y = 26  + 60*\
-                prev_event.hour + prev_event.minute + y_change
-
-                self.calendar.create_text(\
-                (x,y), text=block_title, fill=text_color)
-
-                if curr_event.who.strip() != '' and duration >= 30: 
-                #show people
-                    number_of_people = len(curr_event.who.strip().split())
-                    people_string = 'with '
-                    if number_of_people < 2:
-                        separator_list = ['']
-                    elif number_of_people == 2:
-                        separator_list = [' and ', '']
-                    else:
-                        separator_list = [', and ', '']
-                    if number_of_people > 2:
-                        for i in range(number_of_people -2):
-                            separator_list.insert(0, ', ')
-                    for i in range(len(curr_event.who.strip().split())):
-                        people_string += \
-                        curr_event.who.strip().split()[i] + \
-                        separator_list[i] 
-                    self.calendar.create_text(\
-                    (x,y + 16), text=people_string, fill=text_color) 
+    def get_text_color(self, curr_event):
+        if curr_event.who == '':
+            return 'white'
+        else:
+            return color_dict[curr_event.what.strip()][1]
 
 class Stress_Calendar(Eventstamp_Calendar):
 
-    def fill_calendar_with_blocks(self): 
-        inverted_date_dict = \
-        {date:number for number, date in self.date_dict.items()}
-        for i in range(1,len(self.eventstamp_list)):
-            if self.eventstamp_list[i-1].date in inverted_date_dict and \
-               self.eventstamp_list[i].date in inverted_date_dict: 
-                prev_event = self.eventstamp_list[i-1]
-                curr_event = self.eventstamp_list[i]
-
-                block_color = stress_color_dict[curr_event.stress][0] 
-                
-                topx    = 100 + inverted_date_dict[prev_event.date]*200  
-                bottomx = 300 + inverted_date_dict[curr_event.date]*200 
-                topy    = 20  + prev_event.hour*60 + prev_event.minute 
-                #y is in minutes
-                bottomy = 20  + curr_event.hour*60 + curr_event.minute 
-                #draws backwards from stamp time
-               
-                if prev_event.hour == 23 and prev_event.minute == 60:
-                    topy = 20
-                    topx += 200
-                    
-                self.calendar.create_rectangle(\
-                topx, topy, bottomx, bottomy, fill=block_color, width=0) 
-
-    def fill_calendar_with_titles(self):
-        inverted_date_dict = \
-        {date:number for number, date in self.date_dict.items()}
-        for i in range(1,len(self.eventstamp_list)):
-            duration = self.eventstamp_list[i].minute   + \
-                       self.eventstamp_list[i].hour*60  - \
-                      (self.eventstamp_list[i-1].minute + \
-                       self.eventstamp_list[i-1].hour*60)
-            y_change = 0
-            if duration < 0:
-                duration += 1460
-                y_change = -1440
-            if self.eventstamp_list[i-1].date in inverted_date_dict and \
-               self.eventstamp_list[i].date in inverted_date_dict and \
-               self.eventstamp_list[i].what.strip() != 'Sexual' and \
-               duration >= 15:
-                
-                prev_event = self.eventstamp_list[i-1]
-                curr_event = self.eventstamp_list[i]
-
-                text_color = stress_color_dict[curr_event.stress][1]
-                
-                if self.eventstamp_list[i].note.strip() != '':
-                    block_title = curr_event.note.strip()
-                else:
-                    block_title = curr_event.what.strip() 
-
-                x = 200 + 200*\
-                inverted_date_dict[self.eventstamp_list[i].date]
-                y = 26  + 60*\
-                prev_event.hour + prev_event.minute + y_change
-
-                self.calendar.create_text(\
-                (x,y), text=block_title, fill=text_color)
-
-                if curr_event.who.strip() != '' and duration >= 30: 
-                #show people
-                    number_of_people = len(curr_event.who.strip().split())
-                    people_string = 'with '
-                    if number_of_people < 2:
-                        separator_list = ['']
-                    elif number_of_people == 2:
-                        separator_list = [' and ', '']
-                    else:
-                        separator_list = [', and ', '']
-                    if number_of_people > 2:
-                        for i in range(number_of_people -2):
-                            separator_list.insert(0, ', ')
-                    for i in range(len(curr_event.who.strip().split())):
-                        people_string += \
-                        curr_event.who.strip().split()[i] + \
-                        separator_list[i] 
-                    self.calendar.create_text(\
-                    (x,y + 16), text=people_string, fill=text_color) 
+    def get_color(self, curr_event):
+        return stress_color_dict[curr_event.stress][0]
 
 def eventstamp_calendar():
-    Eventstamp_Calendar('Eventstamp Calendar')
+    Activity_Calendar('Eventstamp Calendar')
 
 def happiness_calendar():
     Happiness_Calendar('Happiness Calendar')
