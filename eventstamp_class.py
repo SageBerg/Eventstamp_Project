@@ -1,12 +1,20 @@
+'''
+eventstamp_class.py
+
+Sage Berg
+Created 4 March 2014
+'''
+
 class Eventstamp(object):
 
-    def __init__(self, year, month, day, hour, minute, what, who, happiness, note, where, stress):
+    def __init__(self, year, month, day, hour, minute, what, who, \
+                 happiness, note, where, stress):
         self.year = year
         self.month = month
         self.day = day
         self.hour = hour
         self.minute = minute
-        self.date = (year, month, day) #used in eventstamp_averages.py
+        self.date = (year, month, day)
 
         self.who = who
 
@@ -20,6 +28,7 @@ class Eventstamp(object):
             self.stress = 1
         else:
             self.stress = 0
+
     def __str__(self):
         return str(self.year) + ', ' + \
                str(self.month) + ', ' + \

@@ -21,7 +21,8 @@ def following():
     for i in range(len(event_list)):
         activity_dict[event_list[i][0].title()] = dict()
         for j in range(len(event_list)):
-            activity_dict[event_list[i][0].title()][event_list[j][0].title()] = 0
+            activity_dict[event_list[i][0].title()]\
+            [event_list[j][0].title()] = 0
 
     for k in range(len(eventstamp_list) -1):
         cur = eventstamp_list[k].what
@@ -38,7 +39,9 @@ def following():
     for m in range(len(event_list)):
         outfile.write(event_list[m][0].title() + ', ')
         for n in range(len(event_list)):
-            outfile.write(str(activity_dict[event_list[m][0].title()][event_list[n][0].title()]) + ', ')
+            outfile.write(\
+            str(activity_dict[event_list[m][0].title()]\
+            [event_list[n][0].title()]) + ', ')
         outfile.write('\n')
     outfile.close()
 

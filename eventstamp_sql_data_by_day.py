@@ -5,20 +5,19 @@ Sage Berg
 Created 13 June 2014
 '''
 
-import eventstamp_parser
-import eventstamp_variables
 import sqlite3
 from datetime             import *
 from eventstamp_class     import *
 from eventstamp_variables import *
+from eventstamp_parser    import *
 
 try:
     from personal_people_list import people
 except:
     print('failed to import personal_people_list')
 
-eventstamp_list = eventstamp_parser.make_eventstamp_list()
-date_dict = eventstamp_parser.make_date_dict()
+eventstamp_list = make_eventstamp_list()
+date_dict       = make_date_dict()
 
 try:
     con = sqlite3.connect('data/eventstamp_statistics.db')
@@ -28,9 +27,13 @@ except sqlite3.Error:
 
 def make_day_table():
     sql_string = 'CREATE TABLE day(id INT, date TEXT, '
-    for i in range(len(eventstamp_variables.event_list)):
-        activity = eventstamp_variables.event_list[i][0]
-        activity = activity.replace(' ', '_').replace('&','And').replace('-','_').title()  
+    for i in range(len(event_list)):
+        activity = event_list[i][0]
+        activity = \
+        activity.replace(' ', '_')  \
+                .replace('&','And') \
+                .replace('-','_')   \
+                .title()  
         sql_string += activity + ' TEXT, '
     sql_string += 'stamps INT, '
     sql_string += 'happiness FLOAT, '
@@ -44,29 +47,32 @@ def make_day_table():
     date_list.sort()
 
     for i in range(len(date_list)):
-        cur.execute('INSERT INTO day (id, date) VALUES (\'' + str(i) + '\', \'' + str(date_list[i]) + '\');')
+        cur.execute('INSERT INTO day (id, date) VALUES (\'' + \
+                    str(i) + '\', \'' + str(date_list[i]) + '\');')
     con.commit()
 
 def make_empty_time_use_by_day_dict():
-    return {activity[0].title(): 0 for activity in eventstamp_variables.event_list}
+    return {activity[0].title(): 0 for activity in event_list}
 
 def update_time_use_by_day_columns():
-    time_use_for_all_days_dict = dict() #dict maps dates to dicts that map activities to time totals
+    time_use_for_all_days_dict = dict() 
+    #dict maps dates to dicts that map activities to time totals
     for i in range(len(eventstamp_list)):
         if eventstamp_list[i].date not in time_use_for_all_days_dict:
-            time_use_for_all_days_dict[eventstamp_list[i].date] = make_empty_time_use_by_day_dict()
+            time_use_for_all_days_dict[eventstamp_list[i].date] = \
+            make_empty_time_use_by_day_dict()
         else:
-            last_time = eventstamp_list[i-1].hour*60 + eventstamp_list[i-1].minute
-            curr_time = eventstamp_list[i].hour*60   + eventstamp_list[i].minute 
-            duration  = curr_time - last_time
-            if duration < 0:
-                duration += 1440
-            time_use_for_all_days_dict[eventstamp_list[i].date][eventstamp_list[i].what] += duration
+            duration = get_eventstamp_duration(i, eventstamp_list)
+            time_use_for_all_days_dict[eventstamp_list[i].date]\
+            [eventstamp_list[i].what] += duration
 
     for date in date_dict.values(): 
         for activity in time_use_for_all_days_dict[date]:
-            q = 'UPDATE day SET ' + \
-            activity.replace(' ', '_').replace('&','And').replace('-','_').title() + \
+            q = 'UPDATE day SET ' +     \
+            activity.replace(' ', '_')  \
+                    .replace('&','And') \
+                    .replace('-','_')   \
+                    .title() + \
             ' = \'' + str(time_use_for_all_days_dict[date][activity]) + \
             '\' WHERE date = \'' + str(date) + '\';'
             cur.execute(q)
@@ -95,13 +101,11 @@ def update_average_happiness_by_day_column():
         day_happiness_sum = 0
         divisor = 0
         for j in range(1, len(eventstamp_list)): #bad loop
-            if date_dict[i] == eventstamp_list[j].date and eventstamp_list[j].what != 'Sleep':
-                curr_time = 60*eventstamp_list[j].hour + eventstamp_list[j].minute 
-                prev_time = 60*eventstamp_list[j-1].hour + eventstamp_list[j-1].minute
-                duration = curr_time - prev_time
-                if duration < 0:
-                    duration += 1440 
-                day_happiness_sum += int(eventstamp_list[j].happiness.strip())*duration
+            if date_dict[i] == eventstamp_list[j].date and \
+               eventstamp_list[j].what != 'Sleep':
+                duration = get_eventstamp_duration(j, eventstamp_list)
+                day_happiness_sum += \
+                int(eventstamp_list[j].happiness.strip())*duration
                 divisor += duration
         if divisor == 0: #tacky
             divisor += 1

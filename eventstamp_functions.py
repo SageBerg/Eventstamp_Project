@@ -29,7 +29,7 @@ except:
     print("failed to import personal_people_list")
     people = list() #make a dummy list to avoid reference errors
 
-def make_people_string(people_list): #this function might need to be moved, since it's not gui related
+def make_people_string(people_list): #used by draw_activity buttons
     people_string = ''
     for person in people_list:
          if person[1].get():
@@ -47,9 +47,12 @@ def add_to_realtime_eventstamp_display(display, display_list):
             color = event[1]
     start_x = eventstamp_list[-2].minute + eventstamp_list[-2].hour*60
     end_x   = eventstamp_list[-1].minute + eventstamp_list[-1].hour*60 
-    display_list.append(display.create_rectangle(start_x, 0, end_x, 40, fill=color, width=0))
+    display_list.append(display.create_rectangle(start_x, 0, end_x, 40, \
+                        fill=color, width=0))
 
-def write_eventstamp(activity_string, people_string, happiness, note, where, stress, scales, scales_list, display, display_list):
+def write_eventstamp(activity_string, people_string, happiness, note, \
+                     where, stress, scales, scales_list, display, \
+                     display_list):
     outfile   = open('eventstamp_data.txt', 'a')
     if scales.get():
         minute = zero_padder(scales_list[0].get())
@@ -57,7 +60,8 @@ def write_eventstamp(activity_string, people_string, happiness, note, where, str
         day    = zero_padder(scales_list[2].get())
         month  = zero_padder(scales_list[3].get())
         year   = str(scales_list[4].get())
-        timestamp = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':00.000000'
+        timestamp = year + '-' + month + '-' + day + ' ' + \
+                    hour + ':' + minute + ':00.000000'
     else:
         timestamp = str(datetime.today())
     activity  = activity_string
@@ -92,9 +96,11 @@ def undo(display, display_list): #callback for "delete last stamp" button
 
 def get_last_stamp():
     lines  = open('eventstamp_data.txt', 'r').readlines()
-    return lines[-1][5:16] + lines[-1][26:-14] #get the last line and don't include it's \n
+    return lines[-1][5:16] + lines[-1][26:-14] 
+    #get the last line and don't include it's \n
 
-def make_note_shortcut_list(eventstamp_list): #function needs a clean up (bad name)
+def make_note_shortcut_list(eventstamp_list): 
+    #function needs a clean up (bad name)
     #changes number of note buttons that appear when eventstamp.py is run
     number_of_note_shortcuts = 56 #most common non-depricated notes
     frequent_note_dict = dict()
@@ -113,14 +119,16 @@ def make_note_shortcut_list(eventstamp_list): #function needs a clean up (bad na
         note_shortcut_list.append(most_freq_list[i][1]) 
     return note_shortcut_list
 
-def refresh_scales(minute_scale, hour_scale, day_scale, month_scale, year_scale):
+def refresh_scales(minute_scale, hour_scale, day_scale, \
+                   month_scale,  year_scale):
     minute_scale.set(datetime.today().minute)
     hour_scale.set(  datetime.today().hour)
     day_scale.set(   datetime.today().day)
     month_scale.set( datetime.today().month)
     year_scale.set(  datetime.today().year)
 
-def set_scales_to_last_eventstamp(minute_scale, hour_scale, day_scale, month_scale, year_scale):
+def set_scales_to_last_eventstamp(minute_scale, hour_scale, day_scale, \
+                                 month_scale,   year_scale):
     eventstamp_list = eventstamp_parser.make_eventstamp_list()
 
     minute = eventstamp_list[-1].minute
@@ -135,7 +143,8 @@ def set_scales_to_last_eventstamp(minute_scale, hour_scale, day_scale, month_sca
     month_scale.set(month)
     year_scale.set(year)
 
-def update_data_files(): #this is not keeping the GUI free, but its 10 times faster :/ 
+def update_data_files(): 
+    #this is not keeping the GUI free, but its 10 times faster :/ 
     #t1 = datetime.today()
     data_parser_list = [eventstamp_txt_data_following.main, \
                         eventstamp_txt_data_by_minute.main, \

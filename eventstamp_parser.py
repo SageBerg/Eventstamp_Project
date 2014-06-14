@@ -30,10 +30,12 @@ def get_eventstamp_duration(index, eventstamp_list):
     '''
     used in eventstamp_stats, eventstamp_sql
     '''
-    last_time = eventstamp_list[index-1].hour*60 + eventstamp_list[index-1].minute
-    curr_time = eventstamp_list[index].hour*60   + eventstamp_list[index].minute 
+    last_time = eventstamp_list[index-1].hour*60 \
+              + eventstamp_list[index-1].minute
+    curr_time = eventstamp_list[index].hour*60 \
+              + eventstamp_list[index].minute 
     duration  = curr_time - last_time
-    if duration < 0:
+    if duration < 0: #deals with stamps that span over midnight
         duration += 1440
     return duration
 
@@ -45,7 +47,8 @@ def make_eventstamp_list():
         eventstamp_file = open('eventstamp_data.txt')
     except:
         eventstamp_file = open('eventstamp_data.txt', 'w')
-        eventstamp_file.write(str(datetime.today()) + ', Other, , , , , no stress\n')
+        eventstamp_file.write(str(datetime.today()) + \
+                              ', Other, , , , , no stress\n')
     eventstamp_list = list()
     eventstamp_string_list = [line for line in eventstamp_file]
     for i in range(1,len(eventstamp_string_list)):
@@ -53,23 +56,28 @@ def make_eventstamp_list():
         date_of_current_activity  = get_date(eventstamp_string_list[i])
 
         line = eventstamp_string_list[i] 
-        parts_list = list(parse_datetime_string(line.split(',')[0])) + line.split(',')[1:]
+        parts_list = list(parse_datetime_string(line.split(',')[0])) + \
+                          line.split(',')[1:]
         for i in range(len(parts_list)): #clean up data
             if type(parts_list[i]) == str:
                 parts_list[i] = parts_list[i].strip()
         if date_of_current_activity == date_of_previous_activity:
             eventstamp_list.append(Eventstamp(*parts_list))
         else: #break up events that span from one day to the next
-            before_midnight_args = list(date_of_previous_activity) + [23] + [60] + parts_list[5:]
-            after_midnight_args  = list(date_of_current_activity) + parts_list[3:] 
+            before_midnight_args = \
+            list(date_of_previous_activity) + [23] + [60] + parts_list[5:]
+            after_midnight_args  = \
+            list(date_of_current_activity) + parts_list[3:] 
             eventstamp_list.append(Eventstamp(*before_midnight_args))
             eventstamp_list.append(Eventstamp(*after_midnight_args))
     eventstamp_file.close()
     return eventstamp_list
 
-def make_recent_date_dict(): #refactor using eventstamp.date logic? #consolidate with other function?
+def make_recent_date_dict(): 
+    #refactor using eventstamp.date logic? 
+    #consolidate with other function?
     '''
-    used 
+    used by eventstamp_calendar.py
     returns dictionary mapping integers 0-6 to the 7 most recent days
     '''
     date_dict = dict()

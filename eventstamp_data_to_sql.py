@@ -54,8 +54,8 @@ for i in range(len(eventstamp_list)):
     ' Happiness = \'' + str(eventstamp_list[i].happiness) + '\',' + \
     ' Stress = \''    + str(eventstamp_list[i].stress)    + '\',' + \
     ' Activity = \''  + str(eventstamp_list[i].what)      + '\',' + \
-    ' Location = \''  + str(eventstamp_list[i].where.replace('\'',''))     + '\',' + \
-    ' Note = \''      + str(eventstamp_list[i].note.replace('\'',''))      + '\',' + \
+    ' Location = \''  + str(eventstamp_list[i].where.replace('\'','')) + '\',' + \
+    ' Note = \''      + str(eventstamp_list[i].note.replace('\'',''))  + '\',' + \
     ' People = \''    + str(eventstamp_list[i].who)       + '\''  + \
     ' WHERE ID = \''  + str(i)           + '\';'
     #print(s) 
