@@ -57,24 +57,23 @@ class Eventstamp_Calendar(object): #needs a clean up
                 hour_title += ' AM'
             else:
                 hour_title += ' PM'
-            self.calendar.create_text((50, hour*60 +30), text=hour_title) 
+            self.calendar.create_text((50, hour*60 +26), text=hour_title) 
             #place the titles of each hour
             self.calendar.create_text(\
-            (self.width -50, hour*60 +30), text=hour_title)
-        self.calendar.create_line(0, 1460, self.width, 1460)
-        #create last line in calendar
-        if len(self.date_dict) <  7:
+            (self.width -50, hour*60 +26), text=hour_title)
+        self.calendar.create_line(0, 1460, self.width, 1460) #last line
+        if len(self.date_dict) < 7:
             for i in range(len(self.date_dict)):
-                self.calendar.create_text(200 + i*200, 10, \
+                self.calendar.create_text(200 + i*200, 11, \
                 text=self.prettyify_date(self.date_dict[i]))
-                self.calendar.create_text(200 + i*200, 1470, \
+                self.calendar.create_text(200 + i*200, 1467, \
                 text=self.prettyify_date(self.date_dict[i]))
         else:
             index = len(self.date_dict) -1
             for i in range(0,7):
-                self.calendar.create_text(1400 - i*200, 10, \
+                self.calendar.create_text(1400 - i*200, 11, \
                 text=self.prettyify_date(self.date_dict[index]))
-                self.calendar.create_text(1400 - i*200, 1470, \
+                self.calendar.create_text(1400 - i*200, 1467, \
                 text=self.prettyify_date(self.date_dict[index]))
                 index -= 1
 
@@ -133,14 +132,21 @@ class Eventstamp_Calendar(object): #needs a clean up
                        self.eventstamp_list[i].hour*60  - \
                       (self.eventstamp_list[i-1].minute + \
                        self.eventstamp_list[i-1].hour*60)
+
+            pass_midnight_flag = False 
             y_change = 0
             if duration < 0:
                 duration += 1460
                 y_change = -1440
+                pass_midnight_flag = True
+
             if self.eventstamp_list[i-1].date in inverted_date_dict and \
                self.eventstamp_list[i].date   in inverted_date_dict and \
                self.eventstamp_list[i].what.strip() != 'Sexual' and \
                duration >= 15:
+                
+                if pass_midnight_flag == True and duration < 35:
+                    continue  
                 
                 prev_event = self.eventstamp_list[i-1]
                 curr_event = self.eventstamp_list[i]
