@@ -18,7 +18,6 @@ except:
     print('failed to import personal_people_list')
 
 eventstamp_list = eventstamp_parser.make_eventstamp_list()
-eventstamp_list.insert(0,Eventstamp(14,3,5,0,0,'Other', '', 3, '', '', 'no stress')) #remove?
 date_dict = eventstamp_parser.make_date_dict()
 
 try:
@@ -31,12 +30,11 @@ def make_day_table():
     sql_string = 'CREATE TABLE day(id INT, date TEXT, '
     for i in range(len(eventstamp_variables.event_list)):
         activity = eventstamp_variables.event_list[i][0]
-        activity = activity.replace(' ', '_').replace('&','').replace('-','_').title() 
+        activity = activity.replace(' ', '_').replace('&','And').replace('-','_').title()  
         sql_string += activity + ' TEXT, '
     sql_string += 'stamps INT, '
     sql_string += 'happiness FLOAT, '
     sql_string = sql_string[:len(sql_string) -2] + ');'
-    #print(sql_string)
     print('writing eventstamp_stats.db')
     cur.executescript('DROP TABLE IF EXISTS day;' + sql_string)
 
@@ -68,7 +66,7 @@ def update_time_use_by_day_columns():
     for date in date_dict.values(): 
         for activity in time_use_for_all_days_dict[date]:
             q = 'UPDATE day SET ' + \
-            activity .replace(' ', '_').replace('&','').replace('-','_').title() + \
+            activity.replace(' ', '_').replace('&','And').replace('-','_').title() + \
             ' = \'' + str(time_use_for_all_days_dict[date][activity]) + \
             '\' WHERE date = \'' + str(date) + '\';'
             cur.execute(q)
@@ -118,6 +116,12 @@ def update_average_happiness_by_day_column():
     con.commit()
 
 def main():
+    try:
+        con = sqlite3.connect('data/eventstamp_statistics.db')
+        cur = con.cursor()
+    except sqlite3.Error:
+        sys.exit(1)
+
     make_day_table()
     update_time_use_by_day_columns()    
     update_stamps_by_day_column()
