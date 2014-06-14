@@ -17,11 +17,7 @@ except:
 ppl.close()
 pdn.close()
 
-from eventstamp_gui_functions import * 
-import eventstamp_stats
-#importing eventstamp_stats updates statistical files when eventstamp.py runs
-import eventstamp_sql
-#importing eventstamp_sql updates databases when eventstamp.py runs
+from eventstamp_gui import *
 
 def main():
     eventstamp_list       = eventstamp_parser.make_eventstamp_list()
@@ -44,6 +40,7 @@ def main():
     draw_note_buttons(note_shortcut_list, note_entry_box, note_entry_string)
     last_stamp_entry = draw_last_stamp_entry()
     draw_last_stamp_button(last_stamp_entry)
+    draw_update_data_files_button()
 
 if __name__ == '__main__': 
     main()

@@ -5,7 +5,8 @@ Sage Berg
 Created: 04 March 2014
 '''
 
-from eventstamp_class import Eventstamp 
+from eventstamp_class import Eventstamp
+from datetime import * 
 
 def parse_datetime_string(datetime_string):
     '''
@@ -20,19 +21,32 @@ def parse_datetime_string(datetime_string):
     return (year, month, day, hour, minute)
 
 def get_date(datetime_string):
-    '''
-    '''
     year   = int(datetime_string[2] + datetime_string[3])
     month  = int(datetime_string[5] + datetime_string[6])
     day    = int(datetime_string[8] + datetime_string[9])
     return (year, month, day) 
 
+def get_eventstamp_duration(index, eventstamp_list): 
+    '''
+    used in eventstamp_stats, eventstamp_sql
+    '''
+    last_time = eventstamp_list[index-1].hour*60 + eventstamp_list[index-1].minute
+    curr_time = eventstamp_list[index].hour*60   + eventstamp_list[index].minute 
+    duration  = curr_time - last_time
+    if duration < 0:
+        duration += 1440
+    return duration
+
 def make_eventstamp_list(): 
     '''
     returns list of eventstamp ojects
     '''
-    eventstamp_file = open('eventstamp_data.txt')
-    eventstamp_list = list() 
+    try:
+        eventstamp_file = open('eventstamp_data.txt')
+    except:
+        eventstamp_file = open('eventstamp_data.txt', 'w')
+        eventstamp_file.write(str(datetime.today()) + ', Other, , , , , no stress\n')
+    eventstamp_list = list()
     eventstamp_string_list = [line for line in eventstamp_file]
     for i in range(1,len(eventstamp_string_list)):
         date_of_previous_activity = get_date(eventstamp_string_list[i-1])
@@ -53,8 +67,10 @@ def make_eventstamp_list():
     eventstamp_file.close()
     return eventstamp_list
 
-def make_recent_date_dict(): #refactor using eventstamp.date logic?
+def make_recent_date_dict(): #refactor using eventstamp.date logic? #consolidate with other function?
     '''
+    used 
+    returns dictionary mapping integers 0-6 to the 7 most recent days
     '''
     date_dict = dict()
     date_set = set()

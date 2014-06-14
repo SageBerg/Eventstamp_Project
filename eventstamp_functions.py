@@ -1,6 +1,6 @@
 '''
 eventstamp_functions.py
-this file imported by eventstamp_gui_functions.py
+this file imported by eventstamp_gui.py
 to map functions as callbacks for gui buttons
 
 Sage Berg
@@ -10,6 +10,11 @@ Created 10 April 2014
 from datetime import *
 from eventstamp_variables import *
 import eventstamp_parser 
+
+import eventstamp_txt_data_following 
+import eventstamp_txt_data_by_minute
+import eventstamp_txt_data_by_day
+import eventstamp_sql_data_by_day
 
 try:
     from personal_depricated_notes import depricated_notes
@@ -23,7 +28,7 @@ except:
     print("failed to import personal_people_list")
     people = list() #make a dummy list to avoid reference errors
 
-def make_people_string(people_list):
+def make_people_string(people_list): #this function might need to be moved, since it's not gui related
     people_string = ''
     for person in people_list:
          if person[1].get():
@@ -128,3 +133,9 @@ def set_scales_to_last_eventstamp(minute_scale, hour_scale, day_scale, month_sca
     day_scale.set(day)
     month_scale.set(month)
     year_scale.set(year)
+
+def update_data_files():
+    eventstamp_txt_data_following.main() 
+    eventstamp_txt_data_by_minute.main()
+    eventstamp_txt_data_by_day.main()
+    eventstamp_sql_data_by_day.main()

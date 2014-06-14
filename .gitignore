@@ -1,9 +1,11 @@
 *.pyc
 *.swp
 *.swo
-eventstamp_stats.py
-eventstamp.db
-stats.db
-Eventstamp_Stats
-Depricated
+*.txt
+data
+depricated
 __pycache__
+personal_depricated_notes.py
+personal_people_list.py
+data_visualization_programs
+

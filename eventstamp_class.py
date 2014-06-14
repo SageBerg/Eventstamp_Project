@@ -7,7 +7,7 @@ class Eventstamp(object):
         self.hour = hour
         self.minute = minute
         self.date = (year, month, day) #used in eventstamp_averages.py
-        
+
         self.who = who
 
         self.what = what
@@ -20,7 +20,6 @@ class Eventstamp(object):
             self.stress = 1
         else:
             self.stress = 0
-
     def __str__(self):
         return str(self.year) + ', ' + \
                str(self.month) + ', ' + \
@@ -31,4 +30,4 @@ class Eventstamp(object):
                self.who + ', ' + \
                str(self.happiness) + ', ' + \
                str(self.where) + ', ' + \
-               str(self.stress)
+               str(self.stress) 
