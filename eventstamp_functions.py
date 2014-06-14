@@ -7,6 +7,7 @@ Sage Berg
 Created 10 April 2014
 '''
 
+from multiprocessing import Process 
 from datetime import *
 from eventstamp_variables import *
 import eventstamp_parser 
@@ -134,8 +135,15 @@ def set_scales_to_last_eventstamp(minute_scale, hour_scale, day_scale, month_sca
     month_scale.set(month)
     year_scale.set(year)
 
-def update_data_files():
-    eventstamp_txt_data_following.main() 
-    eventstamp_txt_data_by_minute.main()
-    eventstamp_txt_data_by_day.main()
-    eventstamp_sql_data_by_day.main()
+def update_data_files(): #this is not keeping the GUI free, but its 10 times faster :/ 
+    #t1 = datetime.today()
+    data_parser_list = [eventstamp_txt_data_following.main, \
+                        eventstamp_txt_data_by_minute.main, \
+                        eventstamp_txt_data_by_day.main, \
+                        eventstamp_sql_data_by_day.main ]
+    for data_parser in data_parser_list:
+        process = Process(target = data_parser)
+        process.start()
+        #process.join()
+    #t2 = datetime.today()
+    #print(t2-t1)
