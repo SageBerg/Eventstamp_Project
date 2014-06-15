@@ -7,8 +7,8 @@ Sage Berg
 Created 10 April 2014
 '''
 
-from multiprocessing import Process 
-from datetime import *
+from multiprocessing      import Process 
+from datetime             import *
 from eventstamp_variables import *
 import eventstamp_parser 
 
@@ -36,8 +36,14 @@ def make_people_string(people_list): #used by draw_activity buttons
             people_string += person[0] + ' '
     return people_string
 
-def remove_last_stamp_from_display(display, display_list):
+def remove_last_stamp_from_display(display, display_list): #work in progress
     display.delete(display_list[-1])
+    new_display_list = list()
+    for i in range(len(display_list) -1):
+        new_display_list.append(display_list[i])
+    print(display_list, new_display_list)
+    display_list = new_display_list
+    print(display_list)
 
 def add_to_realtime_eventstamp_display(display, display_list):
     eventstamp_list = eventstamp_parser.make_eventstamp_list()
@@ -47,11 +53,19 @@ def add_to_realtime_eventstamp_display(display, display_list):
             color = event[1]
     start_x = eventstamp_list[-2].minute + eventstamp_list[-2].hour*60
     end_x   = eventstamp_list[-1].minute + eventstamp_list[-1].hour*60 
-    display_list.append(display.create_rectangle(start_x, 0, end_x, 40, \
-                        fill=color, width=0))
+    if eventstamp_list[-1].date == eventstamp_list[-2].date:
+        display_list.append(display.create_rectangle(
+                            start_x, 0, end_x, 40, 
+                            fill=color, width=0))
+    else: #if a stamp goes over midnight
+        display_list.clear()
+        display_list.append(display.create_rectangle(
+                            0, 0, end_x, 40,
+                            fill=color, width=0))
 
-def write_eventstamp(activity_string, people_string, happiness, note, \
-                     where, stress, scales, scales_list, display, \
+def write_eventstamp(activity_string, people_string, happiness, 
+                     note_string,     where,         stress, 
+                     scales,          scales_list,   display, 
                      display_list):
     outfile   = open('eventstamp_data.txt', 'a')
     if scales.get():
@@ -65,7 +79,8 @@ def write_eventstamp(activity_string, people_string, happiness, note, \
     else:
         timestamp = str(datetime.today())
     activity  = activity_string
-    people    = people_string
+    note      = note_string.replace(',','') #no commas in input strings
+    people    = people_string.replace(',','') 
     mood      = str(happiness.get())
     stress_string = stress
     if stress.get() == 1:
@@ -130,8 +145,9 @@ def refresh_scales(minute_scale, hour_scale, day_scale, \
     month_scale.set( datetime.today().month)
     year_scale.set(  datetime.today().year)
 
-def set_scales_to_last_eventstamp(minute_scale, hour_scale, day_scale, \
+def set_scales_to_last_eventstamp(minute_scale, hour_scale, day_scale, 
                                  month_scale,   year_scale):
+    #must make new eventstamp_list to have up-to-date information 
     eventstamp_list = eventstamp_parser.make_eventstamp_list()
 
     minute = eventstamp_list[-1].minute
@@ -144,7 +160,8 @@ def set_scales_to_last_eventstamp(minute_scale, hour_scale, day_scale, \
     hour_scale.set(hour)
     day_scale.set(day)
     month_scale.set(month)
-    year_scale.set(year)
+    year_scale.set(year + 2000) 
+    #+2000 because eventstamp.year returns yy not yyyy e.g. 14 not 2014
 
 def update_data_files(): 
     #this is not keeping the GUI free, but its 10 times faster :/ 
