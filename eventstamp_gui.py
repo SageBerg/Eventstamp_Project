@@ -28,7 +28,7 @@ stress_bool = IntVar()
 scales_bool = IntVar()
 
 def draw_time_scales():
-    scale_length = 221
+    scale_length = 220
     can_width  = 72 
     can_height = 34
     tx = 36
@@ -183,7 +183,7 @@ def draw_people_checkboxes(people_list):
     for person in people_list:
         check_box_list.append(\
         Checkbutton(root, text=person[0].title(), variable=person[1], \
-        width=6, bg='white', activebackground='white'))#, relief=FLAT))
+        width=6, height=4, bg='white', activebackground='white'))
         check_box_list[-1].grid(\
         row=r, column=k*2, columnspan=2)
         k += 1
@@ -232,18 +232,18 @@ def draw_note_entry_box():
     note_entry_box = Entry(\
     root, textvariable=note_entry_string, width=25, justify=CENTER,
     relief=FLAT)
-    note_entry_box.grid(row=8, column=12, columnspan=3, )
+    note_entry_box.grid(row=7, column=12, columnspan=3, )
     return note_entry_box, note_entry_string
 
 def draw_stress_box(stress_bool):
     stress_box = Checkbutton(\
-    root, text='Stressed', variable=stress_bool, width=6)
+    root, text='Stress', variable=stress_bool, width=6)
     stress_box.grid(row=10, column=0)
 
 def draw_time_scales_check_box(scales_bool):
     check_box = Checkbutton(\
     root, text='Scales', width=6, variable=scales_bool)
-    check_box.grid(row=11,column=0)
+    check_box.grid(row=11, column=0)
 
 def draw_delete_last_stamp_button(display, display_list):
     delete_last_stamp_button = Button(root, text='Delete Last Stamp', 
@@ -273,14 +273,15 @@ def draw_last_stamp_entry():
     return last_stamp_string
 
 def draw_calendar_buttons():
-    button_text_list = ['Activities', 'Happiness', 'People', 'Stress']
+    button_text_list = ['Activities Calendar', 'Happiness Calendar', 
+                        'People Calendar', 'Stress Calendar']
     callback_list = \
     [eventstamp_calendar, happiness_calendar, \
     people_calendar, stress_calendar]
     for i in range(4):
         calendar_button = Button(
         root, text=button_text_list[i], width=12, height=4,
-        relief=FLAT, bd=0,
+        relief=FLAT, bd=0, wraplength=70,
         command=lambda x = callback_list[i]: x() )
         calendar_button.grid(row=0+i, column=18)
 
