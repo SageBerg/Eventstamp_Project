@@ -40,61 +40,61 @@ def draw_time_scales():
     col_span   = 6
 
     minute_title = Canvas(root, height=can_height, width=can_width,
-                        bg='white')
+                        )
     minute_title.grid(row=base_row, column=base_col, columnspan=2)
     minute_title.create_text(tx,ty, text="Minute")
     minute_scale = Scale(root, from_=0, to=59, 
                          orient=HORIZONTAL, length=scale_length,
-                         sliderrelief=FLAT, troughcolor='gray', 
-                         bd=0, bg='white')
+                         sliderrelief=FLAT, troughcolor='gray50', 
+                         bd=0)
     minute_scale.grid(row=base_row, 
                       column=base_col+col_mod, 
                       columnspan=col_span)
 
     hour_title = Canvas(root, height=can_height, width=can_width,
-                        bg='white')
+                        )
     hour_title.grid(row=base_row+1, column=base_col, columnspan=2)
     hour_title.create_text(tx,ty, text="Hour")
     hour_scale = Scale(root, from_=0, to=23, 
                        orient=HORIZONTAL, length=scale_length,
-                         sliderrelief=FLAT, troughcolor='gray', 
-                         bd=0, bg='white')
+                         sliderrelief=FLAT, troughcolor='gray50', 
+                         bd=0, )
     hour_scale.grid(row=base_row+1, 
                     column=base_col+col_mod, 
                     columnspan=col_span)
 
     day_title = Canvas(root, height=can_height, width=can_width,
-                        bg='white')
+                        )
     day_title.grid(row=base_row+2, column=base_col, columnspan=2)
     day_title.create_text(tx,ty, text="Day")
     day_scale = Scale(root, from_=1, to=31, orient=HORIZONTAL, 
                          length=scale_length,
-                         sliderrelief=FLAT, troughcolor='gray', 
-                         bd=0, bg='white')
+                         sliderrelief=FLAT, troughcolor='gray50', 
+                         bd=0, )
     day_scale.grid(row=base_row+2, 
                    column=col_mod, 
                    columnspan=col_span) 
 
     month_title = Canvas(root, height=can_height, width=can_width,
-                        bg='white')
+                        )
     month_title.grid(row=base_row+3, column=base_col, columnspan=2)
     month_title.create_text(tx,ty, text="Month")
     month_scale = Scale(root, from_=1, to=12, \
                         orient=HORIZONTAL, length=scale_length,
-                        sliderrelief=FLAT, troughcolor='gray', 
-                        bd=0, bg='white')
+                        sliderrelief=FLAT, troughcolor='gray50', 
+                        bd=0, )
     month_scale.grid(row=base_row+3, 
                      column=base_col+col_mod, 
                      columnspan=col_span)
 
     year_title = Canvas(root, height=can_height, width=can_width, 
-                        bg='white')
+                        )
     year_title.grid(row=base_row+4, column=base_col, columnspan=2)
     year_title.create_text(tx,ty, text="Year")
     year_scale = Scale(root, from_=2014, to=2100, \
                        orient=HORIZONTAL, length=scale_length,
-                       sliderrelief=FLAT, troughcolor='gray', 
-                       bd=0, bg='white')
+                       sliderrelief=FLAT, troughcolor='gray50', 
+                       bd=0, )
     year_scale.grid(row=base_row+4, 
                     column=base_col+col_mod, 
                     columnspan=col_span) 
