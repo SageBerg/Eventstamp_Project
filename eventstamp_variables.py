@@ -4,7 +4,6 @@ contains variables to be imported into programs in my self-tracking project
 
 Sage Berg
 Created  07 March 2014
-Edited   11 June  2014
 '''
 
 #the first color is the activity color and the second is the activity title color

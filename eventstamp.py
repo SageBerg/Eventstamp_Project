@@ -42,8 +42,8 @@ def main():
     draw_delete_last_stamp_button(display, display_list)
     draw_note_buttons(note_shortcut_list, note_entry_box, \
                       note_entry_string)
-    last_stamp_entry = draw_last_stamp_entry()
-    draw_last_stamp_button(last_stamp_entry)
+    #last_stamp_entry = draw_last_stamp_entry()
+    #draw_last_stamp_button(last_stamp_entry)
     draw_update_data_files_button()
 
 if __name__ == '__main__': 

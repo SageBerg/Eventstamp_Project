@@ -102,7 +102,7 @@ def get_last_stamp():
 def make_note_shortcut_list(eventstamp_list): 
     #function needs a clean up (bad name)
     #changes number of note buttons that appear when eventstamp.py is run
-    number_of_note_shortcuts = 56 #most common non-depricated notes
+    number_of_note_shortcuts = 63 #most common non-depricated notes
     frequent_note_dict = dict()
     for eventstamp in eventstamp_list: 
         if eventstamp.note.strip() in frequent_note_dict:
