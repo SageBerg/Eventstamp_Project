@@ -91,7 +91,7 @@ def draw_time_scales():
                         )
     year_title.grid(row=base_row+4, column=base_col, columnspan=2)
     year_title.create_text(tx,ty, text="Year")
-    year_scale = Scale(root, from_=2014, to=2100, \
+    year_scale = Scale(root, from_=2000, to=2099, \
                        orient=HORIZONTAL, length=scale_length,
                        sliderrelief=FLAT, troughcolor='gray50', 
                        bd=0, )

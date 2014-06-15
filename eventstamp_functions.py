@@ -100,7 +100,7 @@ def get_last_stamp():
     #get the last line and don't include it's \n
 
 def make_note_shortcut_list(eventstamp_list): 
-    #function needs a clean up (bad name)
+    #function needs a clean up 
     #changes number of note buttons that appear when eventstamp.py is run
     number_of_note_shortcuts = 63 #most common non-depricated notes
     frequent_note_dict = dict()
@@ -117,6 +117,9 @@ def make_note_shortcut_list(eventstamp_list):
     note_shortcut_list = list()
     for i in range(min(number_of_note_shortcuts, len(most_freq_list))):
         note_shortcut_list.append(most_freq_list[i][1]) 
+    if len(note_shortcut_list) < number_of_note_shortcuts:
+        for i in range(number_of_note_shortcuts - len(note_shortcut_list)):
+            note_shortcut_list.append('') #for appearence of gui 
     return note_shortcut_list
 
 def refresh_scales(minute_scale, hour_scale, day_scale, \

@@ -49,6 +49,10 @@ def make_eventstamp_list():
         eventstamp_file = open('eventstamp_data.txt', 'w')
         eventstamp_file.write(str(datetime.today()) + \
                               ', Other, , , , , no stress\n')
+        eventstamp_file.close() 
+        #.close() saves this first stamp, which will be immediately parsed
+        eventstamp_file = open('eventstamp_data.txt')
+
     eventstamp_list = list()
     eventstamp_string_list = [line for line in eventstamp_file]
     for i in range(1,len(eventstamp_string_list)):
