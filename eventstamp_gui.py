@@ -112,7 +112,7 @@ def draw_time_scales():
     month  = month_scale,
     year   = year_scale:
     refresh_scales(minute,hour,day,month,year), wraplength=100)
-    refresh_scales_button.grid(row=12, column=8)
+    refresh_scales_button.grid(row=12, column=9)
 
     set_scales_to_last_time_button = Button(root, height=1, width=6, 
                                             text="Last Time", 
@@ -123,14 +123,14 @@ def draw_time_scales():
     day    = day_scale,
     month  = month_scale,
     year   = year_scale:
-    set_scales_to_last_eventstamp(minute,hour,day,month,year), \
+    set_scales_to_last_eventstamp(minute,hour,day,month,year), 
                                   wraplength=100)
-    set_scales_to_last_time_button.grid(row=13, column=8, )
+    set_scales_to_last_time_button.grid(row=13, column=9)
 
     return [minute_scale, hour_scale, day_scale, month_scale, year_scale]
 
-def draw_activity_buttons(event_list,  happiness,   note_entry_box, \
-                          stress_bool, scales_bool, scales_list, \
+def draw_activity_buttons(event_list,  happiness,   note_entry_box, 
+                          stress_bool, scales_bool, scales_list, 
                           display,     display_list):
     buttons_list = list() 
     i = 0
@@ -202,12 +202,12 @@ def draw_happiness_buttons():
         value=i, 
         highlightcolor='white', 
         indicatoron=0, 
-        height=4, 
-        width=8,
+        height=1, 
+        width=2,
         relief=FLAT,
         bg=happiness_color_dict[str(i)][0], \
         activebackground=happiness_color_dict[str(i)][0])) 
-        radio_button_list[-1].grid(row=i, column=8)
+        radio_button_list[-1].grid(row=10, column=i+1)
     radio_button_list[2].select() #happiness level 3 selected by default
     return happiness
 
@@ -232,13 +232,13 @@ def draw_note_entry_box():
     note_entry_box = Entry(\
     root, textvariable=note_entry_string, width=25, justify=CENTER,
     relief=FLAT)
-    note_entry_box.grid(row=8, column=9, columnspan=3, )
+    note_entry_box.grid(row=8, column=12, columnspan=3, )
     return note_entry_box, note_entry_string
 
 def draw_stress_box(stress_bool):
     stress_box = Checkbutton(\
     root, text='Stressed', variable=stress_bool, width=6)
-    stress_box.grid(row=6, column=8)
+    stress_box.grid(row=10, column=0)
 
 def draw_time_scales_check_box(scales_bool):
     check_box = Checkbutton(\
