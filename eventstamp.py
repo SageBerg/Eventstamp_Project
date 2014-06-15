@@ -28,8 +28,20 @@ def main():
     happiness             = draw_happiness_buttons()
     check_box_list        = draw_people_checkboxes(people_list)
 
-    draw_stress_box(stress_bool)
-    note_entry_box, note_entry_string = draw_note_entry_box()
+    #draw_stress_box(stress_bool)
+    draw_entry_box_canvas()
+    note_entry_box,   note_entry_string   = draw_note_entry_box()
+    people_entry_box, people_entry_string = draw_people_entry_box()
+    note_shortcut_box, note_shortcut_string     = \
+    draw_add_note_shortcut_entry_box()
+    people_shortcut_box, people_shortcut_string = \
+    draw_add_people_shortcut_entry_box()
+    rm_note_shortcut_box, rm_note_shortcut_string     = \
+    draw_remove_note_shortcut_entry_box()
+    rm_people_shortcut_box, rm_people_shortcut_string = \
+    draw_remove_people_shortcut_entry_box()
+
+    draw_people_buttons(people_list, people_entry_box, people_entry_string)
 
     scales_list           = draw_time_scales()
 

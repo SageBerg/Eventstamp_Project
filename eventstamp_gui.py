@@ -192,6 +192,21 @@ def draw_people_checkboxes(people_list):
             r += 1
     return check_box_list
 
+def draw_people_buttons(people_list, people_entry_box, people_entry_string):
+    people_button_list = list()
+    x = 11
+    y = 9
+    z = -1 
+    for i in range(len(people_list)):
+        people_button_list.append(
+        Button(root, text=people_list[i][0].title(),
+        width=12, height=1, bg='white', wraplength=100, bd=0, 
+        command=lambda button_label=people_list[i], 
+        change_note=people_entry_string.set: change_note(button_label)))
+        if i%3 == 0:
+            z += 1
+        people_button_list[-1].grid(row=y+z, column=x+i%3)
+
 def draw_happiness_buttons():
     radio_button_list = list()
     happiness = IntVar() 
@@ -216,10 +231,10 @@ def draw_note_buttons(note_list, note_entry_box, note_entry_string):
     x = 0 
     y = 4 
     for note in note_list:
-        note_button_list.append(Button(\
+        note_button_list.append(Button(
         root, text=note, width=12, height=4, bg='white', wraplength=100,
         bd=0, 
-        command=lambda button_label=note, \
+        command=lambda button_label=note, 
         change_note=note_entry_string.set: change_note(button_label)))
         note_button_list[-1].grid(row=x, column=y+5)
         x += 1
@@ -227,16 +242,75 @@ def draw_note_buttons(note_list, note_entry_box, note_entry_string):
         if x == 0:
             y += 1
 
+def draw_entry_box_canvas():
+    entry_box_canvas = Canvas(root, width=1096, height=130, bg='#ffffff')
+    entry_box_canvas.grid(row=7, column=8, rowspan=2, columnspan=10)
+    text_list = ['Note to include in next eventstamp', 
+                 'Add note button',          
+                 'Remove note button',       
+                 'People to include in next eventstamp',
+                 'Add person button',
+                 'Remove person button',
+                 ]
+    x = 185 
+    y = 13
+    for title in text_list:
+        if x >= 1030:
+           x = 185 
+           y += 66
+        entry_box_canvas.create_text(x, y, text=title)
+        x += 365
+
 def draw_note_entry_box():
     note_entry_string = StringVar()
-    note_entry_box = Entry(\
+    note_entry_box = Entry(
     root, textvariable=note_entry_string, width=25, justify=CENTER,
     relief=FLAT)
-    note_entry_box.grid(row=7, column=12, columnspan=3, )
+    note_entry_box.grid(row=7, column=9, columnspan=3)
     return note_entry_box, note_entry_string
 
+def draw_people_entry_box():
+    people_entry_string = StringVar()
+    people_entry_box = Entry(
+    root, textvariable=people_entry_string, width=25, justify=CENTER,
+    relief=FLAT)
+    people_entry_box.grid(row=8, column=9, columnspan=3)
+    return people_entry_box, people_entry_string
+
+def draw_add_note_shortcut_entry_box():
+    shortcut_string = StringVar()
+    shortcut_entry_box = Entry(
+    root, textvariable=shortcut_string, width=25, justify=CENTER,
+    relief=FLAT)
+    shortcut_entry_box.grid(row=7, column=12, columnspan=3)
+    return shortcut_entry_box, shortcut_string
+
+def draw_add_people_shortcut_entry_box():
+    shortcut_string = StringVar()
+    shortcut_entry_box = Entry(
+    root, textvariable=shortcut_string, width=25, justify=CENTER,
+    relief=FLAT)
+    shortcut_entry_box.grid(row=8, column=12, columnspan=3)
+    return shortcut_entry_box, shortcut_string
+
+def draw_remove_note_shortcut_entry_box():
+    shortcut_string = StringVar()
+    shortcut_entry_box = Entry(
+    root, textvariable=shortcut_string, width=25, justify=CENTER,
+    relief=FLAT)
+    shortcut_entry_box.grid(row=7, column=15, columnspan=3)
+    return shortcut_entry_box, shortcut_string
+
+def draw_remove_people_shortcut_entry_box():
+    shortcut_string = StringVar()
+    shortcut_entry_box = Entry(
+    root, textvariable=shortcut_string, width=25, justify=CENTER,
+    relief=FLAT)
+    shortcut_entry_box.grid(row=8, column=15, columnspan=3)
+    return shortcut_entry_box, shortcut_string
+
 def draw_stress_box(stress_bool):
-    stress_box = Checkbutton(\
+    stress_box = Checkbutton(
     root, text='Stress', variable=stress_bool, width=6)
     stress_box.grid(row=10, column=0)
 
@@ -274,11 +348,10 @@ def draw_last_stamp_entry():
 
 def draw_calendar_buttons():
     button_text_list = ['Activities Calendar', 'Happiness Calendar', 
-                        'People Calendar', 'Stress Calendar']
-    callback_list = \
-    [eventstamp_calendar, happiness_calendar, \
-    people_calendar, stress_calendar]
-    for i in range(4):
+                        'People Calendar']
+    callback_list = [eventstamp_calendar, happiness_calendar, 
+                     people_calendar]
+    for i in range(len(button_text_list)):
         calendar_button = Button(
         root, text=button_text_list[i], width=12, height=4,
         relief=FLAT, bd=0, wraplength=70,
