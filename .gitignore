@@ -2,10 +2,10 @@
 *.swp
 *.swo
 *.txt
+*.db
 data
 depricated
 __pycache__
 personal_depricated_notes.py
 personal_people_list.py
 data_visualization_programs
-
