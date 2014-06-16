@@ -26,6 +26,7 @@ def main():
     note_shortcut_list    = make_note_shortcut_list(eventstamp_list)
     display, display_list = draw_realtime_eventstamp_display()
     happiness             = draw_happiness_buttons()
+    X_draw_happiness_buttons()
     check_box_list        = draw_people_checkboxes(people_list)
 
     #draw_stress_box(stress_bool)

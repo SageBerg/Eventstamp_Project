@@ -178,34 +178,32 @@ def draw_activity_buttons(event_list,  happiness,   note_entry_box,
 
 def draw_people_checkboxes(people_list):
     check_box_list = list()
-    r = 7 
-    k = 0
+    r = 9 
+    k = 9 
     for person in people_list:
         check_box_list.append(\
         Checkbutton(root, text=person[0].title(), variable=person[1], \
         width=6, height=4, bg='white', activebackground='white'))
         check_box_list[-1].grid(\
-        row=r, column=k*2, columnspan=2)
+        row=r, column=k)
         k += 1
-        k = k%4
-        if k == 0:
-            r += 1
     return check_box_list
 
 def draw_people_buttons(people_list, people_entry_box, people_entry_string):
     people_button_list = list()
-    x = 11
-    y = 9
-    z = -1 
+    x = 0
+    y = 7
     for i in range(len(people_list)):
         people_button_list.append(
         Button(root, text=people_list[i][0].title(),
-        width=12, height=1, bg='white', wraplength=100, bd=0, 
+        width=6, height=4, bg='white', wraplength=100, bd=0, 
         command=lambda button_label=people_list[i], 
         change_note=people_entry_string.set: change_note(button_label)))
-        if i%3 == 0:
-            z += 1
-        people_button_list[-1].grid(row=y+z, column=x+i%3)
+        people_button_list[-1].grid(row=y, column=x*2, columnspan=2)
+        x += 1
+        x =  x%4
+        if x == 0:
+            y += 1 
 
 def draw_happiness_buttons():
     radio_button_list = list()
@@ -226,6 +224,13 @@ def draw_happiness_buttons():
     radio_button_list[2].select() #happiness level 3 selected by default
     return happiness
 
+def X_draw_happiness_buttons():
+    for i in range(1,6):
+        button = Button(root, text=str(i), width=12, height=4, bd=0,
+                        relief=FLAT, bg=happiness_color_dict[str(i)][0],
+                        fg=happiness_color_dict[str(i)][1])
+        button.grid(row=1+i, column=18) 
+
 def draw_note_buttons(note_list, note_entry_box, note_entry_string):
     note_button_list = list()
     x = 0 
@@ -243,7 +248,7 @@ def draw_note_buttons(note_list, note_entry_box, note_entry_string):
             y += 1
 
 def draw_entry_box_canvas():
-    entry_box_canvas = Canvas(root, width=1096, height=130, bg='#ffffff')
+    entry_box_canvas = Canvas(root, width=1096, height=142, bg='#ffffff')
     entry_box_canvas.grid(row=7, column=8, rowspan=2, columnspan=10)
     text_list = ['Note to include in next eventstamp', 
                  'Add note button',          
@@ -327,7 +332,7 @@ def draw_delete_last_stamp_button(display, display_list):
     display_list=display_list:
     undo(display, display_list), height=4, width=12)
     delete_last_stamp_button.grid(
-    row=5, column=18)
+    row=1, column=18)
 
 def draw_last_stamp_button(last_stamp_string):
     calendar_button = Button(root, text='See Last Stamp', \
@@ -356,13 +361,13 @@ def draw_calendar_buttons():
         root, text=button_text_list[i], width=12, height=4,
         relief=FLAT, bd=0, wraplength=70,
         command=lambda x = callback_list[i]: x() )
-        calendar_button.grid(row=0+i, column=18)
+        calendar_button.grid(row=7+i, column=18)
 
 def draw_update_data_files_button():
     data_files_button = Button(root, text='Update Data Files', width=12, 
     height=4, relief=FLAT, bd=0, 
     command=lambda x = update_data_files: x() )
-    data_files_button.grid(row=6, column=18)
+    data_files_button.grid(row=0, column=18)
 
 def draw_realtime_eventstamp_display():
     display = Canvas(root, height=55, width=1440, bg='white')
