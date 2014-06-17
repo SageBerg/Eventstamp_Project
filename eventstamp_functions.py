@@ -29,7 +29,7 @@ except:
     print("failed to import personal_people_list")
     people = list() #make a dummy list to avoid reference errors
 
-def make_people_string(people_list): #used by draw_activity buttons
+def make_people_string(people_list): #used by draw_activity_buttons
     people_string = ''
     for person in people_list:
          if person[1].get():
@@ -99,6 +99,18 @@ def zero_padder(n):
     if n < 10:
         return '0' + str(n)
     return str(n)   
+
+def add_remove_people_from_entry_box(person_entry_box, 
+                                     person_string,
+                                     person_entry_string):
+    new_person_string = ''
+    if person_string not in person_entry_box.get().split():
+        new_person_string = person_entry_box.get() + ' ' + person_string
+    else:
+        for person in person_entry_box.get().split():
+            if person != person_string:
+                new_person_string += person + ' '
+    person_entry_string.set(new_person_string)
 
 def undo(display, display_list): #callback for "delete last stamp" button
     lines  = open('eventstamp_data.txt', 'r').readlines()

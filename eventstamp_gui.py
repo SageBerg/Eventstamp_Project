@@ -129,9 +129,9 @@ def draw_time_scales():
 
     return [minute_scale, hour_scale, day_scale, month_scale, year_scale]
 
-def draw_activity_buttons(event_list,  happiness,   note_entry_box, 
-                          stress_bool, scales_bool, scales_list, 
-                          display,     display_list):
+def draw_activity_buttons(event_list,  happiness,    note_entry_box, 
+                          stress_bool, scales_bool,  scales_list, 
+                          display,     display_list, people_entry_box):
     buttons_list = list() 
     i = 0
     j = 0
@@ -146,21 +146,22 @@ def draw_activity_buttons(event_list,  happiness,   note_entry_box,
                                    bd=0,
         command=lambda 
         activity_string=event[0].title(), 
-        p=people_list, 
-        hap=happiness, 
-        note=note_entry_box.get, 
-        where=location,
-        stress=stress_bool,
-        scales=scales_bool,
-        scales_list=scales_list,
-        disp=display,
-        disp_list=display_list
+        #p=people_list, 
+        get_people  = people_entry_box.get,
+        hap         = happiness, 
+        get_note    = note_entry_box.get, 
+        where       = location,
+        stress      = stress_bool,
+        scales      = scales_bool,
+        scales_list = scales_list,
+        disp        = display,
+        disp_list   = display_list
         :
         write_eventstamp(
         activity_string,
-        make_people_string(p),
+        get_people(),
         hap,
-        note(), 
+        get_note(), 
         where,  
         stress, 
         scales,
@@ -169,7 +170,7 @@ def draw_activity_buttons(event_list,  happiness,   note_entry_box,
         disp_list
         )))
  
-        buttons_list[-1].grid(\
+        buttons_list[-1].grid(
         row=j, column=i*2, columnspan=2,  )
         j += 1
         j = j%7
@@ -181,15 +182,17 @@ def draw_people_checkboxes(people_list):
     r = 9 
     k = 9 
     for person in people_list:
-        check_box_list.append(\
-        Checkbutton(root, text=person[0].title(), variable=person[1], \
+        check_box_list.append(
+        Checkbutton(root, text=person[0].title(), variable=person[1], 
         width=6, height=4, bg='white', activebackground='white'))
-        check_box_list[-1].grid(\
+        check_box_list[-1].grid(
         row=r, column=k)
         k += 1
     return check_box_list
 
-def draw_people_buttons(people_list, people_entry_box, people_entry_string):
+def draw_people_buttons(people_list, 
+                        people_entry_box, 
+                        people_entry_string):
     people_button_list = list()
     x = 0
     y = 7
@@ -197,8 +200,13 @@ def draw_people_buttons(people_list, people_entry_box, people_entry_string):
         people_button_list.append(
         Button(root, text=people_list[i][0].title(),
         width=6, height=4, bg='white', wraplength=100, bd=0, 
-        command=lambda button_label=people_list[i], 
-        change_note=people_entry_string.set: change_note(button_label)))
+        command=lambda 
+        button_label=people_list[i][0], #clean up later
+        f=add_remove_people_from_entry_box
+        #set_people_entry_string=people_entry_string.set,
+        #cur_people_entry_string=people_entry_box.get
+        : 
+        f(people_entry_box, button_label, people_entry_string))) 
         people_button_list[-1].grid(row=y, column=x*2, columnspan=2)
         x += 1
         x =  x%4

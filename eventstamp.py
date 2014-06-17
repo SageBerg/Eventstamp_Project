@@ -27,12 +27,12 @@ def main():
     display, display_list = draw_realtime_eventstamp_display()
     happiness             = draw_happiness_buttons()
     X_draw_happiness_buttons()
-    check_box_list        = draw_people_checkboxes(people_list)
+    #check_box_list        = draw_people_checkboxes(people_list)
 
     #draw_stress_box(stress_bool)
     draw_entry_box_canvas()
     note_entry_box,   note_entry_string   = draw_note_entry_box()
-    people_entry_box, people_entry_string = draw_people_entry_box()
+    people_entry_box, people_string = draw_people_entry_box()
     note_shortcut_box, note_shortcut_string     = \
     draw_add_note_shortcut_entry_box()
     people_shortcut_box, people_shortcut_string = \
@@ -42,15 +42,16 @@ def main():
     rm_people_shortcut_box, rm_people_shortcut_string = \
     draw_remove_people_shortcut_entry_box()
 
-    draw_people_buttons(people_list, people_entry_box, people_entry_string)
+    draw_people_buttons(people_list, people_entry_box, people_string)
 
     scales_list           = draw_time_scales()
 
     draw_time_scales_check_box(scales_bool)
-    draw_activity_buttons(event_list, happiness, \
-                          note_entry_box, stress_bool, \
-                          scales_bool, scales_list, display, \
-                          display_list) #heart of program
+    draw_activity_buttons(event_list, happiness, 
+                          note_entry_box, stress_bool, 
+                          scales_bool, scales_list, display, 
+                          display_list, people_entry_box) 
+                          #heart of program
     draw_calendar_buttons()
     draw_delete_last_stamp_button(display, display_list)
     draw_note_buttons(note_shortcut_list, note_entry_box, \
