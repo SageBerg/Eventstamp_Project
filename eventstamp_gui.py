@@ -27,107 +27,54 @@ location = ''
 stress_bool = IntVar()
 scales_bool = IntVar()
 
+def draw_end_time_scales_canvas():
+    c = Canvas(root, height=34, width=242, bd=0)
+    c.grid(row=9, column=16, columnspan=2)
+    c.create_text(121, 17, text='End Time Scales')
+
+def draw_end_time_scale_label_canvas():
+    c = Canvas(root, height=214, width=121, bd=0)
+    c.grid(row=9, column=15, rowspan=6)
+    label_list = ['minute', 'hour', 'day', 'month', 'year']
+    x = 96
+    y = 64
+    for i in range(len(label_list)):
+        c.create_text(x, y, text=label_list[i].title())
+        y += 36 
+
+def draw_scales_button(function, scales_list, button_text, r, c):
+    button = Button(root, height=4, width=12, text=button_text,
+                    relief=FLAT,    bd=0,     wraplength=100,
+                    command=lambda
+                    minute = scales_list[0],
+                    hour   = scales_list[1],
+                    day    = scales_list[2], 
+                    month  = scales_list[3],
+                    year   = scales_list[4]:
+                    function(minute, hour, day, month, year))
+    button.grid(row=r, column=c, rowspan=2)
+
 def draw_time_scales():
-    scale_length = 220
-    can_width  = 72 
-    can_height = 34
+    scale_length = 242
     tx = 36
     ty = 28 
     
-    base_row   = 12
-    base_col   = 0
-    col_mod    = 2
-    col_span   = 6
+    span_list   = [(0,59), (0,23), (1,31), (1,12), (2000,2099)]
+    scales_list = list()
 
-    minute_title = Canvas(root, height=can_height, width=can_width,
-                        )
-    minute_title.grid(row=base_row, column=base_col, columnspan=2)
-    minute_title.create_text(tx,ty, text="Minute")
-    minute_scale = Scale(root, from_=0, to=59, 
-                         orient=HORIZONTAL, length=scale_length,
-                         sliderrelief=FLAT, troughcolor='gray50', 
-                         bd=0)
-    minute_scale.grid(row=base_row, 
-                      column=base_col+col_mod, 
-                      columnspan=col_span)
+    for i in range(len(span_list)):
+        scales_list.append(Scale(root, from_=span_list[i][0],
+                                       to   =span_list[i][1], 
+                                       length=scale_length,
+                                       orient=HORIZONTAL,
+                                       relief=FLAT,
+                                       troughcolor='gray75',
+                                       bd=0))
+        scales_list[-1].grid(row=10+i, column=16, columnspan=2)
 
-    hour_title = Canvas(root, height=can_height, width=can_width,
-                        )
-    hour_title.grid(row=base_row+1, column=base_col, columnspan=2)
-    hour_title.create_text(tx,ty, text="Hour")
-    hour_scale = Scale(root, from_=0, to=23, 
-                       orient=HORIZONTAL, length=scale_length,
-                         sliderrelief=FLAT, troughcolor='gray50', 
-                         bd=0, )
-    hour_scale.grid(row=base_row+1, 
-                    column=base_col+col_mod, 
-                    columnspan=col_span)
-
-    day_title = Canvas(root, height=can_height, width=can_width,
-                        )
-    day_title.grid(row=base_row+2, column=base_col, columnspan=2)
-    day_title.create_text(tx,ty, text="Day")
-    day_scale = Scale(root, from_=1, to=31, orient=HORIZONTAL, 
-                         length=scale_length,
-                         sliderrelief=FLAT, troughcolor='gray50', 
-                         bd=0, )
-    day_scale.grid(row=base_row+2, 
-                   column=col_mod, 
-                   columnspan=col_span) 
-
-    month_title = Canvas(root, height=can_height, width=can_width,
-                        )
-    month_title.grid(row=base_row+3, column=base_col, columnspan=2)
-    month_title.create_text(tx,ty, text="Month")
-    month_scale = Scale(root, from_=1, to=12, \
-                        orient=HORIZONTAL, length=scale_length,
-                        sliderrelief=FLAT, troughcolor='gray50', 
-                        bd=0, )
-    month_scale.grid(row=base_row+3, 
-                     column=base_col+col_mod, 
-                     columnspan=col_span)
-
-    year_title = Canvas(root, height=can_height, width=can_width, 
-                        )
-    year_title.grid(row=base_row+4, column=base_col, columnspan=2)
-    year_title.create_text(tx,ty, text="Year")
-    year_scale = Scale(root, from_=2000, to=2099, \
-                       orient=HORIZONTAL, length=scale_length,
-                       sliderrelief=FLAT, troughcolor='gray50', 
-                       bd=0, )
-    year_scale.grid(row=base_row+4, 
-                    column=base_col+col_mod, 
-                    columnspan=col_span) 
-
-    refresh_scales(minute_scale, hour_scale, day_scale, \
-                   month_scale,  year_scale)
-
-    refresh_scales_button = Button(root, height=1, width=6, 
-                                   text="Current",
-                                   relief=FLAT,
-    command=lambda 
-    minute = minute_scale,
-    hour   = hour_scale,
-    day    = day_scale,
-    month  = month_scale,
-    year   = year_scale:
-    refresh_scales(minute,hour,day,month,year), wraplength=100)
-    refresh_scales_button.grid(row=12, column=9)
-
-    set_scales_to_last_time_button = Button(root, height=1, width=6, 
-                                            text="Last Time", 
-                                            relief=FLAT,
-    command=lambda
-    minute = minute_scale,
-    hour   = hour_scale,
-    day    = day_scale,
-    month  = month_scale,
-    year   = year_scale:
-    set_scales_to_last_eventstamp(minute,hour,day,month,year), 
-                                  wraplength=100)
-    set_scales_to_last_time_button.grid(row=13, column=9)
-
-    return [minute_scale, hour_scale, day_scale, month_scale, year_scale]
+    refresh_scales(*scales_list)
+    
+    return scales_list
 
 def draw_activity_buttons(event_list,  hap_ent_box,  note_entry_box, 
                           stress_bool, scales_bool,  scales_list, 
@@ -146,7 +93,6 @@ def draw_activity_buttons(event_list,  hap_ent_box,  note_entry_box,
                                    bd=0,
         command=lambda 
         activity_string=event[0].title(), 
-        #p=people_list, 
         get_people  = people_entry_box.get,
         get_happy   = hap_ent_box.get,
         get_note    = note_entry_box.get, 
@@ -192,32 +138,23 @@ def draw_people_buttons(people_list,
         f=add_remove_people_from_entry_box
         : 
         f(people_entry_box, button_label, people_entry_string))) 
-        people_button_list[-1].grid(row=y, column=x*2, columnspan=2)
+        people_button_list[-1].grid(row=y,     column=x*2, 
+                                    rowspan=2, columnspan=2)
         x += 1
         x =  x%4
         if x == 0:
-            y += 1 
+            y += 2 
+    for i in range(16 - len(people_list)):
+        people_button_list.append(
+        Button(root, width=6, height=4, bg='white', bd=0))
+        people_button_list[-1].grid(row=y,     column=2*x, 
+                                    rowspan=2, columnspan=2)
+        x += 1
+        x =  x%4
+        if x == 0:
+            y += 2 
 
-def draw_happiness_buttons():
-    radio_button_list = list()
-    happiness = IntVar() 
-    for i in range(1,6):
-        radio_button_list.append(Radiobutton(
-        root, text=str(i), 
-        variable=happiness, 
-        value=i, 
-        highlightcolor='white', 
-        indicatoron=0, 
-        height=1, 
-        width=2,
-        relief=FLAT,
-        bg=happiness_color_dict[str(i)][0], \
-        activebackground=happiness_color_dict[str(i)][0])) 
-        radio_button_list[-1].grid(row=12, column=i+12)
-    radio_button_list[2].select() #happiness level 3 selected by default
-    return happiness
-
-def X_draw_happiness_buttons(hap_entry_box, hap_entry_string):
+def draw_happiness_buttons(hap_entry_box, hap_entry_string):
     for i in range(1,6):
         button = Button(root, text=str(i), width=12, height=4, bd=0,
                         relief=FLAT, 
@@ -248,39 +185,43 @@ def draw_note_buttons(note_list, note_entry_box, note_entry_string):
             y += 1
 
 def draw_entry_box_canvas():
-    entry_box_canvas = Canvas(root, width=1096, height=142, bg='#ffffff')
+    entry_box_canvas = Canvas(root, width=1096, height=70, bg='#ffffff')
     entry_box_canvas.grid(row=7, column=8, rowspan=2, columnspan=10)
-    text_list = ['Note to include in next eventstamp', 
-                 'Add note button',          
-                 'Remove note button',       
-                 'People to include in next eventstamp',
-                 'Add person button',
-                 'Remove person button',
+    text_list = ['Person(s) to include in next eventstamp',
+                 'Note to include in next eventstamp', 
+                 'Happiness level for next eventstamp' 
                  ]
     x = 185 
-    y = 13
+    y = 16
     for title in text_list:
-        if x >= 1030:
-           x = 185 
-           y += 66
         entry_box_canvas.create_text(x, y, text=title)
         x += 365
-
-def draw_note_entry_box():
-    note_entry_string = StringVar()
-    note_entry_box = Entry(
-    root, textvariable=note_entry_string, width=25, justify=CENTER,
-    relief=FLAT)
-    note_entry_box.grid(row=7, column=9, columnspan=3)
-    return note_entry_box, note_entry_string
 
 def draw_people_entry_box():
     people_entry_string = StringVar()
     people_entry_box = Entry(
     root, textvariable=people_entry_string, width=25, justify=CENTER,
     relief=FLAT)
-    people_entry_box.grid(row=8, column=9, columnspan=3)
+    people_entry_box.grid(row=7, column=9, rowspan=2, columnspan=3)
     return people_entry_box, people_entry_string
+
+def draw_note_entry_box():
+    note_entry_string = StringVar()
+    note_entry_box = Entry(
+    root, textvariable=note_entry_string, width=25, justify=CENTER,
+    relief=FLAT)
+    note_entry_box.grid(row=7, column=12, rowspan=2, columnspan=3)
+    return note_entry_box, note_entry_string
+
+def draw_happiness_entry_box():
+    happiness_entry_string = StringVar()
+    happiness_entry_box = Entry(root, width=25,
+                                relief=FLAT,
+                                justify=CENTER,
+                                textvariable=happiness_entry_string)
+    happiness_entry_box.grid(row=7, column=15, rowspan=2, columnspan=3)
+    happiness_entry_string.set('3')
+    return happiness_entry_box, happiness_entry_string
 
 def draw_add_note_shortcut_entry_box():
     shortcut_string = StringVar()
@@ -314,15 +255,6 @@ def draw_remove_people_shortcut_entry_box():
     shortcut_entry_box.grid(row=8, column=15, columnspan=3)
     return shortcut_entry_box, shortcut_string
 
-def draw_happiness_entry_box():
-    happiness_entry_string = StringVar()
-    happiness_entry_box = Entry(root, width=6,
-                                relief=FLAT,
-                                justify=CENTER,
-                                textvariable=happiness_entry_string)
-    happiness_entry_box.grid(row=1, column=18)
-    return happiness_entry_box, happiness_entry_string
-
 def draw_happiness_entry_canvas():
     c = Canvas(root, width=120, height=70, bg='#ffffff')
     c.grid(row=1, column=18)
@@ -336,8 +268,15 @@ def draw_stress_box(stress_bool):
 
 def draw_time_scales_check_box(scales_bool):
     check_box = Checkbutton(
-    root, text='Scales', width=6, variable=scales_bool)
-    check_box.grid(row=12, column=10)
+    root, text='Use End Scales', 
+    #height=4, width=12, 
+    indicatoron=False,
+    offrelief=FLAT,
+    relief =FLAT,
+    #highlightcolor='#d9d9d9',
+    variable=scales_bool,
+    wraplength=100)
+    check_box.grid(row=9, column=15)
 
 def draw_delete_last_stamp_button(display, display_list):
     delete_last_stamp_button = Button(root, text='Delete Last Stamp', 
@@ -347,14 +286,14 @@ def draw_delete_last_stamp_button(display, display_list):
     display_list=display_list:
     undo(display, display_list), height=4, width=12)
     delete_last_stamp_button.grid(
-    row=7, column=18)
+    row=7, column=18, rowspan=2)
 
 def draw_undo_delete_last_stamp_button(display, display_list):
     delete_last_stamp_button = Button(root, text='Undo Deletion', 
     relief=FLAT, bd=0,
     height=4, width=12)
     delete_last_stamp_button.grid(
-    row=8, column=18)
+    row=9, column=18, rowspan=2)
 
 def draw_last_stamp_button(last_stamp_string):
     calendar_button = Button(root, text='See Last Stamp', \

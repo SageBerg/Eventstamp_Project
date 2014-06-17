@@ -25,27 +25,35 @@ def main():
     eventstamp_list       = eventstamp_parser.make_eventstamp_list()
     note_shortcut_list    = make_note_shortcut_list(eventstamp_list)
     display, display_list = draw_realtime_eventstamp_display()
-    #happiness             = draw_happiness_buttons()
-    draw_happiness_entry_canvas()
-    hap_entry, hap_string = draw_happiness_entry_box()
-    X_draw_happiness_buttons(hap_entry, hap_string)
+    #draw_happiness_entry_canvas()
 
     #draw_stress_box(stress_bool)
     draw_entry_box_canvas()
+    draw_end_time_scales_canvas()
+    draw_end_time_scale_label_canvas()
     note_entry_box,   note_entry_string   = draw_note_entry_box()
     people_entry_box, people_string = draw_people_entry_box()
-    note_shortcut_box, note_shortcut_string     = \
-    draw_add_note_shortcut_entry_box()
-    people_shortcut_box, people_shortcut_string = \
-    draw_add_people_shortcut_entry_box()
-    rm_note_shortcut_box, rm_note_shortcut_string     = \
-    draw_remove_note_shortcut_entry_box()
-    rm_people_shortcut_box, rm_people_shortcut_string = \
-    draw_remove_people_shortcut_entry_box()
+    hap_entry, hap_string = draw_happiness_entry_box()
+    draw_happiness_buttons(hap_entry, hap_string)
+    #note_shortcut_box, note_shortcut_string     = \
+    #draw_add_note_shortcut_entry_box()
+    #people_shortcut_box, people_shortcut_string = \
+    #draw_add_people_shortcut_entry_box()
+    #rm_note_shortcut_box, rm_note_shortcut_string     = \
+    #draw_remove_note_shortcut_entry_box()
+    #rm_people_shortcut_box, rm_people_shortcut_string = \
+    #draw_remove_people_shortcut_entry_box()
 
     draw_people_buttons(people_list, people_entry_box, people_string)
 
     scales_list           = draw_time_scales()
+    draw_scales_button(refresh_scales, scales_list, 
+                       'Set End Scales to current time',
+                       11, 14)
+    draw_scales_button(set_scales_to_last_eventstamp, scales_list,
+                       'Set End Scales to end time of last eventstamp',
+                       13, 14)
+
 
     draw_time_scales_check_box(scales_bool)
     draw_activity_buttons(event_list, hap_entry, 
