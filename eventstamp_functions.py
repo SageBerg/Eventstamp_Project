@@ -82,10 +82,15 @@ def write_eventstamp(activity_string, people_string, happiness,
     note      = note_string.replace(',','') #no commas in input strings
     people    = people_string.replace(',','') 
     stress_string = stress
-    if happiness < 1:
-        happiness == 1:
-    if happiness > 5:
-        happiness = 5:
+
+    try:
+        if int(happiness) < 1:
+            happiness = '1'
+        if int(happiness) > 5:
+            happiness = '5'
+    except:
+        happiness = '3' #assume neutral happiness for invalid input
+
     if stress.get() == 1:
         stress_string = 'stress'
     else:
