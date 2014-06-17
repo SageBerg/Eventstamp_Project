@@ -81,15 +81,18 @@ def write_eventstamp(activity_string, people_string, happiness,
     activity  = activity_string
     note      = note_string.replace(',','') #no commas in input strings
     people    = people_string.replace(',','') 
-    mood      = str(happiness.get())
     stress_string = stress
+    if happiness < 1:
+        happiness == 1:
+    if happiness > 5:
+        happiness = 5:
     if stress.get() == 1:
         stress_string = 'stress'
     else:
         stress_string = 'no stress'
-    outfile.write(timestamp + ', ' + activity_string + ', ' \
-                   + people_string + ', ' + mood + ', ' + note \
-                    + ', ' + where + ', ' + stress_string + '\n')
+    outfile.write(timestamp + ', ' + activity_string + ', '
+                + people_string + ', ' + happiness + ', ' + note 
+                + ', ' + where + ', ' + stress_string + '\n')
     outfile.close() 
     
     add_to_realtime_eventstamp_display(display, display_list)

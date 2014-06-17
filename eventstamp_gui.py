@@ -1,5 +1,5 @@
 '''
-eventstamp_gui_functions.py
+eventstamp_gui.py
 functions imported by eventstamp.py
 functions draw different parts of the eventstamp.py gui
 
@@ -129,7 +129,7 @@ def draw_time_scales():
 
     return [minute_scale, hour_scale, day_scale, month_scale, year_scale]
 
-def draw_activity_buttons(event_list,  happiness,    note_entry_box, 
+def draw_activity_buttons(event_list,  hap_ent_box,  note_entry_box, 
                           stress_bool, scales_bool,  scales_list, 
                           display,     display_list, people_entry_box):
     buttons_list = list() 
@@ -148,7 +148,7 @@ def draw_activity_buttons(event_list,  happiness,    note_entry_box,
         activity_string=event[0].title(), 
         #p=people_list, 
         get_people  = people_entry_box.get,
-        hap         = happiness, 
+        get_happy   = hap_ent_box.get,
         get_note    = note_entry_box.get, 
         where       = location,
         stress      = stress_bool,
@@ -160,7 +160,7 @@ def draw_activity_buttons(event_list,  happiness,    note_entry_box,
         write_eventstamp(
         activity_string,
         get_people(),
-        hap,
+        get_happy(),
         get_note(), 
         where,  
         stress, 
@@ -177,19 +177,6 @@ def draw_activity_buttons(event_list,  happiness,    note_entry_box,
         if j == 0:
             i += 1
 
-def draw_people_checkboxes(people_list):
-    check_box_list = list()
-    r = 9 
-    k = 9 
-    for person in people_list:
-        check_box_list.append(
-        Checkbutton(root, text=person[0].title(), variable=person[1], 
-        width=6, height=4, bg='white', activebackground='white'))
-        check_box_list[-1].grid(
-        row=r, column=k)
-        k += 1
-    return check_box_list
-
 def draw_people_buttons(people_list, 
                         people_entry_box, 
                         people_entry_string):
@@ -203,8 +190,6 @@ def draw_people_buttons(people_list,
         command=lambda 
         button_label=people_list[i][0], #clean up later
         f=add_remove_people_from_entry_box
-        #set_people_entry_string=people_entry_string.set,
-        #cur_people_entry_string=people_entry_box.get
         : 
         f(people_entry_box, button_label, people_entry_string))) 
         people_button_list[-1].grid(row=y, column=x*2, columnspan=2)
@@ -228,31 +213,38 @@ def draw_happiness_buttons():
         relief=FLAT,
         bg=happiness_color_dict[str(i)][0], \
         activebackground=happiness_color_dict[str(i)][0])) 
-        radio_button_list[-1].grid(row=10, column=i+1)
+        radio_button_list[-1].grid(row=12, column=i+12)
     radio_button_list[2].select() #happiness level 3 selected by default
     return happiness
 
-def X_draw_happiness_buttons():
+def X_draw_happiness_buttons(hap_entry_box, hap_entry_string):
     for i in range(1,6):
         button = Button(root, text=str(i), width=12, height=4, bd=0,
-                        relief=FLAT, bg=happiness_color_dict[str(i)][0],
-                        fg=happiness_color_dict[str(i)][1])
+                        relief=FLAT, 
+                        bg=happiness_color_dict[str(i)][0],
+                        fg=happiness_color_dict[str(i)][1],
+                        command    = lambda 
+                        button_hap = str(i),
+                        set_hap    = hap_entry_string.set
+                        :
+                        set_hap(button_hap))
         button.grid(row=1+i, column=18) 
 
 def draw_note_buttons(note_list, note_entry_box, note_entry_string):
     note_button_list = list()
-    x = 0 
-    y = 4 
+    x = 9 
+    y = 0 
     for note in note_list:
         note_button_list.append(Button(
         root, text=note, width=12, height=4, bg='white', wraplength=100,
         bd=0, 
         command=lambda button_label=note, 
         change_note=note_entry_string.set: change_note(button_label)))
-        note_button_list[-1].grid(row=x, column=y+5)
+        note_button_list[-1].grid(row=y, column=x)
         x += 1
-        x = x%7
+        x = x%18
         if x == 0:
+            x += 9 
             y += 1
 
 def draw_entry_box_canvas():
@@ -322,15 +314,30 @@ def draw_remove_people_shortcut_entry_box():
     shortcut_entry_box.grid(row=8, column=15, columnspan=3)
     return shortcut_entry_box, shortcut_string
 
+def draw_happiness_entry_box():
+    happiness_entry_string = StringVar()
+    happiness_entry_box = Entry(root, width=6,
+                                relief=FLAT,
+                                justify=CENTER,
+                                textvariable=happiness_entry_string)
+    happiness_entry_box.grid(row=1, column=18)
+    return happiness_entry_box, happiness_entry_string
+
+def draw_happiness_entry_canvas():
+    c = Canvas(root, width=120, height=70, bg='#ffffff')
+    c.grid(row=1, column=18)
+    c.create_text(60, 16, text='Happiness') 
+    c.create_text(60, 52, text='Level') 
+
 def draw_stress_box(stress_bool):
     stress_box = Checkbutton(
     root, text='Stress', variable=stress_bool, width=6)
     stress_box.grid(row=10, column=0)
 
 def draw_time_scales_check_box(scales_bool):
-    check_box = Checkbutton(\
+    check_box = Checkbutton(
     root, text='Scales', width=6, variable=scales_bool)
-    check_box.grid(row=11, column=0)
+    check_box.grid(row=12, column=10)
 
 def draw_delete_last_stamp_button(display, display_list):
     delete_last_stamp_button = Button(root, text='Delete Last Stamp', 
@@ -340,7 +347,14 @@ def draw_delete_last_stamp_button(display, display_list):
     display_list=display_list:
     undo(display, display_list), height=4, width=12)
     delete_last_stamp_button.grid(
-    row=1, column=18)
+    row=7, column=18)
+
+def draw_undo_delete_last_stamp_button(display, display_list):
+    delete_last_stamp_button = Button(root, text='Undo Deletion', 
+    relief=FLAT, bd=0,
+    height=4, width=12)
+    delete_last_stamp_button.grid(
+    row=8, column=18)
 
 def draw_last_stamp_button(last_stamp_string):
     calendar_button = Button(root, text='See Last Stamp', \
@@ -360,16 +374,16 @@ def draw_last_stamp_entry():
     return last_stamp_string
 
 def draw_calendar_buttons():
-    button_text_list = ['Activities Calendar', 'Happiness Calendar', 
-                        'People Calendar']
-    callback_list = [eventstamp_calendar, happiness_calendar, 
-                     people_calendar]
+    button_text_list = ['Activities Calendar', 'People Calendar', 
+                        'Happiness Calendar']
+    callback_list = [eventstamp_calendar, people_calendar, 
+                     happiness_calendar]
     for i in range(len(button_text_list)):
         calendar_button = Button(
-        root, text=button_text_list[i], width=12, height=4,
+        root, text=button_text_list[i], width=6, height=4,
         relief=FLAT, bd=0, wraplength=70,
         command=lambda x = callback_list[i]: x() )
-        calendar_button.grid(row=7+i, column=18)
+        calendar_button.grid(row=18+i, column=0, columnspan=2)
 
 def draw_update_data_files_button():
     data_files_button = Button(root, text='Update Data Files', width=12, 
@@ -377,13 +391,17 @@ def draw_update_data_files_button():
     command=lambda x = update_data_files: x() )
     data_files_button.grid(row=0, column=18)
 
+#def draw_realtime_display_canvas():
+#    c = Canvas(root, height=165, width=72, bg='#ffffff')
+#    c.grid(row=20, column=0, rowspan=3, columnspan=2)
+
 def draw_realtime_eventstamp_display():
-    display = Canvas(root, height=55, width=1440, bg='white')
-    display.create_line(0, 40, 1440, 40, fill='grey')
+    display = Canvas(root, height=65, width=1440, bg='white')
+    display.create_line(0, 46, 1441, 46, fill='grey')
 
     for hour in range(24):
-        display.create_line(hour*60, 0, hour*60, 60, fill='grey')
-        display.create_text(hour*60 + 30, 50, text=str(hour) +':00') 
+        display.create_line(hour*60, 0, hour*60, 66, fill='grey')
+        display.create_text(hour*60 + 30, 56, text=str(hour) +':00') 
         
     eventstamp_list    = make_eventstamp_list()
     display_list = list()
@@ -405,6 +423,6 @@ def draw_realtime_eventstamp_display():
             end_x = eventstamp_list[i].minute + eventstamp_list[i].hour*60
             display_list.append(
             display.create_rectangle(
-            start_x, 0, end_x, 40, fill=color, width=0)) 
-    display.grid(row=20, columnspan=19)
+            start_x, 0, end_x, 46, fill=color, width=0)) 
+    display.grid(row=18, column=2, columnspan=18)
     return display, display_list
