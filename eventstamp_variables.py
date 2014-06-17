@@ -6,7 +6,7 @@ Sage Berg
 Created  07 March 2014
 '''
 
-#the first color is the activity color and the second is the activity title color
+#the first color is the activity color, second is the activity title color
 event_list = [  
 ('school','#FFD700', 'black', '#E6C200'),
 ('shopping','bisque', 'black', '#E6CDB0'),		
@@ -117,7 +117,7 @@ activity_list = [
 ('chores','#00B2EE', 'black'),
 ('packing & unpacking', '#F08080', 'black'), #
 ('anaerobic','#F4A460', 'black'),
-('defecate','#D2691E', 'black'),  #wrong hex           
+('defecate','#D2691E', 'black'), #wrong output from spectrum.py?
 ('visual','#FFC0CB', 'black'),
 ('idle','#BFBFBF', 'black'),
            
