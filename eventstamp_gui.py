@@ -33,7 +33,7 @@ def draw_end_time_scales_canvas():
     c.create_text(121, 17, text='End Time Scales')
 
 def draw_end_time_scale_label_canvas():
-    c = Canvas(root, height=214, width=121, bd=0)
+    c = Canvas(root, height=214, width=120, bd=0)
     c.grid(row=9, column=15, rowspan=6)
     label_list = ['minute', 'hour', 'day', 'month', 'year']
     x = 96
@@ -58,10 +58,8 @@ def draw_time_scales():
     scale_length = 242
     tx = 36
     ty = 28 
-    
     span_list   = [(0,59), (0,23), (1,31), (1,12), (2000,2099)]
     scales_list = list()
-
     for i in range(len(span_list)):
         scales_list.append(Scale(root, from_=span_list[i][0],
                                        to   =span_list[i][1], 
@@ -71,9 +69,7 @@ def draw_time_scales():
                                        troughcolor='gray75',
                                        bd=0))
         scales_list[-1].grid(row=10+i, column=16, columnspan=2)
-
     refresh_scales(*scales_list)
-    
     return scales_list
 
 def draw_activity_buttons(event_list,  hap_ent_box,  note_entry_box, 
@@ -330,31 +326,37 @@ def draw_update_data_files_button():
     command=lambda x = update_data_files: x() )
     data_files_button.grid(row=0, column=18)
 
-#def draw_realtime_display_canvas():
-#    c = Canvas(root, height=165, width=72, bg='#ffffff')
-#    c.grid(row=20, column=0, rowspan=3, columnspan=2)
+def get_activity_display_color(eventstamp):
+    index = inverted_event_map[eventstamp.what.strip().lower()]
+    return event_list[index][1] 
 
-def draw_realtime_eventstamp_display():
-    display = Canvas(root, height=65, width=1440, bg='white')
+def get_people_display_color(eventstamp):
+    if eventstamp.who.strip() != '':
+        index = inverted_event_map[eventstamp.what.strip().lower()]
+        return event_list[index][1] 
+    else:
+        return 'white'
+
+def get_happiness_display_color(eventstamp):
+    if eventstamp.what == 'Sleep':
+        return 'white'
+    return happiness_color_dict[eventstamp.happiness][0]
+
+def draw_realtime_eventstamp_display(fill_function, r, c):
+    display = Canvas(root, height=70, width=1440, bg='white')
     display.create_line(0, 46, 1441, 46, fill='grey')
-
     for hour in range(24):
-        display.create_line(hour*60, 0, hour*60, 66, fill='grey')
-        display.create_text(hour*60 + 30, 56, text=str(hour) +':00') 
-        
+        display.create_line(hour*60, 0, hour*60, 71, fill='grey')
+        display.create_text(hour*60 + 30, 59, text=str(hour) +':00') 
     eventstamp_list    = make_eventstamp_list()
     display_list = list()
-
     for i in range(len(eventstamp_list)):
         if eventstamp_list[i].date == \
         (datetime.today().year -2000, 
          datetime.today().month, 
          datetime.today().day):
-            color = 'black'
-            for event in event_list: #tacky code
-                if eventstamp_list[i].what.lower() == event[0]:
-                    color = event[1]
-            if eventstamp_list[i-1].day == eventstamp_list[i].day:
+            color = fill_function(eventstamp_list[i])
+            if eventstamp_list[i-1].day == eventstamp_list[i].day: #coords
                 start_x = \
                 eventstamp_list[i-1].minute + eventstamp_list[i-1].hour*60
             else:
@@ -363,5 +365,6 @@ def draw_realtime_eventstamp_display():
             display_list.append(
             display.create_rectangle(
             start_x, 0, end_x, 46, fill=color, width=0)) 
-    display.grid(row=18, column=2, columnspan=18)
+
+    display.grid(row=r, column=c, columnspan=18)
     return display, display_list

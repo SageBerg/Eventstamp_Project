@@ -22,31 +22,26 @@ pdn.close()
 from eventstamp_gui import *
 
 def main():
-    eventstamp_list       = eventstamp_parser.make_eventstamp_list()
-    note_shortcut_list    = make_note_shortcut_list(eventstamp_list)
-    display, display_list = draw_realtime_eventstamp_display()
-    #draw_happiness_entry_canvas()
+    eventstamp_list           = eventstamp_parser.make_eventstamp_list()
+    note_shortcut_list        = make_note_shortcut_list(eventstamp_list)
+    a_display, a_display_list = draw_realtime_eventstamp_display(
+                                get_activity_display_color, 18, 2)
+    p_display, p_display_list = draw_realtime_eventstamp_display(
+                                get_people_display_color, 19, 2)
+    h_display, h_display_list = draw_realtime_eventstamp_display(
+                                get_happiness_display_color, 20, 2)
 
     #draw_stress_box(stress_bool)
     draw_entry_box_canvas()
     draw_end_time_scales_canvas()
     draw_end_time_scale_label_canvas()
-    note_entry_box,   note_entry_string   = draw_note_entry_box()
-    people_entry_box, people_string = draw_people_entry_box()
-    hap_entry, hap_string = draw_happiness_entry_box()
-    draw_happiness_buttons(hap_entry, hap_string)
-    #note_shortcut_box, note_shortcut_string     = \
-    #draw_add_note_shortcut_entry_box()
-    #people_shortcut_box, people_shortcut_string = \
-    #draw_add_people_shortcut_entry_box()
-    #rm_note_shortcut_box, rm_note_shortcut_string     = \
-    #draw_remove_note_shortcut_entry_box()
-    #rm_people_shortcut_box, rm_people_shortcut_string = \
-    #draw_remove_people_shortcut_entry_box()
 
-    draw_people_buttons(people_list, people_entry_box, people_string)
+    note_entry_box,   note_entry_string = draw_note_entry_box()
+    people_entry_box, people_string     = draw_people_entry_box()
+    hap_entry, hap_string               = draw_happiness_entry_box()
 
     scales_list           = draw_time_scales()
+    draw_time_scales_check_box(scales_bool)
     draw_scales_button(refresh_scales, scales_list, 
                        'Set End Scales to current time',
                        11, 14)
@@ -54,21 +49,21 @@ def main():
                        'Set End Scales to end time of last eventstamp',
                        13, 14)
 
-
-    draw_time_scales_check_box(scales_bool)
+    draw_happiness_buttons(hap_entry, hap_string)
+    draw_people_buttons(people_list, people_entry_box, people_string)
     draw_activity_buttons(event_list, hap_entry, 
                           note_entry_box, stress_bool, 
-                          scales_bool, scales_list, display, 
-                          display_list, people_entry_box) 
+                          scales_bool, scales_list, a_display, 
+                          a_display_list, people_entry_box) 
+
     draw_calendar_buttons()
-    draw_delete_last_stamp_button(display, display_list)
-    draw_undo_delete_last_stamp_button(display, display_list)
+    draw_delete_last_stamp_button(a_display, a_display_list)
+    draw_undo_delete_last_stamp_button(a_display, a_display_list)
     draw_note_buttons(note_shortcut_list, note_entry_box,
                       note_entry_string)
+    draw_update_data_files_button()
     #last_stamp_entry = draw_last_stamp_entry()
     #draw_last_stamp_button(last_stamp_entry)
-    draw_update_data_files_button()
-    #draw_realtime_display_canvas()
 
 if __name__ == '__main__': 
     main()
