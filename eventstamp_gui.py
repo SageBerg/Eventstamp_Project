@@ -24,22 +24,23 @@ root.wm_title('Eventstamp.py')
 
 people_list = [(person, IntVar()) for person in people]
 location = ''
-stress_bool = IntVar()
-scales_bool = IntVar()
+stress_bool       = IntVar()
+END_SCALES_BOOL   = IntVar()
+START_SCALES_BOOL = IntVar()
 
-def draw_end_time_scales_canvas():
-    c = Canvas(root, height=34, width=242, bd=0)
-    c.grid(row=9, column=16, columnspan=2)
-    c.create_text(121, 17, text='End Time Scales')
+def draw_scales_label_canvas(r, c, label):
+    canvas = Canvas(root, height=34, width=242, bd=0)
+    canvas.grid(row=r, column=c, columnspan=2)
+    canvas.create_text(121, 17, text=label)
 
-def draw_end_time_scale_label_canvas():
-    c = Canvas(root, height=214, width=120, bd=0)
-    c.grid(row=9, column=15, rowspan=6)
+def draw_scales_time_canvas(r, c):
+    canvas = Canvas(root, height=214, width=120, bd=0)
+    canvas.grid(row=r, column=c, rowspan=6)
     label_list = ['minute', 'hour', 'day', 'month', 'year']
     x = 96
     y = 64
     for i in range(len(label_list)):
-        c.create_text(x, y, text=label_list[i].title())
+        canvas.create_text(x, y, text=label_list[i].title())
         y += 36 
 
 def draw_scales_button(function, scales_list, button_text, r, c):
@@ -54,10 +55,8 @@ def draw_scales_button(function, scales_list, button_text, r, c):
                     function(minute, hour, day, month, year))
     button.grid(row=r, column=c, rowspan=2)
 
-def draw_time_scales():
+def draw_time_scales(r, c, function):
     scale_length = 242
-    tx = 36
-    ty = 28 
     span_list   = [(0,59), (0,23), (1,31), (1,12), (2000,2099)]
     scales_list = list()
     for i in range(len(span_list)):
@@ -68,12 +67,23 @@ def draw_time_scales():
                                        relief=FLAT,
                                        troughcolor='gray75',
                                        bd=0))
-        scales_list[-1].grid(row=10+i, column=16, columnspan=2)
-    refresh_scales(*scales_list)
+        scales_list[-1].grid(row=r+i, column=c, columnspan=2)
+    function(*scales_list)
     return scales_list
 
+def draw_time_scales_check_box(scales_bool, r, c, label_text):
+    check_box = Checkbutton(
+    root, 
+    text=label_text, 
+    indicatoron=False,
+    offrelief=FLAT,
+    relief =FLAT,
+    variable=scales_bool,
+    wraplength=100)
+    check_box.grid(row=r, column=c)
+
 def draw_activity_buttons(people_ent_box, note_ent_box, hap_ent_box,
-                          stress_bool,    scales_bool,  scales_list,
+                          stress_bool,    END_SCALES_BOOL,  scales_list,
                           observer):
     buttons_list = list() 
     i = 0
@@ -94,7 +104,7 @@ def draw_activity_buttons(people_ent_box, note_ent_box, hap_ent_box,
         get_note    = note_ent_box.get, 
         where       = location,
         stress      = stress_bool,
-        scales      = scales_bool,
+        scales      = END_SCALES_BOOL,
         scales_list = scales_list,
         disp_ob     = observer
         :
@@ -216,16 +226,6 @@ def draw_happiness_entry_box():
     happiness_entry_box.grid(row=7, column=15, rowspan=2, columnspan=3)
     happiness_entry_string.set('3')
     return happiness_entry_box, happiness_entry_string
-
-def draw_time_scales_check_box(scales_bool):
-    check_box = Checkbutton(
-    root, text='Use End Scales', 
-    indicatoron=False,
-    offrelief=FLAT,
-    relief =FLAT,
-    variable=scales_bool,
-    wraplength=100)
-    check_box.grid(row=9, column=15)
 
 def draw_delete_last_stamp_button(observer):
     delete_last_stamp_button = Button(root, text='Delete Last Stamp', 
