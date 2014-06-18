@@ -207,6 +207,16 @@ def draw_note_entry_box():
     note_entry_box.grid(row=7, column=12, rowspan=2, columnspan=3)
     return note_entry_box, note_entry_string
 
+def draw_happiness_entry_box():
+    happiness_entry_string = StringVar()
+    happiness_entry_box = Entry(root, width=25,
+                                relief=FLAT,
+                                justify=CENTER,
+                                textvariable=happiness_entry_string)
+    happiness_entry_box.grid(row=7, column=15, rowspan=2, columnspan=3)
+    happiness_entry_string.set('3')
+    return happiness_entry_box, happiness_entry_string
+
 def draw_time_scales_check_box(scales_bool):
     check_box = Checkbutton(
     root, text='Use End Scales', 
