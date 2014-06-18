@@ -207,59 +207,6 @@ def draw_note_entry_box():
     note_entry_box.grid(row=7, column=12, rowspan=2, columnspan=3)
     return note_entry_box, note_entry_string
 
-def draw_happiness_entry_box():
-    happiness_entry_string = StringVar()
-    happiness_entry_box = Entry(root, width=25,
-                                relief=FLAT,
-                                justify=CENTER,
-                                textvariable=happiness_entry_string)
-    happiness_entry_box.grid(row=7, column=15, rowspan=2, columnspan=3)
-    happiness_entry_string.set('3')
-    return happiness_entry_box, happiness_entry_string
-
-def draw_add_note_shortcut_entry_box():
-    shortcut_string = StringVar()
-    shortcut_entry_box = Entry(
-    root, textvariable=shortcut_string, width=25, justify=CENTER,
-    relief=FLAT)
-    shortcut_entry_box.grid(row=7, column=12, columnspan=3)
-    return shortcut_entry_box, shortcut_string
-
-def draw_add_people_shortcut_entry_box():
-    shortcut_string = StringVar()
-    shortcut_entry_box = Entry(
-    root, textvariable=shortcut_string, width=25, justify=CENTER,
-    relief=FLAT)
-    shortcut_entry_box.grid(row=8, column=12, columnspan=3)
-    return shortcut_entry_box, shortcut_string
-
-def draw_remove_note_shortcut_entry_box():
-    shortcut_string = StringVar()
-    shortcut_entry_box = Entry(
-    root, textvariable=shortcut_string, width=25, justify=CENTER,
-    relief=FLAT)
-    shortcut_entry_box.grid(row=7, column=15, columnspan=3)
-    return shortcut_entry_box, shortcut_string
-
-def draw_remove_people_shortcut_entry_box():
-    shortcut_string = StringVar()
-    shortcut_entry_box = Entry(
-    root, textvariable=shortcut_string, width=25, justify=CENTER,
-    relief=FLAT)
-    shortcut_entry_box.grid(row=8, column=15, columnspan=3)
-    return shortcut_entry_box, shortcut_string
-
-def draw_happiness_entry_canvas():
-    c = Canvas(root, width=120, height=70, bg='#ffffff')
-    c.grid(row=1, column=18)
-    c.create_text(60, 16, text='Happiness') 
-    c.create_text(60, 52, text='Level') 
-
-def draw_stress_box(stress_bool):
-    stress_box = Checkbutton(
-    root, text='Stress', variable=stress_bool, width=6)
-    stress_box.grid(row=10, column=0)
-
 def draw_time_scales_check_box(scales_bool):
     check_box = Checkbutton(
     root, text='Use End Scales', 
@@ -285,23 +232,6 @@ def draw_undo_delete_last_stamp_button(display, display_list):
     height=4, width=12)
     delete_last_stamp_button.grid(
     row=9, column=18, rowspan=2)
-
-def draw_last_stamp_button(last_stamp_string):
-    calendar_button = Button(root, text='See Last Stamp', \
-    relief=FLAT,
-    command=lambda 
-    change_text=last_stamp_string.set
-    : 
-    change_text(get_last_stamp()), width=12)
-    calendar_button.grid(row=9, column=18 )
-
-def draw_last_stamp_entry():
-    last_stamp_string = StringVar()
-    last_stamp_entry = Entry(\
-    root, textvariable=last_stamp_string, width=48, justify=CENTER, 
-    relief=FLAT)
-    last_stamp_entry.grid(row=9, column=19, columnspan=3, )
-    return last_stamp_string
 
 def draw_calendar_buttons():
     button_text_list = ['Activities Calendar', 'People Calendar', 
