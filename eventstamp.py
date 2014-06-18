@@ -1,6 +1,7 @@
 '''
 eventstamp.py 
-provides a GUI for keeping track of personal activities
+provides a GUI for keeping track of personal activities, 
+social interactions, and levels of happiness
 
 Sage Berg
 Created 04 March 2014
@@ -20,16 +21,13 @@ ppl.close()
 pdn.close()
 
 from eventstamp_gui import *
+from eventstamp_realtime_display_class import *
 
 def main():
     eventstamp_list           = make_eventstamp_list()
     note_shortcut_list        = make_note_shortcut_list(eventstamp_list)
-    a_display, a_display_list = draw_realtime_eventstamp_display(
-                                get_activity_display_color, 18, 2)
-    p_display, p_display_list = draw_realtime_eventstamp_display(
-                                get_people_display_color, 19, 2)
-    h_display, h_display_list = draw_realtime_eventstamp_display(
-                                get_happiness_display_color, 20, 2)
+    realtime_display_observer = Realtime_Display()
+    realtime_display_observer.notify()
 
     #draw_stress_box(stress_bool)
     draw_entry_box_canvas()
@@ -53,15 +51,12 @@ def main():
     draw_people_buttons(people_list, people_entry_box, people_string)
     draw_activity_buttons(people_entry_box, note_entry_box, hap_entry,
                           stress_bool, 
-                          scales_bool, scales_list, 
-                          p_display, p_display_list,
-                          a_display, a_display_list, 
-                          h_display, h_display_list)
+                          scales_bool, scales_list,
+                          realtime_display_observer)
 
     draw_calendar_buttons()
-    draw_delete_last_stamp_button([a_display, p_display, h_display], 
-                  [a_display_list, p_display_list, h_display_list])
-    draw_undo_delete_last_stamp_button(a_display, a_display_list)
+    draw_delete_last_stamp_button(realtime_display_observer)
+    #draw_undo_delete_last_stamp_button(a_display, a_display_list)
     draw_note_buttons(note_shortcut_list, note_entry_box,
                       note_entry_string)
     draw_update_data_files_button()

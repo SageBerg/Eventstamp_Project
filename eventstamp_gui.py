@@ -73,10 +73,8 @@ def draw_time_scales():
     return scales_list
 
 def draw_activity_buttons(people_ent_box, note_ent_box, hap_ent_box,
-                          stress_bool,    scales_bool,  scales_list, 
-                          people_display, people_display_list,
-                          act_display,    act_display_list, 
-                          hap_display,    hap_display_list):  
+                          stress_bool,    scales_bool,  scales_list,
+                          observer):
     buttons_list = list() 
     i = 0
     j = 0
@@ -98,12 +96,7 @@ def draw_activity_buttons(people_ent_box, note_ent_box, hap_ent_box,
         stress      = stress_bool,
         scales      = scales_bool,
         scales_list = scales_list,
-        p_disp      = people_display,
-        p_disp_list = people_display_list,
-        a_disp      = act_display,
-        a_disp_list = act_display_list,
-        h_disp      = hap_display,
-        h_disp_list = hap_display_list
+        disp_ob     = observer
         :
         write_eventstamp(
         activity_string,
@@ -114,12 +107,7 @@ def draw_activity_buttons(people_ent_box, note_ent_box, hap_ent_box,
         stress, 
         scales,
         scales_list,
-        p_disp,
-        p_disp_list,
-        a_disp,
-        a_disp_list,
-        h_disp,
-        h_disp_list
+        disp_ob
         )))
  
         buttons_list[-1].grid(
@@ -275,22 +263,19 @@ def draw_stress_box(stress_bool):
 def draw_time_scales_check_box(scales_bool):
     check_box = Checkbutton(
     root, text='Use End Scales', 
-    #height=4, width=12, 
     indicatoron=False,
     offrelief=FLAT,
     relief =FLAT,
-    #highlightcolor='#d9d9d9',
     variable=scales_bool,
     wraplength=100)
     check_box.grid(row=9, column=15)
 
-def draw_delete_last_stamp_button(display, display_list):
+def draw_delete_last_stamp_button(observer):
     delete_last_stamp_button = Button(root, text='Delete Last Stamp', 
     relief=FLAT, bd=0,
     command=lambda 
-    display=display,
-    display_list=display_list:
-    undo(display, display_list), height=4, width=12)
+    realtime_display_observer=observer:
+    undo(realtime_display_observer), height=4, width=12)
     delete_last_stamp_button.grid(
     row=7, column=18, rowspan=2)
 
@@ -359,6 +344,5 @@ def draw_realtime_eventstamp_display(fill_function, r, c):
             display_list.append(
             display.create_rectangle(
             start_x, 0, end_x, 46, fill=color, width=0)) 
-
     display.grid(row=r, column=c, columnspan=18)
     return display, display_list
