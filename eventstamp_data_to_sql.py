@@ -7,7 +7,7 @@ Created: 26 April 2014
 
 import sqlite3 
 import sys
-import eventstamp_parser
+import eventstamp_eventstamp_parser
 
 eventstamp_list = eventstamp_parser.make_eventstamp_list()
 

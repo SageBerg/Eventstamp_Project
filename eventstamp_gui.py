@@ -72,9 +72,11 @@ def draw_time_scales():
     refresh_scales(*scales_list)
     return scales_list
 
-def draw_activity_buttons(event_list,  hap_ent_box,  note_entry_box, 
-                          stress_bool, scales_bool,  scales_list, 
-                          display,     display_list, people_entry_box):
+def draw_activity_buttons(people_ent_box, note_ent_box, hap_ent_box,
+                          stress_bool,    scales_bool,  scales_list, 
+                          people_display, people_display_list,
+                          act_display,    act_display_list, 
+                          hap_display,    hap_display_list):  
     buttons_list = list() 
     i = 0
     j = 0
@@ -89,15 +91,19 @@ def draw_activity_buttons(event_list,  hap_ent_box,  note_entry_box,
                                    bd=0,
         command=lambda 
         activity_string=event[0].title(), 
-        get_people  = people_entry_box.get,
+        get_people  = people_ent_box.get,
         get_happy   = hap_ent_box.get,
-        get_note    = note_entry_box.get, 
+        get_note    = note_ent_box.get, 
         where       = location,
         stress      = stress_bool,
         scales      = scales_bool,
         scales_list = scales_list,
-        disp        = display,
-        disp_list   = display_list
+        p_disp      = people_display,
+        p_disp_list = people_display_list,
+        a_disp      = act_display,
+        a_disp_list = act_display_list,
+        h_disp      = hap_display,
+        h_disp_list = hap_display_list
         :
         write_eventstamp(
         activity_string,
@@ -108,8 +114,12 @@ def draw_activity_buttons(event_list,  hap_ent_box,  note_entry_box,
         stress, 
         scales,
         scales_list,
-        disp,
-        disp_list
+        p_disp,
+        p_disp_list,
+        a_disp,
+        a_disp_list,
+        h_disp,
+        h_disp_list
         )))
  
         buttons_list[-1].grid(
@@ -325,22 +335,6 @@ def draw_update_data_files_button():
     height=4, relief=FLAT, bd=0, 
     command=lambda x = update_data_files: x() )
     data_files_button.grid(row=0, column=18)
-
-def get_activity_display_color(eventstamp):
-    index = inverted_event_map[eventstamp.what.strip().lower()]
-    return event_list[index][1] 
-
-def get_people_display_color(eventstamp):
-    if eventstamp.who.strip() != '':
-        index = inverted_event_map[eventstamp.what.strip().lower()]
-        return event_list[index][1] 
-    else:
-        return 'white'
-
-def get_happiness_display_color(eventstamp):
-    if eventstamp.what == 'Sleep':
-        return 'white'
-    return happiness_color_dict[eventstamp.happiness][0]
 
 def draw_realtime_eventstamp_display(fill_function, r, c):
     display = Canvas(root, height=70, width=1440, bg='white')

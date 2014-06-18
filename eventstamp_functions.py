@@ -10,7 +10,7 @@ Created 10 April 2014
 from multiprocessing      import Process 
 from datetime             import *
 from eventstamp_variables import *
-import eventstamp_parser 
+from eventstamp_parser    import *
 
 import eventstamp_txt_data_following 
 import eventstamp_txt_data_by_minute
@@ -36,26 +36,41 @@ def make_people_string(people_list): #used by draw_activity_buttons
             people_string += person[0] + ' '
     return people_string
 
-def remove_last_stamp_from_display(display, display_list): #work in progress
-    display.delete(display_list[-1])
+def remove_last_stamp_from_display(list_of_displays, 
+                                   list_of_display_lists): 
+    print(display_list)
+    for display in list_of_displays:
+        display.delete(display_list[-1])
     new_display_list = list()
     for i in range(len(display_list) -1):
         new_display_list.append(display_list[i])
-    print(display_list, new_display_list)
     display_list = new_display_list
     print(display_list)
 
-def add_to_realtime_eventstamp_display(display, display_list):
-    eventstamp_list = eventstamp_parser.make_eventstamp_list()
-    color = 'black'
-    for event in event_list: #tacky code
-        if eventstamp_list[-1].what.lower() == event[0]:
-            color = event[1]
+def get_activity_display_color(eventstamp):
+    index = inverted_event_map[eventstamp.what.strip().lower()]
+    return event_list[index][1] 
+
+def get_people_display_color(eventstamp):
+    if eventstamp.who.strip() != '':
+        index = inverted_event_map[eventstamp.what.strip().lower()]
+        return event_list[index][1] 
+    else:
+        return 'white'
+
+def get_happiness_display_color(eventstamp):
+    if eventstamp.what == 'Sleep':
+        return 'white'
+    return happiness_color_dict[eventstamp.happiness][0]
+
+def add_to_realtime_eventstamp_display(display, display_list, function):
+    eventstamp_list = make_eventstamp_list()
+    color = function(eventstamp_list[-1])
     start_x = eventstamp_list[-2].minute + eventstamp_list[-2].hour*60
     end_x   = eventstamp_list[-1].minute + eventstamp_list[-1].hour*60 
     if eventstamp_list[-1].date == eventstamp_list[-2].date:
         display_list.append(display.create_rectangle(
-                            start_x, 0, end_x, 40, 
+                            start_x, 0, end_x, 46, 
                             fill=color, width=0))
     else: #if a stamp goes over midnight
         display_list.clear()
@@ -65,8 +80,10 @@ def add_to_realtime_eventstamp_display(display, display_list):
 
 def write_eventstamp(activity_string, people_string, happiness, 
                      note_string,     where,         stress, 
-                     scales,          scales_list,   display, 
-                     display_list):
+                     scales,          scales_list,   
+                     people_display,  people_display_list,
+                     act_display,     act_display_list,
+                     hap_display,     hap_display_list):
     outfile   = open('eventstamp_data.txt', 'a')
     if scales.get():
         minute = zero_padder(scales_list[0].get())
@@ -100,7 +117,15 @@ def write_eventstamp(activity_string, people_string, happiness,
                 + ', ' + where + ', ' + stress_string + '\n')
     outfile.close() 
     
-    add_to_realtime_eventstamp_display(display, display_list)
+    add_to_realtime_eventstamp_display(act_display, 
+                                       act_display_list,
+                                       get_activity_display_color)
+    add_to_realtime_eventstamp_display(people_display, 
+                                       people_display_list,
+                                       get_people_display_color)
+    add_to_realtime_eventstamp_display(hap_display, 
+                                       hap_display_list,
+                                       get_happiness_display_color)
 
 def zero_padder(n):
     '''takes int, returns string'''
@@ -168,7 +193,7 @@ def refresh_scales(minute_scale, hour_scale, day_scale, \
 def set_scales_to_last_eventstamp(minute_scale, hour_scale, day_scale, 
                                  month_scale,   year_scale):
     #must make new eventstamp_list to have up-to-date information 
-    eventstamp_list = eventstamp_parser.make_eventstamp_list()
+    eventstamp_list = make_eventstamp_list()
 
     minute = eventstamp_list[-1].minute
     hour   = eventstamp_list[-1].hour

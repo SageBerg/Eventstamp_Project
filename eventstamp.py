@@ -22,7 +22,7 @@ pdn.close()
 from eventstamp_gui import *
 
 def main():
-    eventstamp_list           = eventstamp_parser.make_eventstamp_list()
+    eventstamp_list           = make_eventstamp_list()
     note_shortcut_list        = make_note_shortcut_list(eventstamp_list)
     a_display, a_display_list = draw_realtime_eventstamp_display(
                                 get_activity_display_color, 18, 2)
@@ -51,13 +51,16 @@ def main():
 
     draw_happiness_buttons(hap_entry, hap_string)
     draw_people_buttons(people_list, people_entry_box, people_string)
-    draw_activity_buttons(event_list, hap_entry, 
-                          note_entry_box, stress_bool, 
-                          scales_bool, scales_list, a_display, 
-                          a_display_list, people_entry_box) 
+    draw_activity_buttons(people_entry_box, note_entry_box, hap_entry,
+                          stress_bool, 
+                          scales_bool, scales_list, 
+                          p_display, p_display_list,
+                          a_display, a_display_list, 
+                          h_display, h_display_list)
 
     draw_calendar_buttons()
-    draw_delete_last_stamp_button(a_display, a_display_list)
+    draw_delete_last_stamp_button([a_display, p_display, h_display], 
+                  [a_display_list, p_display_list, h_display_list])
     draw_undo_delete_last_stamp_button(a_display, a_display_list)
     draw_note_buttons(note_shortcut_list, note_entry_box,
                       note_entry_string)

@@ -1,5 +1,5 @@
 '''
-eventstamp_sql.py
+eventstamp_sql_data_by_day.py
 
 Sage Berg
 Created 13 June 2014
