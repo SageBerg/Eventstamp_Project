@@ -136,7 +136,7 @@ activity_list = [
 ('dental','#98FB98', 'black'),                
 ('read','#556B2F', 'white'),
 ('other','#000000', 'white')               
-] #for HTML
+] #for HTML and eventstamp_spectrum.py
 
 happiness_color_dict = { '1': ('firebrick', 'white'), 
                          '2': ('tomato', 'black'),

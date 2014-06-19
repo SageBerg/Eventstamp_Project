@@ -5,7 +5,6 @@ Sage Berg
 Created May 2014
 '''
 
-#check to see that these imports are all used
 from datetime             import *
 from eventstamp_class     import *
 from eventstamp_variables import *
@@ -68,7 +67,7 @@ def make_by_minute_text_file():
     '''
     print('writing time_use_by_minute.txt')
     raw_by_minute_file   = open('data/time_use_by_minute.txt',   'w')
-    activity_minute_list = list() #holds data until it is writen to file
+    activity_minute_list = list() #holds data until it is written to file
     column_names = ''
     for h in range(len(event_list)): 
         #iterates list of tuples to collect column titles

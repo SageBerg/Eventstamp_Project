@@ -43,15 +43,15 @@ def make_eventstamp_list():
     '''
     returns list of eventstamp ojects
     '''
-    try:
-        eventstamp_file = open('eventstamp_data.txt')
-    except:
-        eventstamp_file = open('eventstamp_data.txt', 'w')
-        eventstamp_file.write(str(datetime.today()) + \
-                              ', Other, , , , , no stress\n')
-        eventstamp_file.close() 
+    #try: #fix this exception handling later and in such a way as to not destroy my data
+    eventstamp_file = open('eventstamp_data.txt')
+    #except:
+    #    eventstamp_file = open('eventstamp_data.txt', 'w')
+    #    eventstamp_file.write(str(datetime.today()) + \
+    #                          ', Other, , , , , no stress\n')
+    #    eventstamp_file.close() 
         #.close() saves this first stamp, which will be immediately parsed
-        eventstamp_file = open('eventstamp_data.txt')
+    #    eventstamp_file = open('eventstamp_data.txt')
 
     eventstamp_list = list()
     eventstamp_string_list = [line for line in eventstamp_file]
