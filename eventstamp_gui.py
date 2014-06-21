@@ -164,6 +164,8 @@ def draw_happiness_buttons(hap_entry_box, hap_entry_string):
                         relief=FLAT, 
                         bg=happiness_color_dict[str(i)][0],
                         fg=happiness_color_dict[str(i)][1],
+                        activebackground=happiness_color_dict[str(i)][2],
+                        activeforeground=happiness_color_dict[str(i)][1],
                         command    = lambda 
                         button_hap = str(i),
                         set_hap    = hap_entry_string.set

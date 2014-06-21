@@ -138,11 +138,11 @@ activity_list = [
 ('other','#000000', 'white')               
 ] #for HTML and eventstamp_spectrum.py
 
-happiness_color_dict = { '1': ('firebrick', 'white'), 
-                         '2': ('tomato', 'black'),
-                         '3': ('khaki', 'black'),
-                         '4': ('medium sea green', 'black'),
-                         '5': ('sea green', 'white') } #for TK
+happiness_color_dict = { '1': ('firebrick', 'white', '#991d1d'), 
+                         '2': ('tomato', 'black', '#e65940'),
+                         '3': ('khaki', 'black', '#d6cd7d'),
+                         '4': ('medium sea green', 'black', '#339961'),
+                         '5': ('sea green', 'white', '#267348') } #for TK
 
 happiness_heatmap_color_dict = { 2.0: '#222202',
                                  2.1: '#4E2F10',
