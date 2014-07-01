@@ -236,7 +236,7 @@ def draw_delete_last_stamp_button(observer):
     realtime_display_observer=observer:
     undo(realtime_display_observer), height=4, width=12)
     delete_last_stamp_button.grid(
-    row=7, column=18, rowspan=2)
+    row=1, column=18, rowspan=1)
 
 def draw_undo_delete_last_stamp_button(display, display_list):
     delete_last_stamp_button = Button(root, text='Undo Deletion', 
