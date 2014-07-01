@@ -18,7 +18,7 @@ event_list = [
 
 ('paid work','forest green', '#ffffff', '#1C731C'),		
 ('chores','DeepSkyBlue2', 'black', '#009ED4'),
-('packing & unpacking', 'light coral', 'black', '#F08080'),
+('packing & unpacking', 'light coral', 'black', '#D67272'),
 ('anaerobic','sandy brown', 'black', '#DB9356'),
 ('defecate','chocolate', 'black', '#B85C1A'),           
 ('visual','pink', 'black', '#E6ADB7'),
@@ -26,7 +26,7 @@ event_list = [
            
 ('lay in bed','steel blue', 'white', '#3C709C'),
 ('travel','thistle', 'black', '#BFA9BF'),
-('clerical chores', 'MediumPurple1', 'black', '#AB82FF'),
+('clerical chores', 'MediumPurple1', 'black', '#9A75E6'),
 ('sexual','indian red', 'black', '#B35050'),
 ('shower','dark turquoise', 'black', '#00B5B8'),
 ('audio','light cyan', 'black', '#CAE6E6'),
