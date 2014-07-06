@@ -177,10 +177,14 @@ def draw_note_buttons(note_list, note_entry_box, note_entry_string):
     note_button_list = list()
     x = 9 
     y = 0 
-    for note in note_list:
+    for note, b, f, ab in note_list:
         note_button_list.append(Button(
-        root, text=note, width=12, height=4, bg='white', wraplength=100,
+        root, text=note, width=12, height=4, wraplength=100,
         bd=0, 
+        bg=b, 
+        fg=f,
+        activebackground=ab,
+        #activeforeground=af,
         command=lambda button_label=note, 
         change_note=note_entry_string.set: change_note(button_label)))
         note_button_list[-1].grid(row=y, column=x)

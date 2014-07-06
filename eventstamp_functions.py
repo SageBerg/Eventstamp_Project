@@ -128,21 +128,53 @@ def make_note_shortcut_list(eventstamp_list):
     number_of_note_shortcuts = 63 #most common non-depricated notes
     frequent_note_dict = dict()
     for eventstamp in eventstamp_list: 
-        if eventstamp.note.strip() in frequent_note_dict:
-            frequent_note_dict[eventstamp.note.strip()] += 1
-        elif eventstamp.note.strip() not in depricated_notes: 
-            frequent_note_dict[eventstamp.note.strip()] = 1
+        note = eventstamp.note.strip() 
+        act  = eventstamp.what.strip()
+        if note in frequent_note_dict:
+            frequent_note_dict[note][0] += 1
+            #print(frequent_note_dict[note][1])
+            if act not in frequent_note_dict[note][1]:
+                frequent_note_dict[note][1][act] = 1
+            else:
+                frequent_note_dict[note][1][act] += 1
+        elif note not in depricated_notes: 
+            by_activity_dict = dict()
+            by_activity_dict[act] = 1
+            frequent_note_dict[note] = [1, by_activity_dict] 
     most_freq_list = list()
     for key in frequent_note_dict:
-        most_freq_list.append( (frequent_note_dict[key], key) )
+        freq = frequent_note_dict[key][0]
+        max_act = 0
+        max_act_string = ''
+        for act_key in frequent_note_dict[key][1]:
+            #print(frequent_note_dict[key][1][act_key])
+            if frequent_note_dict[key][1][act_key] > max_act:
+                max_act = frequent_note_dict[key][1][act_key]
+                max_act_string = act_key.strip()
+        for event in event_list:
+            if event[0] == max_act_string.lower():
+                b  = event[1]
+                f  = event[2]
+                ab = event[3]
+                break
+            else:
+                b  = 'white'
+                f  = 'black'
+                ab = 'blue'
+        most_freq_list.append( (frequent_note_dict[key][0], key, b, f, ab) ) 
     most_freq_list.sort()
     most_freq_list.reverse()
     note_shortcut_list = list()
     for i in range(min(number_of_note_shortcuts, len(most_freq_list))):
-        note_shortcut_list.append(most_freq_list[i][1]) 
+        #append(note, background_fill, text_fill, active_background_fill)
+        note_shortcut_list.append( ( most_freq_list[i][1], 
+                                     most_freq_list[i][2],   
+                                     most_freq_list[i][3], 
+                                     most_freq_list[i][4] ) )
     if len(note_shortcut_list) < number_of_note_shortcuts:
-        for i in range(number_of_note_shortcuts - len(note_shortcut_list)):
-            note_shortcut_list.append('') #for appearence of gui 
+        for i in range(number_of_note_shortcuts -len(note_shortcut_list)):
+            note_shortcut_list.append('', 'white', 'black', 'white') 
+            #for appearence of gui 
     return note_shortcut_list
 
 def refresh_scales(minute_scale, hour_scale, day_scale, \
