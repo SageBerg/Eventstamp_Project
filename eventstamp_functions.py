@@ -54,8 +54,7 @@ def get_happiness_display_color(eventstamp):
 
 def write_eventstamp(activity_string, people_string, happiness, 
                      note_string,     where,         stress, 
-                     scales,          scales_list,   display_observer,
-                     stats_observer):
+                     scales,          scales_list,   display_observer):
     outfile   = open('eventstamp_data.txt', 'a')
     if scales.get():
         minute = zero_padder(scales_list[0].get())
@@ -89,7 +88,6 @@ def write_eventstamp(activity_string, people_string, happiness,
                 + ', ' + where + ', ' + stress_string + '\n')
     outfile.close() 
 
-    #stats_observer.notify()
     display_observer.notify()
 
 def zero_padder(n):
@@ -219,7 +217,7 @@ def update_data_files():
     #t2 = datetime.today()
     #print(t2-t1)
 
-def calculate_todays_happiness():
+def calculate_today_happiness():
     eventstamp_list = make_eventstamp_list()
     happiness_sum = 0
     divisor = 0
@@ -233,3 +231,46 @@ def calculate_todays_happiness():
             happiness_sum += int(eventstamp_list[i].happiness)*duration
             divisor += duration
     return round(happiness_sum/divisor, 3)
+
+def today_people_time():
+    eventstamp_list = make_eventstamp_list()
+    people_minute_sum = 0
+    divisor = 0
+    for i in range(1, len(eventstamp_list)):
+        e = ( datetime.today().year -2000, 
+              datetime.today().month, 
+              datetime.today().day )
+        if eventstamp_list[i].date == e: 
+            duration = get_eventstamp_duration(i, eventstamp_list)
+            if eventstamp_list[i].who:
+                people_minute_sum += duration
+            divisor += duration
+    return round(people_minute_sum/divisor, 2)*100
+
+def today_number_of_stamps():
+    eventstamp_list = make_eventstamp_list()
+    number_of_stamps = 0
+    for i in range(1, len(eventstamp_list)):
+        e = ( datetime.today().year -2000, 
+              datetime.today().month, 
+              datetime.today().day )
+        if eventstamp_list[i].date == e:
+            number_of_stamps += 1
+    return number_of_stamps
+
+def today_productivity():
+    eventstamp_list = make_eventstamp_list()
+    pro_minute_sum = 0
+    divisor = 0
+    non_productive = ['Sexual', 'Games', 'Video', 'Audio', 
+                      'Read', 'Social', 'Idle'] 
+    for i in range(1, len(eventstamp_list)):
+        e = ( datetime.today().year -2000, 
+              datetime.today().month, 
+              datetime.today().day )
+        if eventstamp_list[i].date == e: 
+            duration = get_eventstamp_duration(i, eventstamp_list)
+            if eventstamp_list[i].what not in non_productive:
+                pro_minute_sum += duration
+            divisor += duration
+    return round(pro_minute_sum/divisor, 2)*100

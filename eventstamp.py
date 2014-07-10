@@ -31,7 +31,7 @@ def main():
     realtime_display_observer.notify() #the initial draw
 
     draw_entry_box_canvas()
-    stats_observer = draw_todays_stats_canvas()
+    #stats_observer = draw_todays_stats_canvas()
 
     note_entry_box,   note_entry_string = draw_note_entry_box()
     people_entry_box, people_string     = draw_people_entry_box()
@@ -64,7 +64,7 @@ def main():
     draw_people_buttons(people_list, people_entry_box, people_string)
     draw_activity_buttons(people_entry_box, note_entry_box, hap_entry,
                           stress_bool,      END_SCALES_BOOL,    scales_list,
-                          realtime_display_observer, stats_observer)
+                          realtime_display_observer)
 
     draw_calendar_buttons()
     draw_delete_last_stamp_button(realtime_display_observer)

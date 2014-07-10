@@ -84,7 +84,7 @@ def draw_time_scales_check_box(scales_bool, r, c, label_text):
 
 def draw_activity_buttons(people_ent_box, note_ent_box, hap_ent_box,
                           stress_bool,    END_SCALES_BOOL,  scales_list,
-                          observer,       stats_observer):
+                          observer):
     buttons_list = list() 
     i = 0
     j = 0
@@ -106,8 +106,7 @@ def draw_activity_buttons(people_ent_box, note_ent_box, hap_ent_box,
         stress      = stress_bool,
         scales      = END_SCALES_BOOL,
         scales_list = scales_list,
-        disp_ob     = observer,
-        stat_ob     = stats_observer,
+        disp_ob     = observer
         :
         write_eventstamp(
         activity_string,
@@ -118,8 +117,7 @@ def draw_activity_buttons(people_ent_box, note_ent_box, hap_ent_box,
         stress, 
         scales,
         scales_list,
-        disp_ob,
-        stat_ob
+        disp_ob
         )))
  
         buttons_list[-1].grid(
@@ -274,6 +272,10 @@ def draw_realtime_eventstamp_display(fill_function, r, c):
     display.create_line(0, 46, 1441, 46, fill='grey')
     for hour in range(24):
         display.create_line(hour*60, 0, hour*60, 71, fill='grey')
+        for fifteen_minute_block in range(1,60,15):
+            display.create_line(hour*60 + fifteen_minute_block, 0, \
+                                hour*60 + fifteen_minute_block, 46, \
+                                fill='grey80')#, dash=(2, 2) )
         display.create_text(hour*60 + 30, 59, text=str(hour) +':00') 
     eventstamp_list    = make_eventstamp_list()
     display_list = list()
@@ -295,10 +297,21 @@ def draw_realtime_eventstamp_display(fill_function, r, c):
     display.grid(row=r, column=c, columnspan=18)
     return display, display_list
 
-def draw_todays_stats_canvas():
+def draw_today_stats_canvas():
     happiness_today = 0
-    stats_canvas = Canvas(root, height=70, width=120, bg='#FFFFFF')
-    stats_canvas.grid(row=7, column=18)
-    todays_happiness = calculate_todays_happiness()
-    stats_canvas.create_text(61, 35, text = str(todays_happiness) )
+    stats_canvas = Canvas(root, height=286, width=120, bg='#FFFFFF')
+    stats_canvas.grid(row=7, column=18, rowspan=8)
+
+    stats_canvas.create_text(60, 23, text = 'Happiness Today') 
+    stats_canvas.create_text(60, 46, text = str(calculate_today_happiness() ) )
+
+    stats_canvas.create_text(60, 93,  text = 'People Today') 
+    stats_canvas.create_text(60, 116, text = str(today_people_time() ) + '%')
+
+    stats_canvas.create_text(60, 166, text = 'Activities Today') 
+    stats_canvas.create_text(60, 189, text = str(today_number_of_stamps() ))
+
+    stats_canvas.create_text(60, 233, text = 'Productivity Today') 
+    stats_canvas.create_text(60, 256, text = str(today_productivity() ) + '%')
+
     return stats_canvas 

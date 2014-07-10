@@ -13,3 +13,4 @@ class Realtime_Display(object):
         draw_realtime_eventstamp_display(get_activity_display_color, 18, 2)
         draw_realtime_eventstamp_display(get_people_display_color, 19, 2)
         draw_realtime_eventstamp_display(get_happiness_display_color, 20, 2)
+        draw_today_stats_canvas()
