@@ -54,7 +54,8 @@ def get_happiness_display_color(eventstamp):
 
 def write_eventstamp(activity_string, people_string, happiness, 
                      note_string,     where,         stress, 
-                     scales,          scales_list,   display_observer):
+                     scales,          scales_list,   display_observer,
+                     stats_observer):
     outfile   = open('eventstamp_data.txt', 'a')
     if scales.get():
         minute = zero_padder(scales_list[0].get())
@@ -88,6 +89,7 @@ def write_eventstamp(activity_string, people_string, happiness,
                 + ', ' + where + ', ' + stress_string + '\n')
     outfile.close() 
 
+    #stats_observer.notify()
     display_observer.notify()
 
 def zero_padder(n):
@@ -216,3 +218,18 @@ def update_data_files():
         #process.join()
     #t2 = datetime.today()
     #print(t2-t1)
+
+def calculate_todays_happiness():
+    eventstamp_list = make_eventstamp_list()
+    happiness_sum = 0
+    divisor = 0
+    for i in range(1, len(eventstamp_list)):
+        e = ( datetime.today().year -2000, 
+              datetime.today().month, 
+              datetime.today().day )
+        if eventstamp_list[i].date == e and \
+           eventstamp_list[i].what != 'Sleep':
+            duration = get_eventstamp_duration(i, eventstamp_list)
+            happiness_sum += int(eventstamp_list[i].happiness)*duration
+            divisor += duration
+    return round(happiness_sum/divisor, 3)

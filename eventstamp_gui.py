@@ -84,7 +84,7 @@ def draw_time_scales_check_box(scales_bool, r, c, label_text):
 
 def draw_activity_buttons(people_ent_box, note_ent_box, hap_ent_box,
                           stress_bool,    END_SCALES_BOOL,  scales_list,
-                          observer):
+                          observer,       stats_observer):
     buttons_list = list() 
     i = 0
     j = 0
@@ -106,7 +106,8 @@ def draw_activity_buttons(people_ent_box, note_ent_box, hap_ent_box,
         stress      = stress_bool,
         scales      = END_SCALES_BOOL,
         scales_list = scales_list,
-        disp_ob     = observer
+        disp_ob     = observer,
+        stat_ob     = stats_observer,
         :
         write_eventstamp(
         activity_string,
@@ -117,7 +118,8 @@ def draw_activity_buttons(people_ent_box, note_ent_box, hap_ent_box,
         stress, 
         scales,
         scales_list,
-        disp_ob
+        disp_ob,
+        stat_ob
         )))
  
         buttons_list[-1].grid(
@@ -292,3 +294,11 @@ def draw_realtime_eventstamp_display(fill_function, r, c):
             start_x, 0, end_x, 46, fill=color, width=0)) 
     display.grid(row=r, column=c, columnspan=18)
     return display, display_list
+
+def draw_todays_stats_canvas():
+    happiness_today = 0
+    stats_canvas = Canvas(root, height=70, width=120, bg='#FFFFFF')
+    stats_canvas.grid(row=7, column=18)
+    todays_happiness = calculate_todays_happiness()
+    stats_canvas.create_text(61, 35, text = str(todays_happiness) )
+    return stats_canvas 
