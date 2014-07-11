@@ -306,12 +306,14 @@ def draw_today_stats_canvas():
     stats_canvas.create_text(60, 46, text = str(calculate_today_happiness() ) )
 
     stats_canvas.create_text(60, 93,  text = 'Time with People') 
-    stats_canvas.create_text(60, 116, text = str(today_people_time() ) + '%')
+    stats_canvas.create_text(60, 116, 
+    text = (str(today_people_time() ) + ' ')[:4].strip() + '%')
 
     stats_canvas.create_text(60, 166, text = 'Activities') 
     stats_canvas.create_text(60, 189, text = str(today_number_of_stamps() ))
 
     stats_canvas.create_text(60, 233, text = 'Productivity') 
-    stats_canvas.create_text(60, 256, text = str(today_productivity() ) + '%')
+    stats_canvas.create_text(60, 256, 
+    text = (str(today_productivity() ) + ' ')[:4].strip() + '%')
 
     return stats_canvas 
