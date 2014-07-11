@@ -156,12 +156,14 @@ def make_note_shortcut_list(eventstamp_list):
                 b  = event[1]
                 f  = event[2]
                 ab = event[3]
+                af = event[2]
                 break
             else:
                 b  = 'white'
                 f  = 'black'
                 ab = 'blue'
-        most_freq_list.append( (frequent_note_dict[key][0], key, b, f, ab) ) 
+                af = 'red'
+        most_freq_list.append( (frequent_note_dict[key][0], key, b, f, ab, af) ) 
     most_freq_list.sort()
     most_freq_list.reverse()
     note_shortcut_list = list()
@@ -170,10 +172,11 @@ def make_note_shortcut_list(eventstamp_list):
         note_shortcut_list.append( ( most_freq_list[i][1], 
                                      most_freq_list[i][2],   
                                      most_freq_list[i][3], 
-                                     most_freq_list[i][4] ) )
+                                     most_freq_list[i][4],
+                                     most_freq_list[i][5]) )
     if len(note_shortcut_list) < number_of_note_shortcuts:
         for i in range(number_of_note_shortcuts -len(note_shortcut_list)):
-            note_shortcut_list.append('', 'white', 'black', 'white') 
+            note_shortcut_list.append('', 'white', 'black', 'white', 'black') 
             #for appearence of gui 
     return note_shortcut_list
 
@@ -245,7 +248,7 @@ def today_people_time():
             if eventstamp_list[i].who:
                 people_minute_sum += duration
             divisor += duration
-    return round(people_minute_sum/divisor, 2)*100
+    return round(people_minute_sum/divisor, 3)*100
 
 def today_number_of_stamps():
     eventstamp_list = make_eventstamp_list()
@@ -273,4 +276,4 @@ def today_productivity():
             if eventstamp_list[i].what not in non_productive:
                 pro_minute_sum += duration
             divisor += duration
-    return round(pro_minute_sum/divisor, 2)*100
+    return round(pro_minute_sum/divisor, 3)*100

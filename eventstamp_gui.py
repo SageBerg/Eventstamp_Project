@@ -177,14 +177,14 @@ def draw_note_buttons(note_list, note_entry_box, note_entry_string):
     note_button_list = list()
     x = 9 
     y = 0 
-    for note, b, f, ab in note_list:
+    for note, b, f, ab, af in note_list:
         note_button_list.append(Button(
         root, text=note, width=12, height=4, wraplength=100,
         bd=0, 
         bg=b, 
         fg=f,
         activebackground=ab,
-        #activeforeground=af,
+        activeforeground=af,
         command=lambda button_label=note, 
         change_note=note_entry_string.set: change_note(button_label)))
         note_button_list[-1].grid(row=y, column=x)
@@ -197,7 +197,7 @@ def draw_note_buttons(note_list, note_entry_box, note_entry_string):
 def draw_entry_box_canvas():
     entry_box_canvas = Canvas(root, width=1096, height=70, bg='#ffffff')
     entry_box_canvas.grid(row=7, column=8, rowspan=2, columnspan=10)
-    text_list = ['Person(s) to include in next eventstamp',
+    text_list = ['People to include in next eventstamp',
                  'Note to include in next eventstamp', 
                  'Happiness level for next eventstamp' 
                  ]
@@ -302,16 +302,16 @@ def draw_today_stats_canvas():
     stats_canvas = Canvas(root, height=286, width=120, bg='#FFFFFF')
     stats_canvas.grid(row=7, column=18, rowspan=8)
 
-    stats_canvas.create_text(60, 23, text = 'Happiness Today') 
+    stats_canvas.create_text(60, 23, text = 'Happiness') 
     stats_canvas.create_text(60, 46, text = str(calculate_today_happiness() ) )
 
-    stats_canvas.create_text(60, 93,  text = 'People Today') 
+    stats_canvas.create_text(60, 93,  text = 'Time with People') 
     stats_canvas.create_text(60, 116, text = str(today_people_time() ) + '%')
 
-    stats_canvas.create_text(60, 166, text = 'Activities Today') 
+    stats_canvas.create_text(60, 166, text = 'Activities') 
     stats_canvas.create_text(60, 189, text = str(today_number_of_stamps() ))
 
-    stats_canvas.create_text(60, 233, text = 'Productivity Today') 
+    stats_canvas.create_text(60, 233, text = 'Productivity') 
     stats_canvas.create_text(60, 256, text = str(today_productivity() ) + '%')
 
     return stats_canvas 
