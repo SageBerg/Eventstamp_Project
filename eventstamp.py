@@ -31,7 +31,6 @@ def main():
     realtime_display_observer.notify() #the initial draw
 
     draw_entry_box_canvas()
-    #stats_observer = draw_todays_stats_canvas()
 
     note_entry_box,   note_entry_string = draw_note_entry_box()
     people_entry_box, people_string     = draw_people_entry_box()

@@ -265,7 +265,7 @@ def today_productivity():
     eventstamp_list = make_eventstamp_list()
     pro_minute_sum = 0
     divisor = 0
-    non_productive = ['Sexual', 'Games', 'Video', 'Audio', 
+    non_productive = ['Games', 'Video', 'Audio', 
                       'Read', 'Social', 'Idle'] 
     for i in range(1, len(eventstamp_list)):
         e = ( datetime.today().year -2000, 

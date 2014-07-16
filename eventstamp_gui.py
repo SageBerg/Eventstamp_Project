@@ -272,10 +272,10 @@ def draw_realtime_eventstamp_display(fill_function, r, c):
     display.create_line(0, 46, 1441, 46, fill='grey')
     for hour in range(24):
         display.create_line(hour*60, 0, hour*60, 71, fill='grey')
-        for fifteen_minute_block in range(1,60,15):
+        for fifteen_minute_block in range(0,60,15):
             display.create_line(hour*60 + fifteen_minute_block, 0, \
-                                hour*60 + fifteen_minute_block, 46, \
-                                fill='grey80')#, dash=(2, 2) )
+                                hour*60 + fifteen_minute_block, 51, \
+                                fill='grey')#, dash=(2, 2) )
         display.create_text(hour*60 + 30, 59, text=str(hour) +':00') 
     eventstamp_list    = make_eventstamp_list()
     display_list = list()
