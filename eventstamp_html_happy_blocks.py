@@ -56,6 +56,8 @@ class HTML_Blocks(object): #needs a clean up
                 curr_event = self.eventstamp_list[i]
 
                 block_color = eventstamp_variables.happiness_color_dict[str(curr_event.happiness)][2]
+                if curr_event.what == 'Sleep':
+                    block_color = '#ffffff'
                 
                 topx    = 0   + self.inverted_date_dict[prev_event.date]*200 
                 topy    = 40  + prev_event.hour*60 + prev_event.minute #y is in minutes 
