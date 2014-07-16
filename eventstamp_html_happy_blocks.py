@@ -103,4 +103,4 @@ class HTML_Blocks(object): #needs a clean up
                                      str(x) + 'px;top:' + str(y) + 'px">' + \
                                      block_title + '</div>\n')
 
-HTML_Blocks()
+#HTML_Blocks()

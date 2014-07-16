@@ -16,6 +16,8 @@ import eventstamp_txt_data_following
 import eventstamp_txt_data_by_minute
 import eventstamp_txt_data_by_day
 import eventstamp_sql_data_by_day
+import eventstamp_html_blocks
+import eventstamp_html_happy_blocks
 
 try:
     from personal_depricated_notes import depricated_notes
@@ -212,13 +214,15 @@ def update_data_files():
     data_parser_list = [eventstamp_txt_data_following.main, \
                         eventstamp_txt_data_by_minute.main, \
                         eventstamp_txt_data_by_day.main, \
-                        eventstamp_sql_data_by_day.main ]
+                        eventstamp_sql_data_by_day.main]
     for data_parser in data_parser_list:
         process = Process(target = data_parser)
         process.start()
         #process.join()
     #t2 = datetime.today()
     #print(t2-t1)
+    eventstamp_html_blocks.HTML_Blocks()
+    eventstamp_html_happy_blocks.HTML_Blocks()
 
 def calculate_today_happiness():
     eventstamp_list = make_eventstamp_list()
