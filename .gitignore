@@ -3,6 +3,7 @@
 *.swo
 *.txt
 *.db
+*.html
 data
 depricated
 __pycache__
