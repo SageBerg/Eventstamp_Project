@@ -237,6 +237,8 @@ def calculate_today_happiness():
             duration = get_eventstamp_duration(i, eventstamp_list)
             happiness_sum += int(eventstamp_list[i].happiness)*duration
             divisor += duration
+    if divisor == 0: #to avoid dividing by 0
+        divisor += 1
     return round(happiness_sum/divisor, 3)
 
 def today_people_time():
@@ -252,6 +254,8 @@ def today_people_time():
             if eventstamp_list[i].who:
                 people_minute_sum += duration
             divisor += duration
+    if divisor == 0: #to avoid dividing by 0
+        divisor += 1
     return round(people_minute_sum/divisor, 3)*100
 
 def today_number_of_stamps():
@@ -280,4 +284,6 @@ def today_productivity():
             if eventstamp_list[i].what not in non_productive:
                 pro_minute_sum += duration
             divisor += duration
+    if divisor == 0: #to avoid dividing by 0
+        divisor += 1
     return round(pro_minute_sum/divisor, 3)*100
