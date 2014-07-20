@@ -27,9 +27,6 @@ def get_date(datetime_string):
     return (year, month, day) 
 
 def get_eventstamp_duration(index, eventstamp_list): 
-    '''
-    used in eventstamp_stats, eventstamp_sql
-    '''
     last_time = eventstamp_list[index-1].hour*60 \
               + eventstamp_list[index-1].minute
     curr_time = eventstamp_list[index].hour*60 \
