@@ -273,7 +273,7 @@ def today_productivity():
     eventstamp_list = make_eventstamp_list()
     pro_minute_sum = 0
     divisor = 0
-    non_productive = ['Games', 'Video', 'Audio', 
+    non_productive = ['Games', 'Visual', 'Audio', 
                       'Read', 'Social', 'Idle'] 
     for i in range(1, len(eventstamp_list)):
         e = ( datetime.today().year -2000, 
@@ -282,6 +282,9 @@ def today_productivity():
         if eventstamp_list[i].date == e: 
             duration = get_eventstamp_duration(i, eventstamp_list)
             if eventstamp_list[i].what not in non_productive:
+                pro_minute_sum += duration
+            elif eventstamp_list[i].what == 'Social' and \
+                 eventstamp_list[i].note == 'travel':
                 pro_minute_sum += duration
             divisor += duration
     if divisor == 0: #to avoid dividing by 0

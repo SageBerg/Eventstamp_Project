@@ -38,19 +38,21 @@ class Data_By_Day(object):
         for i in range(len(self.date_dict)): 
             date_string = self.make_date_string(i)
             time_use_by_day.write(date_string + ',')
-            daily_time_use_dict = {activity[0].title():0 \
-                                   for activity in event_list}
+            time_use_dict = {activity[0].title():0 for activity in event_list}
             for j in range(len(self.eventstamp_list)): #stupid loop, fix
-                if self.date_dict[i] == self.eventstamp_list[j].date:
+                if j == 0 and self.date_dict[i] == self.eventstamp_list[j].date:
+                    duration = self.eventstamp_list[j].minute + \
+                               self.eventstamp_list[j].hour*60
+                    time_use_dict[self.eventstamp_list[j].what.strip()] += duration
+                elif self.date_dict[i] == self.eventstamp_list[j].date:
                     duration = get_eventstamp_duration(j, self.eventstamp_list)
-                    daily_time_use_dict[self.eventstamp_list[j].what.strip()] \
-                    += duration
-            daily_activity_list = [(activity[0].title(), \
-            daily_time_use_dict[activity[0].title()]) \
-                                for activity in event_list]
+                    time_use_dict[self.eventstamp_list[j].what.strip()] += duration
+            daily_activity_list = [ (activity[0].title(), time_use_dict[activity[0].title() ]) \
+                                    for activity in event_list]
             for tup in daily_activity_list: 
                 time_use_by_day.write(str(tup[1]) + ',')
             time_use_by_day.write('\n')
+
         time_use_by_day.close()
 
     def make_happiness_by_day_file(self):
