@@ -25,8 +25,16 @@ root.wm_title('Eventstamp.py')
 people_list = [(person, IntVar()) for person in people]
 location = ''
 stress_bool       = IntVar()
-END_SCALES_BOOL   = IntVar()
-START_SCALES_BOOL = IntVar()
+
+class Scales_Bool(object):
+
+    def __init__(self):
+        self.boolean = False
+    def get(self):
+        return self.boolean
+
+END_SCALES_BOOL   = Scales_Bool() 
+START_SCALES_BOOL = Scales_Bool() 
 
 def draw_scales_label_canvas(r, c, label):
     canvas = Canvas(root, height=34, width=242, bd=0)
@@ -71,16 +79,35 @@ def draw_time_scales(r, c, function):
     function(*scales_list)
     return scales_list
 
+def select_deselect(button, scales_bool):
+    if scales_bool.get() == False:
+        button.config(bg='#d9d9d9', fg='black', 
+        activebackground='#ececec', 
+        activeforeground='black')
+    else:
+        button.config(bg='black', fg='white', 
+        activebackground='black', 
+        activeforeground='white')
+
+def double_lambda(sel_desel, button, scales_bool):
+    if scales_bool.boolean:
+        scales_bool.boolean = False
+    else:
+        scales_bool.boolean = True
+    sel_desel(button, scales_bool)
+
 def draw_time_scales_check_box(scales_bool, r, c, label_text):
-    check_box = Checkbutton(
+    check_button = Button(
     root, 
+    height=4,
+    width =12,
+    bd=0,
     text=label_text, 
-    indicatoron=False,
-    offrelief=FLAT,
     relief =FLAT,
-    variable=scales_bool,
-    wraplength=100)
-    check_box.grid(row=r, column=c)
+    wraplength=100, 
+    command=lambda :
+    double_lambda(select_deselect, check_button, scales_bool) )
+    check_button.grid(row=r, column=c, rowspan=2)
 
 def draw_activity_buttons(people_ent_box, note_ent_box, hap_ent_box,
                           stress_bool,    END_SCALES_BOOL,  scales_list,
