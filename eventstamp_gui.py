@@ -302,18 +302,20 @@ def draw_today_stats_canvas():
     stats_canvas = Canvas(root, height=286, width=120, bg='#FFFFFF')
     stats_canvas.grid(row=7, column=18, rowspan=8)
 
-    stats_canvas.create_text(60, 23, text = 'Happiness') 
-    stats_canvas.create_text(60, 46, text = str(calculate_today_happiness() ) )
+    stats_canvas.create_text(60, 23, text = 'Activities') 
+    stats_canvas.create_text(60, 46, text = str(today_number_of_stamps() ))
 
-    stats_canvas.create_text(60, 93,  text = 'Time with People') 
-    stats_canvas.create_text(60, 116, 
-    text = (str(today_people_time() ) + ' ')[:4].strip() + '%')
+    stats_canvas.create_text(60, 93, text = 'Happiness') 
+    stats_canvas.create_text(60, 116, text = str(calculate_today_happiness() ) )
 
-    stats_canvas.create_text(60, 166, text = 'Activities') 
-    stats_canvas.create_text(60, 189, text = str(today_number_of_stamps() ))
+    people_list = str(today_people_time() ).split('.')
+    people_text = people_list[0] + '.' + people_list[1][0] + '%'
+    stats_canvas.create_text(60, 166,  text = 'Time with People') 
+    stats_canvas.create_text(60, 189, text = people_text) 
 
+    productivity_list = str(today_productivity() ).split('.')
+    productivity_text = productivity_list[0] + '.' + productivity_list[1][0] + '%'
     stats_canvas.create_text(60, 233, text = 'Productivity') 
-    stats_canvas.create_text(60, 256, 
-    text = (str(today_productivity() ) + ' ')[:4].strip() + '%')
+    stats_canvas.create_text(60, 256, text = productivity_text) 
 
     return stats_canvas 
