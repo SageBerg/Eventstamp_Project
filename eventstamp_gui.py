@@ -74,7 +74,8 @@ def draw_time_scales(r, c, function):
                                        orient=HORIZONTAL,
                                        relief=FLAT,
                                        troughcolor='gray75',
-                                       bd=0))
+                                       bd=0,
+                                       sliderrelief=FLAT) )
         scales_list[-1].grid(row=r+i, column=c, columnspan=2)
     function(*scales_list)
     return scales_list
