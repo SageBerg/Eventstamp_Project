@@ -38,20 +38,20 @@ def main():
 
     draw_scales_time_canvas (9, 9)
     draw_scales_label_canvas(9, 10, 'Start Time Scales')
-    draw_scales_time_canvas (9, 15)
-    draw_scales_label_canvas(9, 16, 'End Time Scales')
+    draw_scales_time_canvas (9, 14)
+    draw_scales_label_canvas(9, 15, 'End Time Scales')
     start_scales_list = draw_time_scales(10,10, 
                                          set_scales_to_last_eventstamp)
-    scales_list       = draw_time_scales(10,16, 
+    scales_list       = draw_time_scales(10,15, 
                                          refresh_scales)
     draw_time_scales_check_box(START_SCALES_BOOL, 9, 12, 'Use Start Scales')
-    draw_time_scales_check_box(END_SCALES_BOOL,   9, 14, 'Use End Scales') 
+    draw_time_scales_check_box(END_SCALES_BOOL,   9, 17, 'Use End Scales') 
     draw_scales_button(refresh_scales, scales_list, 
                        'Set End Scales to current time',
-                       11, 14)
+                       11, 17)
     draw_scales_button(set_scales_to_last_eventstamp, scales_list,
                        'Set End Scales to end time of last eventstamp',
-                       13, 14)
+                       13, 17)
     draw_scales_button(refresh_scales, start_scales_list, 
                        'Set Start Scales to current time',
                        11, 12)
