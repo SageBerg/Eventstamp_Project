@@ -8,6 +8,11 @@ Created: 04 March 2014
 from eventstamp_class import Eventstamp
 from datetime import * 
 
+def date_tup():
+    return ( datetime.today().year -2000, 
+             datetime.today().month, 
+             datetime.today().day )
+
 def parse_datetime_string(datetime_string):
     '''
     takes in a datetime string
@@ -65,6 +70,48 @@ def make_eventstamp_list():
         if date_of_current_activity == date_of_previous_activity:
             eventstamp_list.append(Eventstamp(*parts_list))
         else: #break up events that span from one day to the next
+            before_midnight_args = \
+            list(date_of_previous_activity) + [23] + [60] + parts_list[5:]
+            after_midnight_args  = \
+            list(date_of_current_activity) + parts_list[3:] 
+            eventstamp_list.append(Eventstamp(*before_midnight_args))
+            eventstamp_list.append(Eventstamp(*after_midnight_args))
+    eventstamp_file.close()
+    return eventstamp_list
+
+def make_today_eventstamp_list(): 
+    '''
+    returns list of eventstamp ojects
+    the list includes eventstamps from today and the last last one 
+    from the previous day
+    '''
+    #try: #fix this exception handling later and in such a way as to not destroy my data
+    eventstamp_file = open('eventstamp_data.txt')
+    #except:
+    #    eventstamp_file = open('eventstamp_data.txt', 'w')
+    #    eventstamp_file.write(str(datetime.today()) + \
+    #                          ', Other, , , , , no stress\n')
+    #    eventstamp_file.close() 
+        #.close() saves this first stamp, which will be immediately parsed
+    #    eventstamp_file = open('eventstamp_data.txt')
+
+    eventstamp_list = list()
+    eventstamp_string_list = [line for line in eventstamp_file]
+    for i in range(1,len(eventstamp_string_list)):
+        date_of_previous_activity = get_date(eventstamp_string_list[i-1])
+        date_of_current_activity  = get_date(eventstamp_string_list[i])
+
+        line = eventstamp_string_list[i] 
+        parts_list = list(parse_datetime_string(line.split(',')[0])) + \
+                          line.split(',')[1:]
+        for i in range(len(parts_list)): #clean up data
+            if type(parts_list[i]) == str:
+                parts_list[i] = parts_list[i].strip()
+        if date_of_current_activity == date_of_previous_activity and \
+           date_of_current_activity == date_tup():
+            eventstamp_list.append(Eventstamp(*parts_list))
+        elif date_of_current_activity != date_of_previous_activity and \
+             date_of_current_activity == date_tup():
             before_midnight_args = \
             list(date_of_previous_activity) + [23] + [60] + parts_list[5:]
             after_midnight_args  = \
