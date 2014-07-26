@@ -44,8 +44,8 @@ def main():
                                          set_scales_to_last_eventstamp)
     scales_list       = draw_time_scales(10,15, 
                                          refresh_scales)
-    draw_time_scales_check_box(START_SCALES_BOOL, 9, 12, 'Use Start Scales')
-    draw_time_scales_check_box(END_SCALES_BOOL,   9, 17, 'Use End Scales') 
+    draw_time_scales_check_box(START_SCALES_BOOL, 9, 12, 'Use Start Scales', start_scales_list)
+    draw_time_scales_check_box(END_SCALES_BOOL,   9, 17, 'Use End Scales', scales_list) 
     draw_scales_button(refresh_scales, scales_list, 
                        'Set End Scales to current time',
                        11, 17)
