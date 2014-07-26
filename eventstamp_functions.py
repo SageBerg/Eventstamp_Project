@@ -160,11 +160,6 @@ def make_note_shortcut_list(eventstamp_list):
                 ab = event[3]
                 af = event[2]
                 break
-            else:
-                b  = 'white'
-                f  = 'black'
-                ab = 'blue'
-                af = 'red'
         most_freq_list.append( (frequent_note_dict[key][0], key, b, f, ab, af) ) 
     most_freq_list.sort()
     most_freq_list.reverse()
@@ -224,69 +219,63 @@ def update_data_files():
     eventstamp_html_blocks.HTML_Blocks()
     eventstamp_html_happy_blocks.HTML_Blocks()
 
-def calculate_today_happiness():
-    eventstamp_list = make_eventstamp_list()
-    happiness_sum = 0
-    divisor = 0
-    for i in range(1, len(eventstamp_list)):
-        e = ( datetime.today().year -2000, 
-              datetime.today().month, 
-              datetime.today().day )
-        if eventstamp_list[i].date == e and \
-           eventstamp_list[i].what != 'Sleep':
-            duration = get_eventstamp_duration(i, eventstamp_list)
-            happiness_sum += int(eventstamp_list[i].happiness)*duration
-            divisor += duration
-    if divisor == 0: #to avoid dividing by 0
-        divisor += 1
-    return round(happiness_sum/divisor, 3)
+class Today_Stats(object):
+    
+    def __init__(self):
+        self.eventstamp_list = None
 
-def today_people_time():
-    eventstamp_list = make_eventstamp_list()
-    people_minute_sum = 0
-    divisor = 0
-    for i in range(1, len(eventstamp_list)):
-        e = ( datetime.today().year -2000, 
-              datetime.today().month, 
-              datetime.today().day )
-        if eventstamp_list[i].date == e: 
-            duration = get_eventstamp_duration(i, eventstamp_list)
-            if eventstamp_list[i].who:
-                people_minute_sum += duration
-            divisor += duration
-    if divisor == 0: #to avoid dividing by 0
-        divisor += 1
-    return round(people_minute_sum/divisor, 3)*100
+    def update(self, eventstamp_list):
+        self.eventstamp_list = eventstamp_list
+        hap    = self.today_happiness()
+        peeps  = self.today_people_time()
+        stamps = self.today_number_of_stamps()
+        pro    = self.today_productivity()
+        return hap, peeps, stamps, pro
 
-def today_number_of_stamps():
-    eventstamp_list = make_eventstamp_list()
-    number_of_stamps = 0
-    for i in range(1, len(eventstamp_list)):
-        e = ( datetime.today().year -2000, 
-              datetime.today().month, 
-              datetime.today().day )
-        if eventstamp_list[i].date == e:
-            number_of_stamps += 1
-    return number_of_stamps
+    def today_happiness(self):
+        happiness_sum = 0
+        divisor = 0
+        for i in range(1, len(self.eventstamp_list)):
+            if self.eventstamp_list[i].date == date_tup() and \
+               self.eventstamp_list[i].what != 'Sleep':
+                duration = get_eventstamp_duration(i, self.eventstamp_list)
+                happiness_sum += int(self.eventstamp_list[i].happiness)*duration
+                divisor += duration
+        if divisor != 0: 
+            return round(happiness_sum/divisor, 3)
 
-def today_productivity():
-    eventstamp_list = make_eventstamp_list()
-    pro_minute_sum = 0
-    divisor = 0
-    non_productive = ['Games', 'Visual', 'Audio', 
-                      'Read', 'Social', 'Idle'] 
-    for i in range(1, len(eventstamp_list)):
-        e = ( datetime.today().year -2000, 
-              datetime.today().month, 
-              datetime.today().day )
-        if eventstamp_list[i].date == e: 
-            duration = get_eventstamp_duration(i, eventstamp_list)
-            if eventstamp_list[i].what not in non_productive:
-                pro_minute_sum += duration
-            elif eventstamp_list[i].what == 'Social' and \
-                 eventstamp_list[i].note == 'travel':
-                pro_minute_sum += duration
-            divisor += duration
-    if divisor == 0: #to avoid dividing by 0
-        divisor += 1
-    return round(pro_minute_sum/divisor, 3)*100
+    def today_people_time(self):
+        people_minute_sum = 0
+        divisor = 0
+        for i in range(1, len(self.eventstamp_list)):
+            if self.eventstamp_list[i].date == date_tup(): 
+                duration = get_eventstamp_duration(i, self.eventstamp_list)
+                if self.eventstamp_list[i].who:
+                    people_minute_sum += duration
+                divisor += duration
+        if divisor != 0: 
+            return round(people_minute_sum/divisor, 3)*100
+
+    def today_number_of_stamps(self):
+        number_of_stamps = 0
+        for i in range(1, len(self.eventstamp_list)):
+            if self.eventstamp_list[i].date == date_tup():
+                number_of_stamps += 1
+        return number_of_stamps
+
+    def today_productivity(self):
+        pro_minute_sum = 0
+        divisor = 0
+        non_productive = ['Games', 'Visual', 'Audio', 
+                          'Read', 'Social', 'Idle'] 
+        for i in range(1, len(self.eventstamp_list)):
+            if self.eventstamp_list[i].date == date_tup(): 
+                duration = get_eventstamp_duration(i, self.eventstamp_list)
+                if self.eventstamp_list[i].what not in non_productive:
+                    pro_minute_sum += duration
+                elif self.eventstamp_list[i].what == 'Social' and \
+                     self.eventstamp_list[i].note == 'travel':
+                    pro_minute_sum += duration
+                divisor += duration
+        if divisor != 0: 
+            return round(pro_minute_sum/divisor, 3)*100

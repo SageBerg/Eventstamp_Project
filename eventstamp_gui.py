@@ -90,14 +90,18 @@ def select_deselect(button, scales_bool):
         activebackground='black', 
         activeforeground='white')
 
-def double_lambda(sel_desel, button, scales_bool):
+def multifunction(sel_desel, button, scales_bool, scales_list):
     if scales_bool.boolean:
         scales_bool.boolean = False
+        for scale in scales_list:
+            scale.configure(troughcolor='gray75')
     else:
         scales_bool.boolean = True
+        for scale in scales_list:
+            scale.configure(troughcolor='#000000')
     sel_desel(button, scales_bool)
 
-def draw_time_scales_check_box(scales_bool, r, c, label_text):
+def draw_time_scales_check_box(scales_bool, r, c, label_text, scales_list):
     check_button = Button(
     root, 
     height=4,
@@ -107,7 +111,7 @@ def draw_time_scales_check_box(scales_bool, r, c, label_text):
     relief =FLAT,
     wraplength=100, 
     command=lambda :
-    double_lambda(select_deselect, check_button, scales_bool) )
+    multifunction(select_deselect, check_button, scales_bool, scales_list) )
     check_button.grid(row=r, column=c, rowspan=2)
 
 def draw_activity_buttons(people_ent_box, note_ent_box, hap_ent_box,
@@ -295,23 +299,19 @@ def draw_update_data_files_button():
     command=lambda x = update_data_files: x() )
     data_files_button.grid(row=0, column=18)
 
-def draw_realtime_eventstamp_display(fill_function, r, c):
+def draw_realtime_eventstamp_display(fill_function, r, c, eventstamp_list):
     display = Canvas(root, height=70, width=1440, bg='white')
     display.create_line(0, 46, 1441, 46, fill='grey')
     for hour in range(24):
         display.create_line(hour*60, 0, hour*60, 71, fill='grey')
-        for fifteen_minute_block in range(0,60,15):
-            display.create_line(hour*60 + fifteen_minute_block, 0, \
-                                hour*60 + fifteen_minute_block, 51, \
-                                fill='grey')#, dash=(2, 2) )
+        #for fifteen_minute_block in range(0,60,15):
+        #    display.create_line(hour*60 + fifteen_minute_block, 0, \
+        #                        hour*60 + fifteen_minute_block, 51, \
+        #                        fill='grey')
         display.create_text(hour*60 + 30, 59, text=str(hour) +':00') 
-    eventstamp_list    = make_eventstamp_list()
     display_list = list()
     for i in range(len(eventstamp_list)):
-        if eventstamp_list[i].date == \
-        (datetime.today().year -2000, 
-         datetime.today().month, 
-         datetime.today().day):
+        if eventstamp_list[i].date == date_tup():
             color = fill_function(eventstamp_list[i])
             if eventstamp_list[i-1].day == eventstamp_list[i].day: #coords
                 start_x = \
@@ -325,23 +325,26 @@ def draw_realtime_eventstamp_display(fill_function, r, c):
     display.grid(row=r, column=c, columnspan=18)
     return display, display_list
 
-def draw_today_stats_canvas():
+def draw_today_stats_canvas(eventstamp_list):
     happiness_today = 0
+    ts = Today_Stats()
+    hap, peeps, stamps, pro = ts.update(eventstamp_list)
+
     stats_canvas = Canvas(root, height=286, width=120, bg='#FFFFFF')
     stats_canvas.grid(row=7, column=18, rowspan=8)
 
     stats_canvas.create_text(60, 23, text = 'Activities') 
-    stats_canvas.create_text(60, 46, text = str(today_number_of_stamps() ))
+    stats_canvas.create_text(60, 46, text = str(stamps ))
 
     stats_canvas.create_text(60, 93, text = 'Happiness') 
-    stats_canvas.create_text(60, 116, text = str(calculate_today_happiness() ) )
+    stats_canvas.create_text(60, 116, text = str(hap ) )
 
-    people_list = str(today_people_time() ).split('.')
+    people_list = str(peeps ).split('.')
     people_text = people_list[0] + '.' + people_list[1][0] + '%'
     stats_canvas.create_text(60, 166,  text = 'Time with People') 
     stats_canvas.create_text(60, 189, text = people_text) 
 
-    productivity_list = str(today_productivity() ).split('.')
+    productivity_list = str(pro ).split('.')
     productivity_text = productivity_list[0] + '.' + productivity_list[1][0] + '%'
     stats_canvas.create_text(60, 233, text = 'Productivity') 
     stats_canvas.create_text(60, 256, text = productivity_text) 
