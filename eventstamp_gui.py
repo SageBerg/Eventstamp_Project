@@ -167,10 +167,10 @@ def draw_people_buttons(people_list,
     y = 7
     for i in range(len(people_list)):
         people_button_list.append(
-        Button(root, text=people_list[i][0].title(),
-        width=6, height=4, bg='white', wraplength=100, bd=0, 
+        Button(root, text=people_list[i].title(),
+        width=6, height=4, bg='white', wraplength=70, bd=0, 
         command=lambda 
-        button_label=people_list[i][0], #clean up later
+        button_label=people_list[i], #clean up later
         f=add_remove_people_from_entry_box
         : 
         f(people_entry_box, button_label, people_entry_string))) 

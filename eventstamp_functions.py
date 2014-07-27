@@ -177,6 +177,31 @@ def make_note_shortcut_list(eventstamp_list):
             #for appearence of gui 
     return note_shortcut_list
 
+def make_people_shortcut_list(eventstamp_list): 
+    number_of_people_shortcuts = 16 #most common non-depricated people
+    frequent_people_dict = dict()
+    for eventstamp in eventstamp_list: 
+        who_list = eventstamp.who.strip().split()
+        for i in range( len(who_list) ):
+            if who_list[i] in frequent_people_dict:
+                frequent_people_dict[who_list[i]] += 1
+            elif who_list[i]: #not in depricated_people: 
+                frequent_people_dict[who_list[i]] = 1 
+    most_freq_list = list()
+    for key in frequent_people_dict:
+        most_freq_list.append( (frequent_people_dict[key], key ) ) 
+    most_freq_list.sort()
+    most_freq_list.reverse()
+    people_shortcut_list = list()
+    for i in range(min(number_of_people_shortcuts, len(most_freq_list))):
+        people_shortcut_list.append( most_freq_list[i][1] )
+    if len(people_shortcut_list) < number_of_people_shortcuts:
+        for i in range(number_of_people_shortcuts 
+                       -len(people_shortcut_list) ):
+            people_shortcut_list.append('') 
+    print(people_shortcut_list)
+    return people_shortcut_list
+
 def refresh_scales(minute_scale, hour_scale, day_scale, \
                    month_scale,  year_scale):
     minute_scale.set(datetime.today().minute)

@@ -24,8 +24,9 @@ from eventstamp_gui import *
 from eventstamp_realtime_display_class import *
 
 def main():
-    eventstamp_list           = make_eventstamp_list()
-    note_shortcut_list        = make_note_shortcut_list(eventstamp_list)
+    eventstamp_list      = make_eventstamp_list()
+    note_shortcut_list   = make_note_shortcut_list(eventstamp_list)
+    people_shortcut_list = make_people_shortcut_list(eventstamp_list)
 
     realtime_display_observer = Realtime_Display()
     realtime_display_observer.notify() #the initial draw
@@ -44,8 +45,10 @@ def main():
                                          set_scales_to_last_eventstamp)
     scales_list       = draw_time_scales(10,15, 
                                          refresh_scales)
-    draw_time_scales_check_box(START_SCALES_BOOL, 9, 12, 'Use Start Scales', start_scales_list)
-    draw_time_scales_check_box(END_SCALES_BOOL,   9, 17, 'Use End Scales', scales_list) 
+    draw_time_scales_check_box(
+    START_SCALES_BOOL, 9, 12, 'Use Start Scales', start_scales_list)
+    draw_time_scales_check_box(
+    END_SCALES_BOOL,   9, 17, 'Use End Scales', scales_list) 
     draw_scales_button(refresh_scales, scales_list, 
                        'Set End Scales to current time',
                        11, 17)
@@ -60,14 +63,15 @@ def main():
                        13, 12)
     
     draw_happiness_buttons(hap_entry, hap_string)
-    draw_people_buttons(people_list, people_entry_box, people_string)
-    draw_activity_buttons(people_entry_box, note_entry_box, hap_entry,
-                          stress_bool,      END_SCALES_BOOL,    scales_list,
+    draw_people_buttons(people_shortcut_list, 
+                        people_entry_box, 
+                        people_string)
+    draw_activity_buttons(people_entry_box, note_entry_box,  hap_entry,
+                          stress_bool,      END_SCALES_BOOL, scales_list,
                           realtime_display_observer)
 
     draw_calendar_buttons()
     draw_delete_last_stamp_button(realtime_display_observer)
-    #draw_undo_delete_last_stamp_button(a_display, a_display_list)
     draw_note_buttons(note_shortcut_list, note_entry_box,
                       note_entry_string)
     draw_update_data_files_button()
