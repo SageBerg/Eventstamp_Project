@@ -35,7 +35,10 @@ class Scales_Bool(object):
         return self.boolean
 
 END_SCALES_BOOL   = Scales_Bool() 
-START_SCALES_BOOL = Scales_Bool() 
+START_SCALES_BOOL = Scales_Bool()
+
+H = 5
+W = 17
 
 def draw_scales_label_canvas(r, c, label):
     canvas = Canvas(root, height=34, width=242, bd=0)
@@ -70,7 +73,7 @@ def draw_time_scales(r, c, function):
     return scales_list
 
 def draw_scales_button(function, scales_list, button_text, r, c):
-    button = Button(root, height=4, width=12, text=button_text,
+    button = Button(root, height=H, width=W, text=button_text,
                     relief=FLAT,    bd=0,     wraplength=100,
                     command=lambda
                     minute = scales_list[0],
@@ -105,8 +108,8 @@ def multifunction(sel_desel, button, scales_bool, scales_list):
 def draw_time_scales_check_box(scales_bool, r, c, label_text, scales_list):
     check_button = Button(
     root, 
-    height=4,
-    width =12,
+    height=H,
+    width=W,
     bd=0,
     text=label_text, 
     relief =FLAT,
@@ -116,7 +119,7 @@ def draw_time_scales_check_box(scales_bool, r, c, label_text, scales_list):
     check_button.grid(row=r, column=c, rowspan=2)
 
 def draw_entry_canvas(r, c):
-    entry_box_canvas = Canvas(root, width=1096, height=70, bg='#ffffff')
+    entry_box_canvas = Canvas(root, width=1122, height=70, bg='#ffffff')
     entry_box_canvas.grid(row=r, column=c, rowspan=2, columnspan=9) 
     text_list = ['People to include in next eventstamp',
                  'Note to include in next eventstamp', 
@@ -163,7 +166,7 @@ def draw_people_buttons(people_list,
     for i in range(len(people_list[:-4])):
         people_button_list.append(
         Button(root, text=people_list[i].title(),
-        width=12, height=4, bg='white', wraplength=70, bd=0, 
+        width=W, height=H, bg='white', wraplength=70, bd=0, 
         command=lambda 
         button_label=people_list[i], 
         f=add_remove_people_from_entry_box
@@ -183,7 +186,7 @@ def draw_activity_buttons(people_ent_box, note_ent_box, hap_ent_box,
     i = 4 
     j = 0
     for event in event_list:
-        buttons_list.append(Button(root, width = 12, height = 4, 
+        buttons_list.append(Button(root, width=W, height=H, 
                                    text=event[0].title(), 
                                    bg=event[1], fg=event[2], 
                                    activebackground=event[3], 
@@ -223,7 +226,7 @@ def draw_activity_buttons(people_ent_box, note_ent_box, hap_ent_box,
 
 def draw_happiness_buttons(r, c, hap_entry_box, hap_entry_string):
     for i in range(1,6):
-        button = Button(root, text=str(i), width=12, height=4, bd=0,
+        button = Button(root, text=str(i), width=W, height=H, bd=0,
                         relief=FLAT, 
                         bg=happiness_color_dict[str(i)][0],
                         fg=happiness_color_dict[str(i)][1],
@@ -241,13 +244,13 @@ def draw_delete_last_stamp_button(r, c, observer):
     relief=FLAT, bd=0,
     command=lambda 
     realtime_display_observer=observer:
-    undo(realtime_display_observer), height=4, width=12)
+    undo(realtime_display_observer), height=H, width=W)
     delete_last_stamp_button.grid(row=r, column=c, rowspan=2)
 
 def draw_undo_delete_last_stamp_button(display, display_list):
     delete_last_stamp_button = Button(root, text='Undo Deletion', 
     relief=FLAT, bd=0,
-    height=4, width=12)
+    height=H, width=W)
     delete_last_stamp_button.grid(
     row=9, column=18, rowspan=2)
 
@@ -258,14 +261,14 @@ def draw_calendar_buttons(r, c):
                      happiness_calendar]
     for i in range(len(button_text_list)):
         calendar_button = Button(
-        root, text=button_text_list[i], width=12, height=4,
+        root, text=button_text_list[i], width=W, height=H,
         relief=FLAT, bd=0, wraplength=70,
         command=lambda x = callback_list[i]: x() )
         calendar_button.grid(row=r, column=c+i, rowspan=2)
 
 def draw_update_data_files_button(r, c):
-    data_files_button = Button(root, text='Update Data Files', width=12, 
-    height=4, relief=FLAT, bd=0, 
+    data_files_button = Button(root, text='Update Data Files', width=W, 
+    height=H, relief=FLAT, bd=0, 
     command=lambda x = update_data_files: x() )
     data_files_button.grid(row=r, column=c, rowspan=2)
 
