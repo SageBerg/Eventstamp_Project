@@ -199,7 +199,6 @@ def make_people_shortcut_list(eventstamp_list):
         for i in range(number_of_people_shortcuts 
                        -len(people_shortcut_list) ):
             people_shortcut_list.append('') 
-    print(people_shortcut_list)
     return people_shortcut_list
 
 def refresh_scales(minute_scale, hour_scale, day_scale, \
