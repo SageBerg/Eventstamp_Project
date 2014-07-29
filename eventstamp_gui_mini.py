@@ -41,12 +41,12 @@ H = 5
 W = 17
 
 def draw_scales_label_canvas(r, c, label):
-    canvas = Canvas(root, height=34, width=242, bd=0)
-    canvas.grid(row=r, column=c, columnspan=2)
+    canvas = Canvas(root, height=242, width=246, bd=0)
+    canvas.grid(row=r, column=c, rowspan=6, columnspan=2)
     canvas.create_text(121, 17, text=label)
 
 def draw_scales_time_canvas(r, c):
-    canvas = Canvas(root, height=214, width=120, bd=0)
+    canvas = Canvas(root, height=242, width=123, bd=0)
     canvas.grid(row=r, column=c, rowspan=6)
     label_list = ['minute', 'hour', 'day', 'month', 'year']
     x = 96
@@ -299,7 +299,7 @@ def draw_today_stats_canvas(r, c, eventstamp_list):
     ts = Today_Stats()
     hap, peeps, stamps, pro = ts.update(eventstamp_list)
 
-    stats_canvas = Canvas(root, height=332, width=120, bg='#FFFFFF')
+    stats_canvas = Canvas(root, height=324, width=120, bg='#FFFFFF')
     stats_canvas.grid(row=r, column=c, rowspan=8)
 
     inc    = 40
