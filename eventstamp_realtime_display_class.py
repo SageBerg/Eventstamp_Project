@@ -23,3 +23,5 @@ class Realtime_Display(object):
         get_happiness_display_color, 20, 2, eventstamp_list)
 
         draw_today_stats_canvas(eventstamp_list)
+
+        
