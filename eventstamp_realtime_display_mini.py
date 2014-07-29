@@ -21,3 +21,5 @@ class Realtime_Display_Mini(object):
 
         draw_realtime_eventstamp_display(
         get_happiness_display_color, 0, 11, eventstamp_list)
+
+        draw_today_stats_canvas(6, 3, eventstamp_list)

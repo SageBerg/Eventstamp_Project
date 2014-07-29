@@ -163,7 +163,7 @@ def draw_people_buttons(people_list,
     people_button_list = list()
     x = 0
     y = 6 
-    for i in range(len(people_list[:-4])):
+    for i in range(len(people_list[:-7])):
         people_button_list.append(
         Button(root, text=people_list[i].title(),
         width=W, height=H, bg='white', wraplength=70, bd=0, 
@@ -175,7 +175,7 @@ def draw_people_buttons(people_list,
         people_button_list[-1].grid(row=y,     column=x, 
                                     rowspan=1, columnspan=1)
         x += 1
-        x =  x%4
+        x =  x%3
         if x == 0:
             y += 2 
 
@@ -294,28 +294,31 @@ def draw_realtime_eventstamp_display(fill_function, r, c, eventstamp_list):
     display.grid(row=r, column=c, rowspan=12)
     return display, display_list
 
-def draw_today_stats_canvas(eventstamp_list):
+def draw_today_stats_canvas(r, c, eventstamp_list):
     happiness_today = 0
     ts = Today_Stats()
     hap, peeps, stamps, pro = ts.update(eventstamp_list)
 
-    stats_canvas = Canvas(root, height=286, width=120, bg='#FFFFFF')
-    stats_canvas.grid(row=7, column=18, rowspan=8)
+    stats_canvas = Canvas(root, height=332, width=120, bg='#FFFFFF')
+    stats_canvas.grid(row=r, column=c, rowspan=8)
 
-    stats_canvas.create_text(60, 23, text = 'Activities') 
-    stats_canvas.create_text(60, 46, text = str(stamps ))
+    inc    = 40
+    offset = 16
 
-    stats_canvas.create_text(60, 93, text = 'Happiness') 
-    stats_canvas.create_text(60, 116, text = str(hap ) )
+    stats_canvas.create_text(60, inc, text = 'Activities') 
+    stats_canvas.create_text(60, inc + offset, text = str(stamps ))
+
+    stats_canvas.create_text(60, inc*3, text = 'Happiness') 
+    stats_canvas.create_text(60, inc*3 + offset, text = str(hap ) )
 
     people_list = str(peeps ).split('.')
     people_text = people_list[0] + '.' + people_list[1][0] + '%'
-    stats_canvas.create_text(60, 166,  text = 'Time with People') 
-    stats_canvas.create_text(60, 189, text = people_text) 
+    stats_canvas.create_text(60, inc*5,  text = 'Time with People') 
+    stats_canvas.create_text(60, inc*5 + offset, text = people_text) 
 
     productivity_list = str(pro ).split('.')
     productivity_text = productivity_list[0] + '.' + productivity_list[1][0] + '%'
-    stats_canvas.create_text(60, 233, text = 'Productivity') 
-    stats_canvas.create_text(60, 256, text = productivity_text) 
+    stats_canvas.create_text(60, inc*7, text = 'Productivity') 
+    stats_canvas.create_text(60, inc*7 + offset, text = productivity_text) 
 
     return stats_canvas 
