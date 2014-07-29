@@ -19,6 +19,8 @@ import eventstamp_sql_data_by_day
 import eventstamp_html_blocks
 import eventstamp_html_happy_blocks
 
+import os
+
 try:
     from personal_depricated_notes import depricated_notes
 except:
@@ -227,7 +229,10 @@ def set_scales_to_last_eventstamp(minute_scale, hour_scale, day_scale,
     year_scale.set(year + 2000) 
     #+2000 because eventstamp.year returns yy not yyyy e.g. 14 not 2014
 
-def update_data_files(): 
+def update_data_files():
+    if not os.path.exists('data'):
+        os.makedirs('data')
+    
     #this is not keeping the GUI free, but its 10 times faster :/ 
     #t1 = datetime.today()
     data_parser_list = [eventstamp_txt_data_following.main, \
