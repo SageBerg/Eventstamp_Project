@@ -86,7 +86,7 @@ def draw_scales_button(function, scales_list, button_text, r, c):
 
 def select_deselect(button, scales_bool):
     if scales_bool.get() == False:
-        button.config(bg='#d9d9d9', fg='black', 
+        button.config(bg='#f0f0f0', fg='black', 
         activebackground='#ececec', 
         activeforeground='black')
     else:
