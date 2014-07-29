@@ -273,29 +273,25 @@ def draw_update_data_files_button(r, c):
     data_files_button.grid(row=r, column=c, rowspan=2)
 
 def draw_realtime_eventstamp_display(fill_function, r, c, eventstamp_list):
-    display = Canvas(root, height=70, width=1440, bg='white')
-    display.create_line(0, 46, 1441, 46, fill='grey')
+    display = Canvas(root, height=480, width=60, bg='white', bd=0)
+    display.create_line(30, 0, 30, 720, fill='grey')
     for hour in range(24):
-        display.create_line(hour*60, 0, hour*60, 71, fill='grey')
-        #for fifteen_minute_block in range(0,60,15):
-        #    display.create_line(hour*60 + fifteen_minute_block, 0, \
-        #                        hour*60 + fifteen_minute_block, 51, \
-        #                        fill='grey')
-        display.create_text(hour*60 + 30, 59, text=str(hour) +':00') 
+        display.create_line(0, hour*20, 30, hour*20, fill='grey')
+        display.create_text(15, hour*20 + 10, text=str(hour) +':00') 
     display_list = list()
     for i in range(len(eventstamp_list)):
         if eventstamp_list[i].date == date_tup():
             color = fill_function(eventstamp_list[i])
             if eventstamp_list[i-1].day == eventstamp_list[i].day: #coords
-                start_x = \
-                eventstamp_list[i-1].minute + eventstamp_list[i-1].hour*60
+                start_y = \
+                (eventstamp_list[i-1].minute)//3 + eventstamp_list[i-1].hour*20
             else:
-                start_x = 0
-            end_x = eventstamp_list[i].minute + eventstamp_list[i].hour*60
+                start_y = 0
+            end_y = (eventstamp_list[i].minute)//3 + eventstamp_list[i].hour*20
             display_list.append(
             display.create_rectangle(
-            start_x, 0, end_x, 46, fill=color, width=0)) 
-    display.grid(row=r, column=c, columnspan=18)
+            30, start_y, 60, end_y, fill=color, width=0)) 
+    display.grid(row=r, column=c, rowspan=12)
     return display, display_list
 
 def draw_today_stats_canvas(eventstamp_list):

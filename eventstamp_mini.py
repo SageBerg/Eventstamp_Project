@@ -21,19 +21,15 @@ ppl.close()
 pdn.close()
 
 from eventstamp_gui_mini import *
-
-class Dummy_RTDO(object):
-    def __init__(self):
-        pass
-    def notify(self):
-        pass
+from eventstamp_realtime_display_mini import *
 
 def main():
     eventstamp_list      = make_eventstamp_list()
     note_shortcut_list   = make_note_shortcut_list(eventstamp_list)
     people_shortcut_list = make_people_shortcut_list(eventstamp_list)
 
-    realtime_display_observer = Dummy_RTDO()
+    realtime_display_observer = Realtime_Display_Mini()
+    realtime_display_observer.notify()
 
     draw_scales_time_canvas(0,0)
     draw_scales_label_canvas(0, 1, 'End Time Scales')
