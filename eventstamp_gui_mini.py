@@ -312,7 +312,6 @@ def draw_today_stats_canvas(r, c, eventstamp_list):
     stats_canvas.create_text(60, inc*3 + offset, text = str(hap ) )
 
     people_list = str(peeps ).split('.')
-    print(people_list)
     if people_list[0] != 'None':
         people_text = people_list[0] + '.' + people_list[1][0] + '%'
     else:

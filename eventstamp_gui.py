@@ -130,15 +130,15 @@ def draw_activity_buttons(people_ent_box, note_ent_box, hap_ent_box,
                                    relief=FLAT,
                                    bd=0,
         command=lambda 
-        activity_string=event[0].title(), 
-        get_people  = people_ent_box.get,
-        get_happy   = hap_ent_box.get,
-        get_note    = note_ent_box.get, 
-        where       = location,
-        stress      = stress_bool,
-        scales      = END_SCALES_BOOL,
-        scales_list = scales_list,
-        disp_ob     = observer
+        activity_string =event[0].title(), 
+        get_people      = people_ent_box.get,
+        get_happy       = hap_ent_box.get,
+        get_note        = note_ent_box.get, 
+        where           = location,
+        stress          = stress_bool,
+        scales          = END_SCALES_BOOL,
+        scales_list     = scales_list,
+        disp_ob         = observer
         :
         write_eventstamp(
         activity_string,
@@ -304,10 +304,6 @@ def draw_realtime_eventstamp_display(fill_function, r, c, eventstamp_list):
     display.create_line(0, 46, 1441, 46, fill='grey')
     for hour in range(24):
         display.create_line(hour*60, 0, hour*60, 71, fill='grey')
-        #for fifteen_minute_block in range(0,60,15):
-        #    display.create_line(hour*60 + fifteen_minute_block, 0, \
-        #                        hour*60 + fifteen_minute_block, 51, \
-        #                        fill='grey')
         display.create_text(hour*60 + 30, 59, text=str(hour) +':00') 
     display_list = list()
     for i in range(len(eventstamp_list)):
