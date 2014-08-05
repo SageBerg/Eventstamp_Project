@@ -336,12 +336,18 @@ def draw_today_stats_canvas(eventstamp_list):
     stats_canvas.create_text(60, 116, text = str(hap ) )
 
     people_list = str(peeps ).split('.')
-    people_text = people_list[0] + '.' + people_list[1][0] + '%'
+    if people_list[0] != 'None':
+        people_text = people_list[0] + '.' + people_list[1][0] + '%'
+    else:
+        people_text = '0.0%'
     stats_canvas.create_text(60, 166,  text = 'Time with People') 
     stats_canvas.create_text(60, 189, text = people_text) 
 
     productivity_list = str(pro ).split('.')
-    productivity_text = productivity_list[0] + '.' + productivity_list[1][0] + '%'
+    if productivity_list[0] != 'None':
+        productivity_text = productivity_list[0] + '.' + productivity_list[1][0] + '%'
+    else:
+        productivity_text = '0.0%' 
     stats_canvas.create_text(60, 233, text = 'Productivity') 
     stats_canvas.create_text(60, 256, text = productivity_text) 
 
