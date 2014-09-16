@@ -18,6 +18,7 @@ import data_parsers.eventstamp_txt_data_by_day
 import data_parsers.eventstamp_sql_data_by_day
 import data_parsers.eventstamp_html_blocks
 import data_parsers.eventstamp_html_happy_blocks
+import data_parsers.eventstamp_data_to_sql
 
 import os
 
@@ -238,7 +239,8 @@ def update_data_files():
     data_parser_list = [data_parsers.eventstamp_txt_data_following.main, \
                         data_parsers.eventstamp_txt_data_by_minute.main, \
                         data_parsers.eventstamp_txt_data_by_day.main, \
-                        data_parsers.eventstamp_sql_data_by_day.main]
+                        data_parsers.eventstamp_sql_data_by_day.main, \
+                        data_parsers.eventstamp_data_to_sql.main]
     for data_parser in data_parser_list:
         process = Process(target = data_parser)
         process.start()

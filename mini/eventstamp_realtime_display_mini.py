@@ -5,7 +5,7 @@ Sage Berg
 Created 28 July 2014
 '''
 
-from eventstamp_gui_mini import *
+from mini.eventstamp_gui_mini import *
 from eventstamp_parser   import *
 
 class Realtime_Display_Mini(object):

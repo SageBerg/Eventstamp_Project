@@ -10,7 +10,7 @@ Created 28 July 2014
 from tkinter              import *
 from datetime             import *
 from eventstamp_functions import *
-from eventstamp_calendar  import *
+from gui.eventstamp_calendar  import *
 from eventstamp_parser    import *
 from eventstamp_variables import *
 

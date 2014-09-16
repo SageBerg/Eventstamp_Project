@@ -26,7 +26,7 @@ class HTML_Blocks(object): #needs a clean up
         0, 0, 'Other','',3,'','','no stress'))
         self.width = min(99 + len(self.date_dict)*200, 1499)  #width of calendar canvas 
         
-        self.html_file = open('eventstamp_web_calendar_blocks.html', 'w')
+        self.html_file = open('data/eventstamp_web_calendar_blocks.html', 'w')
         self.html_file.write('<!DOCTYPE html>\n<html>\n<body>\n')
        
         self.draw_dates()
