@@ -20,8 +20,8 @@ except:
 ppl.close()
 pdn.close()
 
-from eventstamp_gui import *
-from eventstamp_realtime_display_class import *
+from gui.eventstamp_gui import *
+from gui.eventstamp_realtime_display_class import *
 
 def main():
     eventstamp_list      = make_eventstamp_list()
