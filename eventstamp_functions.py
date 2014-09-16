@@ -12,12 +12,12 @@ from datetime             import *
 from eventstamp_variables import *
 from eventstamp_parser    import *
 
-import eventstamp_txt_data_following 
-import eventstamp_txt_data_by_minute
-import eventstamp_txt_data_by_day
-import eventstamp_sql_data_by_day
-import eventstamp_html_blocks
-import eventstamp_html_happy_blocks
+import data_parsers.eventstamp_txt_data_following 
+import data_parsers.eventstamp_txt_data_by_minute
+import data_parsers.eventstamp_txt_data_by_day
+import data_parsers.eventstamp_sql_data_by_day
+import data_parsers.eventstamp_html_blocks
+import data_parsers.eventstamp_html_happy_blocks
 
 import os
 
@@ -235,18 +235,18 @@ def update_data_files():
     
     #this is not keeping the GUI free, but its 10 times faster :/ 
     #t1 = datetime.today()
-    data_parser_list = [eventstamp_txt_data_following.main, \
-                        eventstamp_txt_data_by_minute.main, \
-                        eventstamp_txt_data_by_day.main, \
-                        eventstamp_sql_data_by_day.main]
+    data_parser_list = [data_parsers.eventstamp_txt_data_following.main, \
+                        data_parsers.eventstamp_txt_data_by_minute.main, \
+                        data_parsers.eventstamp_txt_data_by_day.main, \
+                        data_parsers.eventstamp_sql_data_by_day.main]
     for data_parser in data_parser_list:
         process = Process(target = data_parser)
         process.start()
         #process.join()
     #t2 = datetime.today()
     #print(t2-t1)
-    eventstamp_html_blocks.HTML_Blocks()
-    eventstamp_html_happy_blocks.HTML_Blocks()
+    data_parsers.eventstamp_html_blocks.HTML_Blocks()
+    data_parsers.eventstamp_html_happy_blocks.HTML_Blocks()
 
 class Today_Stats(object):
     
